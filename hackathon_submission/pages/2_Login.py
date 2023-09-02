@@ -1,5 +1,12 @@
 import streamlit as st
+from streamlit_extras.switch_page_button import switch_page
 from hackathon_submission.conf import pageState, hideSidebarCSS
+from pathlib import Path
+from hackathon_submission.schemas.sql import SQL
+from sqlalchemy import Connection, text, TextClause
+import pandas
+from pandas import DataFrame
+
 
 HEADER: str = """# Empire General Hospital Patient Portal
 > A prototype developed by Nicholas M. Synovic
@@ -9,6 +16,16 @@ HEADER: str = """# Empire General Hospital Patient Portal
 Test username: `user`\n
 Test password: `password`
 """
+
+def searchForUser(username: str, password: str) ->  bool:
+    dbPath: Path = Path("../data.db")
+
+    print(dbPath.is_file())
+
+    sql: SQL = SQL(sqliteDBPath=dbPath)
+
+    df: DataFrame = pandas.read_sql_table(table_name="Users", con=sql.engine)
+    print(df)
 
 def main()  ->  None:
     st.set_page_config(**pageState)
@@ -22,9 +39,14 @@ def main()  ->  None:
 
     with col1:
         backButton: bool = st.button(label="Back")
+        if backButton:
+            switch_page(page_name="About")
     
     with col2:
         loginButton: bool = st.button(label="Login")
+
+        if loginButton:
+            searchForUser(username="user", password="password")
 
     st.divider()
 
