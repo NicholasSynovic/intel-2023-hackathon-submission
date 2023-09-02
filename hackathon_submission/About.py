@@ -1,7 +1,7 @@
 import streamlit as st
 from streamlit_extras.switch_page_button import switch_page
 
-from conf import hideSidebarCSS, pageState
+from hackathon_submission.conf import hideSidebarCSS, pageState
 
 HEADER: str = """# Empire General Hospital Patient Portal
 > A prototype developed by Nicholas M. Synovic
