@@ -16,7 +16,6 @@ Test username: `user`\n
 Test password: `password`
 """
 
-LOGIN_SUCCESS: bool = False
 
 LOGIN_ERROR: str = ":red[Invalid {}]"
 
@@ -54,6 +53,8 @@ def checkPassword(username: str, password: str) -> bool:
 
 
 def main() -> None:
+    LOGIN_SUCCESS: bool = False
+   
     st.set_page_config(**pageState)
     st.markdown(**hideSidebarCSS)
 
@@ -71,14 +72,19 @@ def main() -> None:
         help="Password",
     )
 
-    col1, _, _, _, _, col2 = st.columns(spec=[1, 1, 1, 1, 1, 1], gap="large")
+    col1, _, _, _, col2, col3 = st.columns(spec=[1, 1, 1, 1, 1, 1], gap="small")
 
     with col1:
         backButton: bool = st.button(label="Back")
         if backButton:
             switch_page(page_name="About")
-
+    
     with col2:
+        signUpButton: bool = st.button(label="Sign Up")
+        if signUpButton:
+            switch_page(page_name="SignUp")
+
+    with col3:
         loginButton: bool = st.button(label="Login")
 
     if loginButton:
