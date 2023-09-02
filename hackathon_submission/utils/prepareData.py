@@ -47,6 +47,26 @@ def to_symptoms_string(row: pd.Series) -> str:
     Returns:
         str: shuffled string representation of indicator symptoms
     """
+    print(row)
+    
+    templates = [
+        "Patient is experiencing {}.",
+        "Reported signs of {}.",
+        "Occasional {} experienced by patient.",
+        "{}.",
+        "Issues of frequent {}.",
+        "{} over the last few days.",
+        "Sporadic {}.",
+        "Mild case of {}."
+    ]
+
+    neg_templates = [
+        "Patient reports no {}.",
+        "No evidence of {} seen.",
+        "{} is not present."
+    ]
+    
+
     symptoms = row.index.values[row.values == 1].tolist()
     non_symptoms = row.index.values[row.values == 0].tolist()
     random.shuffle(symptoms)
