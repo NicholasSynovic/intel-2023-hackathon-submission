@@ -52,7 +52,7 @@ def checkPassword(username: str, password: str) -> bool:
 
 def main() -> None:
     LOGIN_SUCCESS: bool = False
-   
+
     st.set_page_config(**pageState)
     st.markdown(**hideSidebarCSS)
 
@@ -76,7 +76,7 @@ def main() -> None:
         backButton: bool = st.button(label="Back")
         if backButton:
             switch_page(page_name="About")
-    
+
     with col2:
         signUpButton: bool = st.button(label="Sign Up")
         if signUpButton:

@@ -1,4 +1,3 @@
-
 from pathlib import Path
 
 import pandas
@@ -32,13 +31,16 @@ def searchForUser(username: str) -> bool:
     return False
 
 
-def createAccount(username: str, password: str) ->  bool:
+def createAccount(username: str, password: str) -> bool:
     # MOVE TO BACKEND
     sql: SQL = SQL(sqliteDBPath=dbPath)
     df: DataFrame = pandas.read_sql_table(table_name="Users", con=sql.conn)
 
     df.set_index("index", inplace=True)
-    df = df.append(other={"Username": username, "Password": password}, ignore_index=True,)
+    df = df.append(
+        other={"Username": username, "Password": password},
+        ignore_index=True,
+    )
 
     sql.writeDFToDB(df=df, tableName="Users", keepIndex=True)
     sql.closeConnection()
@@ -46,7 +48,7 @@ def createAccount(username: str, password: str) ->  bool:
 
 def main() -> None:
     LOGIN_SUCCESS: bool = False
-   
+
     st.set_page_config(**pageState)
     st.markdown(**hideSidebarCSS)
 
@@ -70,7 +72,7 @@ def main() -> None:
         backButton: bool = st.button(label="Back")
         if backButton:
             switch_page(page_name="Login")
-    
+
     with col2:
         createAccountButton: bool = st.button(label="Create Account")
 
