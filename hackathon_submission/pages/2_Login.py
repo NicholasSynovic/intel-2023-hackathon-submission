@@ -1,5 +1,3 @@
-from pathlib import Path
-
 import pandas
 import streamlit as st
 from hackathon_submission.conf import dbPath, hideSidebarCSS, pageState
@@ -98,7 +96,8 @@ def main() -> None:
             st.write(LOGIN_ERROR.format("Username"))
 
     if LOGIN_SUCCESS:
-        st.write("Test")
+        st.session_state["username"] = username
+        switch_page(page_name="Portal")
 
     st.divider()
 
