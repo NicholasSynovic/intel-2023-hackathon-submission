@@ -1,6 +1,8 @@
 import streamlit as st
 from streamlit_extras.switch_page_button import switch_page
 
+from conf import hideSidebarCSS, pageState
+
 HEADER: str = """# Empire General Hospital Patient Portal
 > A prototype developed by Nicholas M. Synovic
 
@@ -15,23 +17,19 @@ technology does not replace practicioners and that the predicted prognosis might
 be incorrect.
 Furthermore, this technology is still in development and is subject to buggy
 behavior.
+""" 
 
-## For Intel Hackathon Judges
-
-I was unable to permently hide the sidebar for this submission. You are free to
-navigate pages with it, however, I am unsure how the application state will 
-change as you do so.
-"""
-
-def main()  ->  None:
-    st.set_page_config(page_title="About", initial_sidebar_state="collapsed")
+def main() -> None:
+    st.set_page_config(**pageState)
+    st.markdown(**hideSidebarCSS)
+    
     st.write(HEADER)
-    st.divider()
 
     nextPage: bool = st.button(label="Login")
     if nextPage:
         switch_page(page_name="Login")
 
+    st.divider()
+
 if __name__ == "__main__":
     main()
-
