@@ -16,6 +16,7 @@ HEADER: str = """# Empire General Hospital Patient Portal
 
 
 LOGIN_ERROR: str = ":red[Invalid {}]"
+ACCOUNT_CREATED: str = ":green[Created Account: {}]"
 
 
 def searchForUser(username: str) -> bool:
@@ -29,6 +30,18 @@ def searchForUser(username: str) -> bool:
     if row.shape[0] > 0:
         return True
     return False
+
+
+def createAccount(username: str, password: str) ->  bool:
+    # MOVE TO BACKEND
+    sql: SQL = SQL(sqliteDBPath=dbPath)
+    df: DataFrame = pandas.read_sql_table(table_name="Users", con=sql.conn)
+
+    df.set_index("index", inplace=True)
+    df = df.append(other={"Username": username, "Password": password}, ignore_index=True,)
+
+    sql.writeDFToDB(df=df, tableName="Users", keepIndex=True)
+    sql.closeConnection()
 
 
 def main() -> None:
@@ -69,7 +82,9 @@ def main() -> None:
             LOGIN_SUCCESS = True
 
     if LOGIN_SUCCESS:
-        st.write("Test")
+        createAccount(username=username, password=password)
+        st.session_state["username"] = username
+        switch_page(page_name="Portal")
 
     st.divider()
 
