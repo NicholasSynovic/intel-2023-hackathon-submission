@@ -17,12 +17,13 @@ technology does not replace practicioners and that the predicted prognosis might
 be incorrect.
 Furthermore, this technology is still in development and is subject to buggy
 behavior.
-""" 
+"""
+
 
 def main() -> None:
     st.set_page_config(**pageState)
     st.markdown(**hideSidebarCSS)
-    
+
     st.write(HEADER)
 
     nextPage: bool = st.button(label="Login")
@@ -30,6 +31,7 @@ def main() -> None:
         switch_page(page_name="Login")
 
     st.divider()
+
 
 if __name__ == "__main__":
     main()
