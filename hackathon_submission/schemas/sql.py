@@ -1,9 +1,9 @@
 from pathlib import Path
-from typing import Literal
+from typing import Literal, Tuple
 
 from pandas import DataFrame
 from sqlalchemy import (Column, Connection, Engine, Float, ForeignKey, Integer,
-                        MetaData, String, Table, create_engine)
+                        MetaData, String, Table, create_engine, text, TextClause)
 
 
 class SQL:
@@ -48,8 +48,8 @@ class SQL:
     ) -> None:
         df.to_sql(
             name=tableName,
-            con=self.conn,
-            if_exists="fail",
+            con=self.engine,
+            if_exists="replace",
             index=keepIndex,
             index_label=indexColumn,
         )
