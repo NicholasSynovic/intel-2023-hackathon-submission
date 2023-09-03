@@ -7,7 +7,7 @@
 # pylint: disable=C0415,E0401,R0914
 
 # Modified by Nicholas M. Synovic.
-# Originally from 
+# Originally from
 # https://github.com/oneapi-src/disease-prediction/blob/main/data/prepare_data.py
 
 """
@@ -28,13 +28,13 @@ templates = [
     "Issues of frequent {}.",
     "{} over the last few days.",
     "Sporadic {}.",
-    "Mild case of {}."
+    "Mild case of {}.",
 ]
 
 neg_templates = [
     "Patient reports no {}.",
     "No evidence of {} seen.",
-    "{} is not present."
+    "{} is not present.",
 ]
 
 
@@ -48,7 +48,7 @@ def to_symptoms_string(row: pd.Series) -> str:
         str: shuffled string representation of indicator symptoms
     """
     print(row)
-    
+
     templates = [
         "Patient is experiencing {}.",
         "Reported signs of {}.",
@@ -57,15 +57,14 @@ def to_symptoms_string(row: pd.Series) -> str:
         "Issues of frequent {}.",
         "{} over the last few days.",
         "Sporadic {}.",
-        "Mild case of {}."
+        "Mild case of {}.",
     ]
 
     neg_templates = [
         "Patient reports no {}.",
         "No evidence of {} seen.",
-        "{} is not present."
+        "{} is not present.",
     ]
-    
 
     symptoms = row.index.values[row.values == 1].tolist()
     non_symptoms = row.index.values[row.values == 0].tolist()
@@ -73,31 +72,33 @@ def to_symptoms_string(row: pd.Series) -> str:
     symptom_sentences = []
     for symptom in symptoms:
         symptom_sentences.append(
-            templates[random.randint(0, len(templates) - 1)]
-            .replace("{}", symptom)
+            templates[random.randint(0, len(templates) - 1)].replace("{}", symptom)
         )
 
     total_negative = 0
     for non_symptom in non_symptoms:
         if random.random() < 0.1 and total_negative < 3:
             symptom_sentences.append(
-                neg_templates[random.randint(0, len(neg_templates) - 1)]
-                .replace("{}", non_symptom)
+                neg_templates[random.randint(0, len(neg_templates) - 1)].replace(
+                    "{}", non_symptom
+                )
             )
             total_negative += 1
 
     random.shuffle(symptom_sentences)
 
-    res = " ".join(symptom_sentences) \
-        .replace(" _", " ") \
-        .replace("_ ", " ") \
+    res = (
+        " ".join(symptom_sentences)
+        .replace(" _", " ")
+        .replace("_ ", " ")
         .replace("_", " ")
+    )
 
     return res
 
 
 def add_noise(data):
-    if 'Unnamed: 133' in data.columns:
-        data = data.drop('Unnamed: 133', axis=1)
-    data['symptoms'] = data.apply(to_symptoms_string, axis=1)
-    return data[['symptoms', 'prognosis']]
+    if "Unnamed: 133" in data.columns:
+        data = data.drop("Unnamed: 133", axis=1)
+    data["symptoms"] = data.apply(to_symptoms_string, axis=1)
+    return data[["symptoms", "prognosis"]]
