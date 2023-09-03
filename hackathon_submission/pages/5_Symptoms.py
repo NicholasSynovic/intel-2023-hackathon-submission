@@ -8,6 +8,7 @@ from hackathon_submission.utils import runInference
 from hackathon_submission.utils.prepareData import to_symptoms_string
 from pandas import DataFrame, Series
 from streamlit_extras.switch_page_button import switch_page
+import pandas
 
 HEADER: str = f"""# Empire General Hospital Patient Portal
 > A prototype developed by Nicholas M. Synovic
@@ -34,7 +35,18 @@ def inference(data: DataFrame) -> None:
     )
 
     predictions = runInference.main(flags=FLAGS)
-    print(predictions)
+    pairs: dict[str, float] = predictions[0]["prognosis"]
+
+    foo: dict[str, list] = {"prognosis": [], "probability": []}
+
+    prognosis: str
+    for prognosis in pairs.keys():
+        foo["prognosis"].append(prognosis)
+        foo["probability"].append(pairs[prognosis])
+
+    df: DataFrame = DataFrame(data=foo)
+
+    print(df)
 
 
 def main() -> None:
@@ -337,7 +349,7 @@ def main() -> None:
             with bottomCol2:
                 with st.spinner("Predicting prognosis..."):
                     inference(data=df)
-                st.success("Done!")
+                switch_page(page_name="Report")
 
     st.divider()
 
