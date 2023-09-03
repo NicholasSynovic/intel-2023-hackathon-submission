@@ -1,16 +1,14 @@
 import time
 
 import streamlit as st
-import torch
 from hackathon_submission.conf import dbPath, hideSidebarCSS, pageState
 from hackathon_submission.schemas.sql import SQL
 from hackathon_submission.utils.prepareData import to_symptoms_string
-from hackathon_submission.utils.processData import (DiseasePrognosisDataset,
-                                                    read_and_preprocess_data)
+from hackathon_submission.utils import runInference
+from argparse import Namespace
+
 from pandas import DataFrame, Series
 from streamlit_extras.switch_page_button import switch_page
-from transformers import (AutoModelForSequenceClassification, AutoTokenizer,
-                          BertConfig, BertForSequenceClassification)
 
 HEADER: str = f"""# Empire General Hospital Patient Portal
 > A prototype developed by Nicholas M. Synovic
@@ -20,6 +18,23 @@ HEADER: str = f"""# Empire General Hospital Patient Portal
 Please select all relevant symptoms, then press "Submit Symptoms" at the bottom
 of this page.
 """
+
+
+def inference(data: DataFrame) -> None:
+    FLAGS: Namespace = Namespace(
+        batch_size=-1,
+        benchmark_mode=False,
+        bf16=True,
+        input_file=data,
+        intel=True,
+        is_inc_int8=False,
+        logfile="",
+        n_runs=100,
+        saved_model_dir="NicholasSynovic/intel-hackathon",
+        seq_length=512,
+    )
+
+    predictions = runInference.main(flags=FLAGS)
 
 
 def main() -> None:
