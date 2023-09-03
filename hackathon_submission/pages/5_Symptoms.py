@@ -22,7 +22,7 @@ of this page.
 
 def inference(data: DataFrame) -> None:
     FLAGS: Namespace = Namespace(
-        batch_size=-1,
+        batch_size=1,
         benchmark_mode=False,
         bf16=True,
         input_file=data,
@@ -30,11 +30,12 @@ def inference(data: DataFrame) -> None:
         is_inc_int8=False,
         logfile="",
         n_runs=100,
-        saved_model_dir="NicholasSynovic/intel-hackathon",
+        saved_model_dir="model",
         seq_length=512,
     )
 
     predictions = runInference.main(flags=FLAGS)
+    print(predictions)
 
 
 def main() -> None:
@@ -332,10 +333,11 @@ def main() -> None:
 
             row: Series = Series(data=data)
             symptomStr: str = to_symptoms_string(row=row)
+            df: DataFrame  = DataFrame(data={"symptoms":[symptomStr]})
 
             with bottomCol2:
-                with st.spinner("Wait for it..."):
-                    time.sleep(5)
+                with st.spinner("Predicting prognosis..."):
+                    inference(data=df)
                 st.success("Done!")
 
     st.divider()

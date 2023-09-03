@@ -17,6 +17,11 @@ technology does not replace practicioners and that the predicted prognosis might
 be incorrect.
 Furthermore, this technology is still in development and is subject to buggy
 behavior.
+
+To speak to a doctor at Empire General Hospital, call: `(xxx) xxx-xxxx`\n
+
+For medical emergencies, call `911`
+
 """
 
 

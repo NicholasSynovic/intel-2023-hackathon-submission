@@ -29,7 +29,7 @@ def main() -> None:
             switch_page(page_name="Login")
 
     with col2:
-        newSymptomsButton = st.button(label="New Symptoms")
+        newSymptomsButton = st.button(label="Report Symptoms")
         if newSymptomsButton:
             switch_page(page_name="Symptoms")
     with col3:
