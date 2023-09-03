@@ -1,7 +1,6 @@
 import streamlit as st
-from streamlit_extras.switch_page_button import switch_page
-
 from hackathon_submission.conf import hideSidebarCSS, pageState
+from streamlit_extras.switch_page_button import switch_page
 
 HEADER: str = f"""# Empire General Hospital Patient Portal
 > A prototype developed by Nicholas M. Synovic
@@ -23,9 +22,13 @@ def main() -> None:
 
     st.write(HEADER)
 
-    st.dataframe(data=st.session_state["report"], use_container_width=True, hide_index=True,)
+    st.dataframe(
+        data=st.session_state["report"],
+        use_container_width=True,
+        hide_index=True,
+    )
 
-    col1, col2 = st.columns(spec=[6,2], gap="large")
+    col1, col2 = st.columns(spec=[6, 2], gap="large")
 
     with col1:
         reportSymptomsButton = st.button(label="Report Symptoms")

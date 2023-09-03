@@ -45,7 +45,7 @@ def inference(data: DataFrame) -> None:
         foo["probability"].append(pairs[prognosis])
 
     df: DataFrame = DataFrame(data=foo)
-    
+
     st.session_state["report"] = df
 
 
