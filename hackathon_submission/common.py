@@ -1,7 +1,7 @@
 from pathlib import Path
 
 SITE_STATE = {
-    "page_title": "Empire General Hospital Patient Portal",
+    "page_title": "DiagnoEase", 
     "initial_sidebar_state": "collapsed",
     "layout": "wide",
 }
@@ -21,7 +21,7 @@ DB_PATH: Path = Path("storage/data.db")
 
 MODEL_PATH: Path = Path("model")
 
-PAGE_HEADER: str = """# Empire General Hospital Patient Self-Diagnosis Tool
+PAGE_HEADER: str = """# Empire General Hospital DiagnoEase
 > A prototype developed by Nicholas M. Synovic ([nsynovic@luc.edu](mailto:nsynovic@luc.edu))"""
 
 PAGE_FOOTER: str = """To speak to a medical professional at Empire General Hospital, call `(xxx) xxx-xxxx`\n
