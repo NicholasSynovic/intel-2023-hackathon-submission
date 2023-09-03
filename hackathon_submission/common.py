@@ -1,4 +1,5 @@
 from pathlib import Path
+from hackathon_submission.utils import api
 
 SITE_STATE = {
     "page_title": "DiagnoEase", 
@@ -25,3 +26,6 @@ PAGE_HEADER: str = """# Empire General Hospital DiagnoEase
 
 PAGE_FOOTER: str = """To speak to a medical professional at Empire General Hospital, call `(xxx) xxx-xxxx`\n
 For all medical emergencies, call `911`"""
+
+ACCOUNT_ERROR_MESSAGE: str = ":red[Invalid {}]"
+SERVER_ERROR_MESSAGE: str = f":red[Unable to reach server at: {api.URL}]"
