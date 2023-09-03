@@ -62,7 +62,7 @@ def main() -> None:
         help="Password",
     )
 
-    col1, col2 = st.columns(spec=[5, 1], gap="small")
+    col1, col2 = st.columns(spec=[4, 1], gap="small")
 
     with col1:
         backButton: bool = st.button(label="Back")

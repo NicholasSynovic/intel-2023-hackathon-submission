@@ -197,7 +197,7 @@ def main() -> None:
         red_sore_around_nose = st.checkbox(label="Red sore around nose")
         yellow_crust_ooze = st.checkbox(label="Yellow crust ooze")
 
-    bottomCol1, bottomCol2, bottomCol3 = st.columns(spec=[2, 1, 1], gap="small")
+    bottomCol1, bottomCol2, bottomCol3 = st.columns(spec=[1, 1, 1], gap="small")
 
     with bottomCol1:
         logoutButton = st.button(label="Logout")

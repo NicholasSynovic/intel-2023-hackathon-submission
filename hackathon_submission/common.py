@@ -3,7 +3,6 @@ from pathlib import Path
 SITE_STATE = {
     "page_title": "DiagnoEase", 
     "initial_sidebar_state": "collapsed",
-    "layout": "wide",
 }
 
 HIDDEN_SIDEBAR_CSS = {

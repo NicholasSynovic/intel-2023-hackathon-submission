@@ -24,7 +24,7 @@ def main() -> None:
         hide_index=True,
     )
 
-    col1, col2, col3 = st.columns(spec=[3, 1, 1], gap="small")
+    col1, col2, col3 = st.columns(spec=[1, 1, 1], gap="small")
 
     with col1:
         logoutButton = st.button(label="Logout")
