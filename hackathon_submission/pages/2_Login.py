@@ -97,7 +97,7 @@ def main() -> None:
 
     if LOGIN_SUCCESS:
         st.session_state["username"] = username
-        switch_page(page_name="Portal")
+        switch_page(page_name="Symptoms")
 
     st.divider()
 

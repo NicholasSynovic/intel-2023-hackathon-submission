@@ -80,9 +80,6 @@ def main(flags) -> None:
     tokenizer = AutoTokenizer.from_pretrained(flags.saved_model_dir)
 
     try:
-
-        print(flags.input_file)
-
         test_dataset = read_and_preprocess_data(
             flags.input_file,
             tokenizer,
@@ -198,3 +195,4 @@ def main(flags) -> None:
                 predictions.append({"id": index, "prognosis": probs})
                 index += 1
         print({"predictions": predictions})
+        return predictions
