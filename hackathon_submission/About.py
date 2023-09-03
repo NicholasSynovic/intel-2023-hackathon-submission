@@ -2,6 +2,7 @@ import streamlit as st
 from streamlit_extras.switch_page_button import switch_page
 
 from hackathon_submission.conf import hideSidebarCSS, pageState
+from pandas import DataFrame
 
 HEADER: str = """# Empire General Hospital Patient Portal
 > A prototype developed by Nicholas M. Synovic
@@ -31,6 +32,8 @@ def main() -> None:
 
     if "username" not in st.session_state:
         st.session_state["username"] = ""
+    if "report" not in st.session_state:
+        st.session_state["report"] = DataFrame()
 
     st.write(HEADER)
 
