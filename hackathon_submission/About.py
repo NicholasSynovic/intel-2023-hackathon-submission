@@ -25,7 +25,7 @@ def main() -> None:
     st.markdown(**hideSidebarCSS)
     
     if "username" not in st.session_state:
-        st.session_state["username"] = None
+        st.session_state["username"] = ""
 
     st.write(HEADER)
 
