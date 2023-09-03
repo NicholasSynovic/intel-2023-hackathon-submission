@@ -74,12 +74,12 @@ def main() -> None:
     with col1:
         backButton: bool = st.button(label="Back")
         if backButton:
-            switch_page(page_name="About")
+            switch_page(page_name="about")
 
     with col2:
         signUpButton: bool = st.button(label="Sign Up")
         if signUpButton:
-            switch_page(page_name="SignUp")
+            switch_page(page_name="signup")
 
     with col3:
         loginButton: bool = st.button(label="Login")
@@ -96,7 +96,7 @@ def main() -> None:
 
     if LOGIN_SUCCESS:
         st.session_state["username"] = username
-        switch_page(page_name="Symptoms")
+        switch_page(page_name="symptoms")
 
     st.divider()
 
