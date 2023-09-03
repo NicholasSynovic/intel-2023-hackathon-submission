@@ -16,7 +16,7 @@ HIDDEN_SIDEBAR_CSS = {
     "unsafe_allow_html": True,
 }
 
-DB_PATH: Path = Path("storage/data.db")
+DB_PATH: Path = Path("backend/storage/data.db")
 
 MODEL_PATH: Path = Path("model")
 
