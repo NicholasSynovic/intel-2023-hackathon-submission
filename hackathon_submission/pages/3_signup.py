@@ -84,8 +84,8 @@ def main() -> None:
         st.session_state["username"] = username
         switch_page(page_name="symptoms")
 
-    st.write(common.PAGE_FOOTER)
     st.divider()
+    st.write(common.PAGE_FOOTER)
 
 
 if __name__ == "__main__":

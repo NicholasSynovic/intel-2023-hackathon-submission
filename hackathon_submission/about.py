@@ -29,13 +29,13 @@ def main() -> None:
 
     st.write(common.PAGE_HEADER)
     st.write(MESSAGE)
-    st.write(common.PAGE_FOOTER)
 
     nextPage: bool = st.button(label="Login")
     if nextPage:
         switch_page(page_name="login")
 
     st.divider()
+    st.write(common.PAGE_FOOTER)
 
 
 if __name__ == "__main__":

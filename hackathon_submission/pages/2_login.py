@@ -54,7 +54,6 @@ def main() -> None:
 
     st.write(common.PAGE_HEADER)
     st.write(MESSAGE)
-    st.write(common.PAGE_FOOTER)
 
     username: str = st.text_input(
         label="Username",
@@ -99,6 +98,7 @@ def main() -> None:
         switch_page(page_name="symptoms")
 
     st.divider()
+    st.write(common.PAGE_FOOTER)
 
 
 if __name__ == "__main__":
