@@ -1,12 +1,11 @@
 import time
+from argparse import Namespace
 
 import streamlit as st
 from hackathon_submission.conf import dbPath, hideSidebarCSS, pageState
 from hackathon_submission.schemas.sql import SQL
-from hackathon_submission.utils.prepareData import to_symptoms_string
 from hackathon_submission.utils import runInference
-from argparse import Namespace
-
+from hackathon_submission.utils.prepareData import to_symptoms_string
 from pandas import DataFrame, Series
 from streamlit_extras.switch_page_button import switch_page
 
@@ -333,7 +332,7 @@ def main() -> None:
 
             row: Series = Series(data=data)
             symptomStr: str = to_symptoms_string(row=row)
-            df: DataFrame  = DataFrame(data={"symptoms":[symptomStr]})
+            df: DataFrame = DataFrame(data={"symptoms": [symptomStr]})
 
             with bottomCol2:
                 with st.spinner("Predicting prognosis..."):
