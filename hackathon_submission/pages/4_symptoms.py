@@ -197,9 +197,16 @@ def main() -> None:
         red_sore_around_nose = st.checkbox(label="Red sore around nose")
         yellow_crust_ooze = st.checkbox(label="Yellow crust ooze")
 
-    bottomCol1, bottomCol2 = st.columns(spec=[2, 2], gap="large")
+    bottomCol1, bottomCol2, bottomCol3 = st.columns(spec=[2, 1, 1], gap="small")
 
     with bottomCol1:
+        logoutButton = st.button(label="Logout")
+        if logoutButton:
+            st.session_state["username"] = ""
+            st.session_state["report"] = DataFrame()
+            switch_page(page_name="about")
+
+    with bottomCol2:
         submitButton = st.button(label="Submit Symptoms")
         if submitButton:
             data: dict[str, int] = {
@@ -341,7 +348,7 @@ def main() -> None:
             symptomStr: str = to_symptoms_string(row=row)
             df: DataFrame = DataFrame(data={"symptoms": [symptomStr]})
 
-            with bottomCol2:
+            with bottomCol3:
                 with st.spinner("Predicting prognosis..."):
                     inference(data=df)
                 switch_page(page_name="report")
