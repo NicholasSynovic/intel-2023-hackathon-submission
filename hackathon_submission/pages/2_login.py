@@ -1,19 +1,15 @@
 import pandas
 import streamlit as st
-from hackathon_submission.conf import dbPath, hideSidebarCSS, pageState
+from hackathon_submission import common 
 from hackathon_submission.schemas.sql import SQL
 from pandas import DataFrame
 from streamlit_extras.switch_page_button import switch_page
 
-HEADER: str = """# Empire General Hospital Patient Portal
-> A prototype developed by Nicholas M. Synovic
-
-## Login
+MESSAGE: str = """## Login
 
 Test username: `user`\n
 Test password: `password`
 """
-
 
 LOGIN_ERROR: str = ":red[Invalid {}]"
 
@@ -53,10 +49,13 @@ def checkPassword(username: str, password: str) -> bool:
 def main() -> None:
     LOGIN_SUCCESS: bool = False
 
-    st.set_page_config(**pageState)
-    st.markdown(**hideSidebarCSS)
+    st.set_page_config(**common.SITE_STATE)
+    st.markdown(**common.HIDDEN_SIDEBAR_CSS)
+    
+    st.write(common.PAGE_HEADER)
+    st.write(MESSAGE)
+    st.write(common.PAGE_FOOTER)
 
-    st.write(HEADER)
     username: str = st.text_input(
         label="Username",
         max_chars=30,
@@ -70,7 +69,7 @@ def main() -> None:
         help="Password",
     )
 
-    col1, _, _, _, col2, col3 = st.columns(spec=[1, 1, 1, 1, 1, 1], gap="small")
+    col1, col2, col3 = st.columns(spec=[3, 3, 3], gap="large")
 
     with col1:
         backButton: bool = st.button(label="Back")
