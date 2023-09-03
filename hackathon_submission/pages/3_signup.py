@@ -11,6 +11,7 @@ MESSAGE: str = "## Sign Up"
 
 LOGIN_ERROR: str = ":red[Invalid {}]"
 
+
 def searchForUser(username: str) -> bool:
     # MOVE TO BACKEND
     sql: SQL = SQL(sqliteDBPath=common.DB_PATH)

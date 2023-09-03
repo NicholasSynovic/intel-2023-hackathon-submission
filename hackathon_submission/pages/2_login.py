@@ -1,6 +1,6 @@
 import pandas
 import streamlit as st
-from hackathon_submission import common 
+from hackathon_submission import common
 from hackathon_submission.schemas.sql import SQL
 from pandas import DataFrame
 from streamlit_extras.switch_page_button import switch_page
@@ -51,7 +51,7 @@ def main() -> None:
 
     st.set_page_config(**common.SITE_STATE)
     st.markdown(**common.HIDDEN_SIDEBAR_CSS)
-    
+
     st.write(common.PAGE_HEADER)
     st.write(MESSAGE)
     st.write(common.PAGE_FOOTER)
