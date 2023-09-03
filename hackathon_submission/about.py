@@ -1,13 +1,10 @@
 import streamlit as st
 from streamlit_extras.switch_page_button import switch_page
 
-from hackathon_submission.conf import hideSidebarCSS, pageState
+from hackathon_submission import common
 from pandas import DataFrame
 
-HEADER: str = """# Empire General Hospital Patient Portal
-> A prototype developed by Nicholas M. Synovic
-
-## About
+MESSAGE: str = """## About
 
 Empire General Hospital is commited to providing patients with state-of-the-art
 resources to assist in the diagnosis of medical symptoms.
@@ -18,28 +15,25 @@ technology does not replace practicioners and that the predicted prognosis might
 be incorrect.
 Furthermore, this technology is still in development and is subject to buggy
 behavior.
-
-To speak to a doctor at Empire General Hospital, call: `(xxx) xxx-xxxx`\n
-
-For medical emergencies, call `911`
-
 """
 
 
 def main() -> None:
-    st.set_page_config(**pageState)
-    st.markdown(**hideSidebarCSS)
+    st.set_page_config(**common.SITE_STATE)
+    st.markdown(**common.HIDDEN_SIDEBAR_CSS)
 
     if "username" not in st.session_state:
         st.session_state["username"] = ""
     if "report" not in st.session_state:
         st.session_state["report"] = DataFrame()
 
-    st.write(HEADER)
+    st.write(common.PAGE_HEADER)
+    st.write(MESSAGE)
+    st.write(common.PAGE_FOOTER)
 
     nextPage: bool = st.button(label="Login")
     if nextPage:
-        switch_page(page_name="Login")
+        switch_page(page_name="login")
 
     st.divider()
 
