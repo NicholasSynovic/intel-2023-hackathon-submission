@@ -3,6 +3,7 @@ from pandas import DataFrame
 from streamlit_extras.switch_page_button import switch_page
 
 from hackathon_submission import common
+from hackathon_submission.utils import api
 
 MESSAGE: str = """## About
 
@@ -30,9 +31,13 @@ def main() -> None:
     st.write(common.PAGE_HEADER)
     st.write(MESSAGE)
 
-    nextPage: bool = st.button(label="Login")
-    if nextPage:
-        switch_page(page_name="login")
+
+    if api.check():
+        nextPage: bool = st.button(label="Login")
+        if nextPage:
+            switch_page(page_name="login")
+    else:
+        st.write(common.SERVER_ERROR_MESSAGE)
 
     st.divider()
     st.write(common.PAGE_FOOTER)
