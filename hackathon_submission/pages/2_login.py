@@ -16,7 +16,7 @@ LOGIN_ERROR: str = ":red[Invalid {}]"
 
 def searchForUser(username: str) -> bool:
     # MOVE TO BACKEND
-    sql: SQL = SQL(sqliteDBPath=dbPath)
+    sql: SQL = SQL(sqliteDBPath=common.DB_PATH)
     df: DataFrame = pandas.read_sql_table(table_name="Users", con=sql.conn)
     sql.closeConnection()
 
@@ -29,7 +29,7 @@ def searchForUser(username: str) -> bool:
 
 def checkPassword(username: str, password: str) -> bool:
     # MOVE TO BACKEND
-    sql: SQL = SQL(sqliteDBPath=dbPath)
+    sql: SQL = SQL(sqliteDBPath=common.DB_PATH)
     df: DataFrame = pandas.read_sql_table(table_name="Users", con=sql.conn)
     sql.closeConnection()
 
