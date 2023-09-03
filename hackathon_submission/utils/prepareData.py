@@ -47,8 +47,6 @@ def to_symptoms_string(row: pd.Series) -> str:
     Returns:
         str: shuffled string representation of indicator symptoms
     """
-    print(row)
-
     templates = [
         "Patient is experiencing {}.",
         "Reported signs of {}.",
