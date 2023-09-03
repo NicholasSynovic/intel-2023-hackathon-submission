@@ -15,6 +15,7 @@ Utility functions to create datasets.
 from typing import List
 
 import pandas as pd
+from pandas import DataFrame
 import torch
 from torch.utils.data import Dataset
 from transformers import PreTrainedTokenizer
@@ -105,15 +106,15 @@ class DiseasePrognosisDataset(Dataset):
 
 
 def read_and_preprocess_data(
-    data_path: str,
+    data: DataFrame,
     tokenizer: PreTrainedTokenizer,
     max_length: int = 64,
-    include_label: bool = True,
+    include_label: bool = False,
 ) -> Dataset:
     """read, preprocess data, and create a Dataset with a pretrained tokenizer
 
     Args:
-        data_path (str): path to dataset
+        data (DataFrame): data
         tokenizer (PreTrainedTokenizer): tokenizer to use
         max_length (int): max length for tokenization
         include_label (bool): Whether to include the label field for
@@ -122,7 +123,7 @@ def read_and_preprocess_data(
         Dataset : preprocessed Dataset
     """
 
-    data = pd.read_csv(data_path)
+    # data = pd.read_csv(data_path)
     if include_label:
         prognosis = data["prognosis"]
     symptoms = data["symptoms"]
