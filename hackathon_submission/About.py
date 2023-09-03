@@ -28,7 +28,7 @@ For medical emergencies, call `911`
 def main() -> None:
     st.set_page_config(**pageState)
     st.markdown(**hideSidebarCSS)
-    
+
     if "username" not in st.session_state:
         st.session_state["username"] = ""
 

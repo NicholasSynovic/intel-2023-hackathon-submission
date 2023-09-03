@@ -15,8 +15,8 @@ Utility functions to create datasets.
 from typing import List
 
 import pandas as pd
-from pandas import DataFrame
 import torch
+from pandas import DataFrame
 from torch.utils.data import Dataset
 from transformers import PreTrainedTokenizer
 

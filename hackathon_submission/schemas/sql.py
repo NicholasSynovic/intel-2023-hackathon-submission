@@ -3,7 +3,8 @@ from typing import Literal, Tuple
 
 from pandas import DataFrame
 from sqlalchemy import (Column, Connection, Engine, Float, ForeignKey, Integer,
-                        MetaData, String, Table, create_engine, text, TextClause)
+                        MetaData, String, Table, TextClause, create_engine,
+                        text)
 
 
 class SQL:

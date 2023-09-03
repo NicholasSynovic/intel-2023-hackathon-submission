@@ -1,6 +1,7 @@
 import time
 from argparse import Namespace
 
+import pandas
 import streamlit as st
 from hackathon_submission.conf import dbPath, hideSidebarCSS, pageState
 from hackathon_submission.schemas.sql import SQL
@@ -8,7 +9,6 @@ from hackathon_submission.utils import runInference
 from hackathon_submission.utils.prepareData import to_symptoms_string
 from pandas import DataFrame, Series
 from streamlit_extras.switch_page_button import switch_page
-import pandas
 
 HEADER: str = f"""# Empire General Hospital Patient Portal
 > A prototype developed by Nicholas M. Synovic

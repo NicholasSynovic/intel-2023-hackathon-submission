@@ -13,11 +13,11 @@ Run inference benchmarks
 """
 
 import argparse
-from argparse import Namespace
 import logging
 import os
 import pathlib
 import time
+from argparse import Namespace
 from contextlib import nullcontext
 
 import numpy as np

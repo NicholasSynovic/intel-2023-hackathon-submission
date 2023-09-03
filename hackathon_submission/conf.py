@@ -3,7 +3,7 @@ from pathlib import Path
 pageState = {
     "page_title": "Empire General Hospital Patient Portal",
     "initial_sidebar_state": "collapsed",
-    "layout":"wide",
+    "layout": "wide",
 }
 
 hideSidebarCSS = {
