@@ -1,12 +1,12 @@
 from pathlib import Path
 
-pageState = {
+SITE_STATE: dict[str, str] = {
     "page_title": "Empire General Hospital Patient Portal",
     "initial_sidebar_state": "collapsed",
     "layout": "wide",
 }
 
-hideSidebarCSS = {
+HIDDEN_SIDEBAR_CSS: dict[str, str] = {
     "body": """
 <style>
     [data-testid="collapsedControl"] {
@@ -16,4 +16,13 @@ hideSidebarCSS = {
 """,
     "unsafe_allow_html": True,
 }
-dbPath: Path = Path("storage/data.db")
+
+DB_PATH: Path = Path("storage/data.db")
+
+MODEL_PATH: Path = Path("model")
+
+PAGE_HEADER: str = """# Empire General Hospital Patient Self-Diagnosis Tool
+> A prototype developed by Nicholas M. Synovic ((nsynovic@luc.edu)[mailto:nsynovic@luc.edu])"""
+
+PAGE_FOOTER: str = """To speak to a medical professional at Empire General Hospital, call `(xxx) xxx-xxxx`\n
+For all medical emergencies, call `911`"""
