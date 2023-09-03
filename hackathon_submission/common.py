@@ -16,9 +16,9 @@ HIDDEN_SIDEBAR_CSS = {
     "unsafe_allow_html": True,
 }
 
-DB_PATH: Path = Path("backend/storage/data.db")
+DB_PATH: Path = Path("../backend/storage/data.db")
 
-MODEL_PATH: Path = Path("model")
+MODEL_PATH: Path = Path("../backend/model")
 
 PAGE_HEADER: str = """# Empire General Hospital DiagnoEase
 > A prototype developed by Nicholas M. Synovic ([nsynovic@luc.edu](mailto:nsynovic@luc.edu))"""
