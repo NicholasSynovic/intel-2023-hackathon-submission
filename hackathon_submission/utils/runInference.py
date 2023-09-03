@@ -13,6 +13,7 @@ Run inference benchmarks
 """
 
 import argparse
+from argparse import Namespace
 import logging
 import os
 import pathlib
@@ -194,70 +195,3 @@ def main(flags) -> None:
                 predictions.append({"id": index, "prognosis": probs})
                 index += 1
         print({"predictions": predictions})
-
-
-if __name__ == "__main__":
-    parser = argparse.ArgumentParser()
-
-    parser.add_argument(
-        "--saved_model_dir",
-        required=True,
-        help="saved pretrained model to benchmark",
-        type=str,
-    )
-
-    parser.add_argument(
-        "--input_file", required=True, help="input to make predictions on", type=str
-    )
-
-    parser.add_argument(
-        "--batch_size",
-        default=-1,
-        type=int,
-        help="batch size to use. if -1, uses all entries in input.",
-    )
-
-    parser.add_argument(
-        "--benchmark_mode",
-        default=False,
-        help="Benchmark instead of get predictions.",
-        action="store_true",
-    )
-
-    parser.add_argument(
-        "--intel",
-        default=False,
-        action="store_true",
-        help="use intel accelerated technologies. defaults to False.",
-    )
-
-    parser.add_argument(
-        "--is_inc_int8",
-        default=False,
-        action="store_true",
-        help="saved model dir is a quantized int8 model. defaults to False.",
-    )
-
-    parser.add_argument(
-        "--seq_length",
-        default=512,
-        help="sequence length to use. defaults to 512.",
-        type=int,
-    )
-
-    parser.add_argument("--logfile", help="logfile to use.", default="", type=str)
-
-    parser.add_argument(
-        "--n_runs",
-        default=100,
-        help="number of trials to test. defaults to 100.",
-        type=int,
-    )
-
-    parser.add_argument(
-        "--bf16", default=False, action="store_true", help="Enable bf16 inference"
-    )
-
-    FLAGS = parser.parse_args()
-
-    main(FLAGS)
