@@ -2,25 +2,18 @@ from pathlib import Path
 
 import pandas
 import streamlit as st
-from hackathon_submission.conf import dbPath, hideSidebarCSS, pageState
+from hackathon_submission import common
 from hackathon_submission.schemas.sql import SQL
 from pandas import DataFrame
 from streamlit_extras.switch_page_button import switch_page
 
-HEADER: str = """# Empire General Hospital Patient Portal
-> A prototype developed by Nicholas M. Synovic
-
-## Sign Up 
-"""
-
+MESSAGE: str = "## Sign Up"
 
 LOGIN_ERROR: str = ":red[Invalid {}]"
-ACCOUNT_CREATED: str = ":green[Created Account: {}]"
-
 
 def searchForUser(username: str) -> bool:
     # MOVE TO BACKEND
-    sql: SQL = SQL(sqliteDBPath=dbPath)
+    sql: SQL = SQL(sqliteDBPath=common.DB_PATH)
     df: DataFrame = pandas.read_sql_table(table_name="Users", con=sql.conn)
     sql.closeConnection()
 
@@ -33,7 +26,7 @@ def searchForUser(username: str) -> bool:
 
 def createAccount(username: str, password: str) -> bool:
     # MOVE TO BACKEND
-    sql: SQL = SQL(sqliteDBPath=dbPath)
+    sql: SQL = SQL(sqliteDBPath=common.DB_PATH)
     df: DataFrame = pandas.read_sql_table(table_name="Users", con=sql.conn)
 
     df.set_index("index", inplace=True)
@@ -49,10 +42,12 @@ def createAccount(username: str, password: str) -> bool:
 def main() -> None:
     LOGIN_SUCCESS: bool = False
 
-    st.set_page_config(**pageState)
-    st.markdown(**hideSidebarCSS)
+    st.set_page_config(**common.SITE_STATE)
+    st.markdown(**common.HIDDEN_SIDEBAR_CSS)
 
-    st.write(HEADER)
+    st.write(common.PAGE_HEADER)
+    st.write(MESSAGE)
+
     username: str = st.text_input(
         label="Username",
         max_chars=30,
@@ -66,7 +61,7 @@ def main() -> None:
         help="Password",
     )
 
-    col1, _, _, _, col2 = st.columns(spec=[1, 1, 1, 1, 1], gap="small")
+    col1, col2 = st.columns(spec=[5, 1], gap="small")
 
     with col1:
         backButton: bool = st.button(label="Back")
@@ -86,8 +81,9 @@ def main() -> None:
     if LOGIN_SUCCESS:
         createAccount(username=username, password=password)
         st.session_state["username"] = username
-        switch_page(page_name="Symptoms")
+        switch_page(page_name="symptoms")
 
+    st.write(common.PAGE_FOOTER)
     st.divider()
 
 
