@@ -37,12 +37,12 @@ def inference(data: DataFrame) -> None:
     predictions = runInference.main(flags=FLAGS)
     pairs: dict[str, float] = predictions[0]["prognosis"]
 
-    foo: dict[str, list] = {"prognosis": [], "probability": []}
+    foo: dict[str, list] = {"Prognosis": [], "Probability": []}
 
     prognosis: str
     for prognosis in pairs.keys():
-        foo["prognosis"].append(prognosis)
-        foo["probability"].append(pairs[prognosis])
+        foo["Prognosis"].append(prognosis)
+        foo["Probability"].append(str(pairs[prognosis] * 100) + "%")
 
     df: DataFrame = DataFrame(data=foo)
 
