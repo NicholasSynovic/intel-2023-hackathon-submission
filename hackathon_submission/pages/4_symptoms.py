@@ -1,19 +1,13 @@
-import time
 from argparse import Namespace
 
-import pandas
 import streamlit as st
-from hackathon_submission.conf import dbPath, hideSidebarCSS, pageState
-from hackathon_submission.schemas.sql import SQL
+from hackathon_submission import common
 from hackathon_submission.utils import runInference
 from hackathon_submission.utils.prepareData import to_symptoms_string
 from pandas import DataFrame, Series
 from streamlit_extras.switch_page_button import switch_page
 
-HEADER: str = f"""# Empire General Hospital Patient Portal
-> A prototype developed by Nicholas M. Synovic
-
-## {st.session_state["username"]}'s Symptoms
+MESSAGE: str = f"""## {st.session_state["username"]}'s Symptoms
 
 Please select all relevant symptoms, then press "Submit Symptoms" at the bottom
 of this page.
@@ -30,7 +24,7 @@ def inference(data: DataFrame) -> None:
         is_inc_int8=False,
         logfile="",
         n_runs=100,
-        saved_model_dir="model",
+        saved_model_dir=common.MODEL_PATH,
         seq_length=512,
     )
 
@@ -50,10 +44,11 @@ def inference(data: DataFrame) -> None:
 
 
 def main() -> None:
-    st.set_page_config(**pageState)
-    st.markdown(**hideSidebarCSS)
+    st.set_page_config(**common.SITE_STATE)
+    st.markdown(**common.HIDDEN_SIDEBAR_CSS)
 
-    st.write(HEADER)
+    st.write(common.PAGE_HEADER)
+    st.write(MESSAGE)
 
     (
         col1,
@@ -102,7 +97,7 @@ def main() -> None:
         back_pain = st.checkbox(label="Back pain")
         constipation = st.checkbox(label="Constipation")
         abdominal_pain = st.checkbox(label="Abdominal pain")
-        diarrhoea = st.checkbox(label="Diarrhoea")
+        diarrhoea = st.checkbox(label="Diarrhea")
         mild_fever = st.checkbox(label="Mild fever")
         yellow_urine = st.checkbox(label="Yellow urine")
         yellowing_of_eyes = st.checkbox(label="Yellowing of eyes")
@@ -349,8 +344,9 @@ def main() -> None:
             with bottomCol2:
                 with st.spinner("Predicting prognosis..."):
                     inference(data=df)
-                switch_page(page_name="Report")
+                switch_page(page_name="report")
 
+    st.write(common.PAGE_FOOTER)
     st.divider()
 
 
