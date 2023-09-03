@@ -3,10 +3,10 @@ from streamlit_extras.switch_page_button import switch_page
 
 from hackathon_submission.conf import hideSidebarCSS, pageState
 
-HEADER: str = """# Empire General Hospital Patient Portal
+HEADER: str = f"""# Empire General Hospital Patient Portal
 > A prototype developed by Nicholas M. Synovic
 
-## Report
+## {st.session_state["username"]}'s Report
 
 Below are your *estimated* prognoses with their probabilities.
 Please know that these are only estimations by an automated system.
@@ -22,6 +22,20 @@ def main() -> None:
     st.markdown(**hideSidebarCSS)
 
     st.write(HEADER)
+
+    st.dataframe(data=st.session_state["report"], use_container_width=True, hide_index=True,)
+
+    col1, col2 = st.columns(spec=[6,2], gap="large")
+
+    with col1:
+        reportSymptomsButton = st.button(label="Report Symptoms")
+        if reportSymptomsButton:
+            switch_page(page_name="symptoms")
+
+    with col2:
+        aiDoctor = st.button(label="Talk to an AI Doctor")
+        if aiDoctor:
+            switch_page(page_name="Talk")
 
     st.divider()
 

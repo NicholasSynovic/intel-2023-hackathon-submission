@@ -13,7 +13,7 @@ from streamlit_extras.switch_page_button import switch_page
 HEADER: str = f"""# Empire General Hospital Patient Portal
 > A prototype developed by Nicholas M. Synovic
 
-## {st.session_state["username"]}'s New Symptoms
+## {st.session_state["username"]}'s Symptoms
 
 Please select all relevant symptoms, then press "Submit Symptoms" at the bottom
 of this page.
@@ -45,8 +45,8 @@ def inference(data: DataFrame) -> None:
         foo["probability"].append(pairs[prognosis])
 
     df: DataFrame = DataFrame(data=foo)
-
-    print(df)
+    
+    st.session_state["report"] = df
 
 
 def main() -> None:
