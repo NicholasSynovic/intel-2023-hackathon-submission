@@ -1,9 +1,10 @@
 import streamlit as st
 from hackathon_submission import common
-from streamlit_extras.switch_page_button import switch_page
 from hackathon_submission.frontend.utils import api
+from streamlit_extras.switch_page_button import switch_page
 
 MESSAGE: str = "## Sign Up"
+
 
 def main() -> None:
     st.set_page_config(**common.SITE_STATE)
@@ -36,7 +37,7 @@ def main() -> None:
         createAccountButton: bool = st.button(label="Create Account")
 
     if createAccountButton:
-        signup: bool= api.signup(username=username, password=password)
+        signup: bool = api.signup(username=username, password=password)
         if signup:
             st.session_state["username"] = signup
             switch_page(page_name="symptoms")

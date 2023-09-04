@@ -1,13 +1,14 @@
 import streamlit as st
 from hackathon_submission import common
-from streamlit_extras.switch_page_button import switch_page
 from hackathon_submission.frontend.utils import api
+from streamlit_extras.switch_page_button import switch_page
 
 MESSAGE: str = """## Login
 
 Test username: `user`\n
 Test password: `password`
 """
+
 
 def main() -> None:
     st.set_page_config(**common.SITE_STATE)
@@ -51,7 +52,7 @@ def main() -> None:
                 switch_page(page_name="symptoms")
             else:
                 st.write(common.ACCOUNT_ERROR_MESSAGE.format("Account Credentials"))
-    
+
     else:
         st.write(common.SERVER_ERROR_MESSAGE)
 

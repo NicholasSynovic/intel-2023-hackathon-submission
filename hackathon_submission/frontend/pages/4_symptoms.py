@@ -1,9 +1,9 @@
 from argparse import Namespace
-from hackathon_submission.frontend.utils import api
 
 import streamlit as st
 from hackathon_submission import common
-from pandas import DataFrame 
+from hackathon_submission.frontend.utils import api
+from pandas import DataFrame
 from streamlit_extras.switch_page_button import switch_page
 
 MESSAGE: str = f"""## {st.session_state["username"]}'s Symptoms
@@ -26,7 +26,7 @@ def inference(data: DataFrame) -> None:
         saved_model_dir=common.MODEL_PATH,
         seq_length=512,
     )
-    
+
     return None
     # predictions = runInference.main(flags=FLAGS)
     pairs: dict[str, float] = predictions[0]["prognosis"]
@@ -101,12 +101,14 @@ def main() -> None:
         fatigue = st.checkbox(label="Fatigue")
         fluid_overload = st.checkbox(label="Fluid overload")
         foul_smell_of_urine = st.checkbox(label="Foul smell ofurine")
-    
+
     with col2:
         headache = st.checkbox(label="Headache")
         high_fever = st.checkbox(label="High fever")
         hip_joint_pain = st.checkbox(label="Hip joint pain")
-        history_of_alcohol_consumption = st.checkbox(label="History of alcohol consumption")
+        history_of_alcohol_consumption = st.checkbox(
+            label="History of alcohol consumption"
+        )
         increased_appetite = st.checkbox(label="Increased appetite")
         indigestion = st.checkbox(label="Indigestion")
         inflammatory_nails = st.checkbox(label="Inflammatory nails")
@@ -147,9 +149,11 @@ def main() -> None:
         puffy_face_and_eyes = st.checkbox(label="Puffy face and eyes")
         pus_filled_pimples = st.checkbox(label="Pus filled pimples")
         receiving_blood_transfusion = st.checkbox(label="Receiving blood transfusion")
-    
+
     with col3:
-        receiving_unsterile_injections = st.checkbox(label="Receiving unsterile injections")
+        receiving_unsterile_injections = st.checkbox(
+            label="Receiving unsterile injections"
+        )
         red_sore_around_nose = st.checkbox(label="Red sore around nose")
         red_spots_over_body = st.checkbox(label="Red spots over body")
         redness_of_eyes = st.checkbox(label="Redness of eyes")
@@ -192,7 +196,7 @@ def main() -> None:
         yellow_urine = st.checkbox(label="Yellow urine")
         yellowing_of_eyes = st.checkbox(label="Yellowing of eyes")
         yellowish_skin = st.checkbox(label="Yellowish skin")
-    
+
     bottomCol1, bottomCol2, bottomCol3 = st.columns(spec=[1, 1, 1], gap="small")
 
     with bottomCol1:
@@ -340,7 +344,7 @@ def main() -> None:
                 "yellowing_of_eyes": int(yellowing_of_eyes),
                 "yellowish_skin": int(yellowish_skin),
             }
-            
+
             symptoms: str = api.preprocess(data=data)
 
             print(symptoms)
@@ -349,8 +353,8 @@ def main() -> None:
 
             with bottomCol3:
                 with st.spinner("Predicting prognosis..."):
-                    #inference(data=df)
-                #switch_page(page_name="report")
+                    # inference(data=df)
+                    # switch_page(page_name="report")
                     pass
 
     st.write(common.PAGE_FOOTER)
