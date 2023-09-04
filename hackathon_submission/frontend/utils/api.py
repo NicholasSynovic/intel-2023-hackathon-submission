@@ -41,6 +41,6 @@ def preprocess(data: dict)  ->  str:
 
 def prognosis(message: str)  ->  DataFrame:
     data: dict = {"message": message}
-    resp: Response = post(url=f"{URL}/api/inference/prognosis", json=data, headers=HEADERS,)
+    resp: Response = post(url=f"{URL}/api/inference/nlp/prognosis", json=data, headers=HEADERS,)
     df: DataFrame = DataFrame(data=resp.json())
     return df
