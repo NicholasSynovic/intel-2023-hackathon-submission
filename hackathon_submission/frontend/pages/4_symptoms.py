@@ -1,7 +1,4 @@
-from argparse import Namespace
-
 import streamlit as st
-from pandas import DataFrame
 from streamlit_extras.switch_page_button import switch_page
 
 from hackathon_submission.frontend.utils import api, common
@@ -19,6 +16,10 @@ def main() -> None:
 
     st.write(common.PAGE_HEADER)
     st.write(MESSAGE)
+    viewReportsButton = st.button(label="View Reports")
+
+    if viewReportsButton:
+        switch_page(page_name="report")
 
     (
         col1,
