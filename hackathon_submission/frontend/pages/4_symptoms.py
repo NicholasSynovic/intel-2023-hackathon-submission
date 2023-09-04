@@ -2,6 +2,7 @@ from argparse import Namespace
 
 import streamlit as st
 from hackathon_submission import common
+from hackathon_submission.frontend.utils import common
 from hackathon_submission.frontend.utils import api
 from pandas import DataFrame
 from streamlit_extras.switch_page_button import switch_page
@@ -100,7 +101,7 @@ def main() -> None:
         fast_heart_rate = st.checkbox(label="Fast heart rate")
         fatigue = st.checkbox(label="Fatigue")
         fluid_overload = st.checkbox(label="Fluid overload")
-        foul_smell_of_urine = st.checkbox(label="Foul smell ofurine")
+        foul_smell_of_urine = st.checkbox(label="Foul smell of urine")
 
     with col2:
         headache = st.checkbox(label="Headache")
@@ -202,10 +203,7 @@ def main() -> None:
     with bottomCol1:
         logoutButton = st.button(label="Logout")
         if logoutButton:
-            api.logout()
-            st.session_state["username"] = ""
-            st.session_state["report"] = DataFrame()
-            switch_page(page_name="about")
+            common.logout()
 
     with bottomCol2:
         submitButton = st.button(label="Submit Symptoms")
@@ -254,8 +252,7 @@ def main() -> None:
                 "fast_heart_rate": int(fast_heart_rate),
                 "fatigue": int(fatigue),
                 "fluid_overload": int(fluid_overload),
-                "fluid_overload": int(fluid_overload),
-                "foul_smell_ofurine": int(foul_smell_of_urine),
+                "foul_smell_of_urine": int(foul_smell_of_urine),
                 "headache": int(headache),
                 "high_fever": int(high_fever),
                 "hip_joint_pain": int(hip_joint_pain),
@@ -329,7 +326,7 @@ def main() -> None:
                 "swollen_extremeties": int(swollen_extremeties),
                 "swollen_legs": int(swollen_legs),
                 "throat_irritation": int(throat_irritation),
-                "toxic_look_(typhos)": int(toxic_look_typhos),
+                "toxic_look_typhos": int(toxic_look_typhos),
                 "ulcers_on_tongue": int(ulcers_on_tongue),
                 "unsteadiness": int(unsteadiness),
                 "visual_disturbances": int(visual_disturbances),
@@ -346,9 +343,6 @@ def main() -> None:
             }
 
             symptoms: str = api.preprocess(data=data)
-
-            print(symptoms)
-
             df: DataFrame = DataFrame(data={"symptoms": [symptomStr]})
 
             with bottomCol3:
