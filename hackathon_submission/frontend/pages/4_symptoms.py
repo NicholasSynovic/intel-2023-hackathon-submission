@@ -314,7 +314,10 @@ def main() -> None:
 
             with bottomCol3:
                 with st.spinner("Predicting prognosis..."):
-                    print(api.prognosis(message=symptoms))
+                    df: DataFrame = api.prognosis(message=symptoms)
+                    st.session_state["reportDF"] = df
+                    switch_page(page_name="report")
+
 
     st.write(common.PAGE_FOOTER)
     st.divider()
