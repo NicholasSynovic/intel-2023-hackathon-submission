@@ -1,11 +1,12 @@
-from hackathon_submission.frontend.utils import api
-import streamlit as st
-from pandas import DataFrame
 from pathlib import Path
+
+import streamlit as st
+from hackathon_submission.frontend.utils import api
+from pandas import DataFrame
 from streamlit_extras.switch_page_button import switch_page
 
 SITE_STATE = {
-    "page_title": "DiagnoEase", 
+    "page_title": "DiagnoEase",
     "initial_sidebar_state": "collapsed",
 }
 
@@ -30,7 +31,8 @@ ACCOUNT_ERROR_MESSAGE: str = ":red[Invalid {}]"
 
 SERVER_ERROR_MESSAGE: str = f":red[Unable to reach server at: {api.URL}]"
 
-def logout()    ->  None:
+
+def logout() -> None:
     api.logout()
     st.session_state["username"] = ""
     st.session_state["reportDF"] = DataFrame()
