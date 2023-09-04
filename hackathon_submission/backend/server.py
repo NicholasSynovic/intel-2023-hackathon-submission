@@ -316,7 +316,6 @@ def signup(username: str, password: str) -> dict:
 def preprocessData(data: Symptoms) -> dict:
     row: Series = Series(data.__dict__)
     message: str = prepareData.to_symptoms_string(row=row)
-    print(message)
     return {"message": message}
 
 
