@@ -314,8 +314,7 @@ def main() -> None:
 
             with bottomCol3:
                 with st.spinner("Predicting prognosis..."):
-                    df: DataFrame = api.prognosis(message=symptoms)
-                    st.session_state["reportDF"] = df
+                    api.prognosis(message=symptoms, username=st.session_state["username"],)
                     switch_page(page_name="report")
 
 

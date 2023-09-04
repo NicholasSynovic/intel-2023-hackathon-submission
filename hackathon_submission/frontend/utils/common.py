@@ -35,6 +35,5 @@ SERVER_ERROR_MESSAGE: str = f":red[Unable to reach server at: {api.URL}]"
 def logout() -> None:
     api.logout()
     st.session_state["username"] = ""
-    st.session_state["reportDF"] = DataFrame()
     st.session_state["symptoms"] = ""
     switch_page(page_name="about")

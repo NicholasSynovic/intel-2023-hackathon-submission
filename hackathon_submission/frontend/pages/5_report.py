@@ -17,13 +17,6 @@ def main() -> None:
 
     st.write(common.PAGE_HEADER)
     st.write(MESSAGE)
-    st.divider()
-
-    st.dataframe(
-        data=st.session_state["reportDF"],
-        use_container_width=True,
-        hide_index=True,
-    )
 
     col1, col2, col3 = st.columns(spec=[1, 1, 1], gap="small")
 

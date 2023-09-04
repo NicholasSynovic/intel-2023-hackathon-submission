@@ -23,8 +23,6 @@ def main() -> None:
 
     if "username" not in st.session_state:
         st.session_state["username"] = ""
-    if "reportDF" not in st.session_state:
-        st.session_state["reportDF"] = DataFrame()
     if "symptoms" not in st.session_state:
         st.session_state["symptoms"] = ""
 

@@ -8,6 +8,7 @@ from hackathon_submission.backend.utils import common
 from hackathon_submission.schemas.sql import SQL
 from pandas import DataFrame, Series
 from pydantic import BaseModel
+import time
 
 app: FastAPI = FastAPI()
 
@@ -16,7 +17,7 @@ class Reports:
     def __init__(
         self,
         username: str,
-        reportTime: int,
+        reportTime: float,
         symptoms: str,
         prognosis1: str,
         probability1: str,
@@ -53,7 +54,7 @@ class Reports:
 class ReportData(BaseModel):
     username: str
     symptoms: str
-    reportTime: int
+    reportTime: float 
     type_: str
     Prognosis: list
     Probability: list
@@ -61,6 +62,7 @@ class ReportData(BaseModel):
 
 class SymptomStr(BaseModel):
     message: str
+    username: str
 
 
 class Symptoms(BaseModel):
@@ -222,6 +224,40 @@ def checkPassword(username: str, password: str, df: DataFrame) -> bool:
     return False
 
 
+def generateReport(data: ReportData) -> None:
+    reportsDF: DataFrame = getReportsTable()
+    sql: SQL = SQL(sqliteDBPath=common.DB_PATH)
+
+    if data.type_ == "nlp":
+        foo: dict = {
+            "username": data.username,
+            "reportTime": data.reportTime,
+            "symptoms": data.symptoms,
+            "prognosis1": data.Prognosis[0],
+            "prognosis2": data.Prognosis[1],
+            "prognosis3": data.Prognosis[2],
+            "prognosis4": data.Prognosis[3],
+            "prognosis5": data.Prognosis[4],
+            "probability1": data.Probability[0],
+            "probability2": data.Probability[1],
+            "probability3": data.Probability[2],
+            "probability4": data.Probability[3],
+            "probability5": data.Probability[4],
+        }
+
+        nlpReport: Reports = Reports(**foo)
+        nlpDF: DataFrame = nlpReport.to_df()
+        nlpDF.index.name = "ID"
+
+        df: DataFrame = pandas.concat(objs=[reportsDF, nlpDF], ignore_index=True,)
+        
+        sql.writeDFToDB(df=df, tableName="Reports", keepIndex=True)
+        sql.closeConnection()
+
+    elif data.type_ == "cv":
+        pass
+
+
 @app.get(path="/")
 def check() -> Literal[True]:
     return True
@@ -273,7 +309,7 @@ def preprocessData(data: Symptoms) -> dict:
 
 
 @app.post(path="/api/inference/nlp/prognosis")
-def inferencePrognosis(data: SymptomStr) -> dict:
+def inferencePrognosis(data: SymptomStr) -> bool:
     df: DataFrame = DataFrame(data={"symptoms": [data.message]})
 
     FLAGS: Namespace = Namespace(
@@ -289,10 +325,17 @@ def inferencePrognosis(data: SymptomStr) -> dict:
         seq_length=512,
     )
 
-    predictions: list = runInference.main(flags=FLAGS)
+    try:
+        predictions: list = runInference.main(flags=FLAGS)
+    except:
+        return False
+
     pairs: dict[str, float] = predictions[0]["prognosis"]
 
-    formattedPairs: dict[str, list] = {
+    formattedPairs: dict[str, Any] = {
+        "username": data.username,
+        "symptoms": data.message,
+        "reportTime": time.time(),
         "type_": "nlp",
         "Prognosis": [],
         "Probability": [],
@@ -303,48 +346,15 @@ def inferencePrognosis(data: SymptomStr) -> dict:
         formattedPairs["Prognosis"].append(prognosis)
         formattedPairs["Probability"].append(str(pairs[prognosis] * 100) + "%")
 
-    return formattedPairs
+    fpReportData: ReportData = ReportData(**formattedPairs)
+    generateReport(data=fpReportData) 
 
+    return True
 
-@app.post(path="/api/generate/report")
-def generateReport(data: ReportData) -> None:
-    reportsDF: DataFrame = getReportsTable()
-    sql: SQL = SQL(sqliteDBPath=common.DB_PATH)
-
-    if data.type_ == "nlp":
-        foo: dict = {
-            "username": data.username,
-            "reportTime": data.reportTime,
-            "symptoms": data.symptoms,
-            "prognosis1": data.Prognosis[0],
-            "prognosis2": data.Prognosis[1],
-            "prognosis3": data.Prognosis[2],
-            "prognosis4": data.Prognosis[3],
-            "prognosis5": data.Prognosis[4],
-            "probability1": data.Probability[0],
-            "probability2": data.Probability[1],
-            "probability3": data.Probability[2],
-            "probability4": data.Probability[3],
-            "probability5": data.Probability[4],
-        }
-
-        nlpReport: Reports = Reports(**foo)
-        nlpDF: DataFrame = nlpReport.to_df()
-        nlpDF.index.name = "ID"
-
-        df: DataFrame = pandas.concat(objs=[reportsDF, nlpDF], ignore_index=True,)
-        
-        sql.writeDFToDB(df=df, tableName="Reports", keepIndex=True)
-        sql.closeConnection()
-
-    elif data.type_ == "cv":
-        pass
 
 
 @app.get(path="/api/storage/report")
 def getReport(username: str) -> list:
-    sql: SQL = SQL(sqliteDBPath=common.DB_PATH)
-    df: DataFrame = pandas.read_sql_table(
-        table_name="Reports",
-        con=sql.conn,
-    )
+    df: DataFrame = getReportsTable()
+
+
