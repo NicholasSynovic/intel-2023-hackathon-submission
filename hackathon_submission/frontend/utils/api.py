@@ -61,3 +61,13 @@ def nlpPrognosis(message: str, username: str) -> bool:
         headers=HEADERS,
     )
     return str2bool(data=resp.content.decode())
+
+
+def getReports(username: str) -> list:
+    dfList: list = []
+    resp: Response = get(url=f"{URL}/api/storage/report")
+    largeDF: DataFrame = DataFrame(data=resp.json())
+
+    print(largeDF)
+
+    return dfList
