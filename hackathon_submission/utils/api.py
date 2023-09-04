@@ -9,3 +9,9 @@ def check() ->  bool:
         return True
     except ConnectionError:
         return False
+
+def login(username: str, password: str = "test")    ->  bool:
+    resp: Response = post(url=f"{URL}/api/account/login?username={username}&password={password}")
+    print(resp.content)
+
+login(username="user", password="password1")
