@@ -300,7 +300,6 @@ def signup(username: str, password: str) -> dict:
     if userExists:
         return {"username": False}
 
-    df.set_index("index", inplace=True)
     df = df.append(
         other={"Username": username, "Password": password},
         ignore_index=True,
@@ -364,8 +363,8 @@ def inferencePrognosis(data: SymptomStr) -> bool:
 
 
 @app.get(path="/api/storage/report")
-def getReport(username: str) -> list:
+def getReport(username: str) -> dict:
     df: DataFrame = getReportsTable()
     userSpecificDF: DataFrame = df[df["Username"] == username]
+    userSpecificDF.reset_index(drop=True, inplace=True)
     return userSpecificDF.to_dict()
-
