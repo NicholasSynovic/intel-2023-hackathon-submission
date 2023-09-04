@@ -1,6 +1,6 @@
 from pandas import DataFrame
 
-from hackathon_submission import common
+from hackathon_submission.backend.utils import common
 from hackathon_submission.schemas.sql import SQL
 
 
