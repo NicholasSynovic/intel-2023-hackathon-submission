@@ -1,5 +1,4 @@
 from requests import get, post, Response
-from requests.exceptions import ConnectionError
 
 URL: str = "http://localhost:8000"
 
@@ -33,3 +32,7 @@ def signup(username: str, password: str)    ->  bool:
     resp: Response = post(url=f"{URL}/api/account/signup?username={username}&password={password}")
     data: str = resp.json()["username"]
     return str2bool(data=data)
+
+def preprocess(data: dict)  ->  str:
+    resp: Response = post(url=f"{URL}/api/inference/preprocess", data=data)
+    return resp.json()["message"]
