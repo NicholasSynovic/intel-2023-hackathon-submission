@@ -19,7 +19,7 @@ def main() -> None:
     st.write(MESSAGE)
 
     st.dataframe(
-        data=st.session_state["report"],
+        data=st.session_state["reportDF"],
         use_container_width=True,
         hide_index=True,
     )
