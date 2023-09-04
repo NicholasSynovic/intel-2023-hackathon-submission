@@ -12,6 +12,10 @@ def check() ->  bool:
 
 def login(username: str, password: str = "test")    ->  bool:
     resp: Response = post(url=f"{URL}/api/account/login?username={username}&password={password}")
-    print(resp.content)
+    data: str = resp.content.decode()
 
-login(username="user", password="password1")
+    if data == "true":
+        return True
+    return False
+
+print(login(username="user", password="password"))
