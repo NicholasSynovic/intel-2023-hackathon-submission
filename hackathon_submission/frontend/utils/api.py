@@ -44,7 +44,7 @@ def signup(username: str, password: str) -> bool:
     return str2bool(data=data)
 
 
-def preprocess(data: dict) -> str:
+def nlpPreprocess(data: dict) -> str:
     resp: Response = post(
         url=f"{URL}/api/inference/nlp/preprocess",
         json=data,
@@ -53,7 +53,7 @@ def preprocess(data: dict) -> str:
     return resp.json()["message"]
 
 
-def prognosis(message: str, username: str) -> bool:
+def nlpPrognosis(message: str, username: str) -> bool:
     data: dict = {"message": message, "username": username}
     resp: Response = post(
         url=f"{URL}/api/inference/nlp/prognosis",
