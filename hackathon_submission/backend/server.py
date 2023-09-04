@@ -306,7 +306,7 @@ def signup(username: str, password: str) -> dict:
         ignore_index=True,
     )
 
-    sql.writeDFToDB(df=df, tableName="Users", keepIndex=True)
+    sql.writeDFToDB(df=df, tableName="Users", keepIndex=False)
     sql.closeConnection()
 
     return {"username": username}
