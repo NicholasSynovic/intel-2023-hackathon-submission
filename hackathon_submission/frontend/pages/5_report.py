@@ -1,4 +1,5 @@
 import streamlit as st
+from hackathon_submission.utils import api
 from streamlit_extras.switch_page_button import switch_page
 from hackathon_submission import common
 from pandas import DataFrame
@@ -29,6 +30,7 @@ def main() -> None:
     with col1:
         logoutButton = st.button(label="Logout")
         if logoutButton:
+            api.logout()
             st.session_state["username"] = ""
             st.session_state["report"] = DataFrame()
             switch_page(page_name="about")
