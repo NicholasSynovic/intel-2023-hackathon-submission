@@ -311,11 +311,11 @@ def main() -> None:
                 "yellowish_skin": int(yellowish_skin),
             }
 
-            symptoms: str = api.preprocess(data=data)
+            symptoms: str = api.nlpPreprocess(data=data)
 
             with bottomCol3:
                 with st.spinner("Predicting prognosis..."):
-                    api.prognosis(
+                    api.nlpPrognosis(
                         message=symptoms,
                         username=st.session_state["username"],
                     )
