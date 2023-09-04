@@ -3,7 +3,7 @@ from streamlit_extras.switch_page_button import switch_page
 
 from hackathon_submission.frontend.utils import api, common
 
-MESSAGE: str = f"""## {st.session_state["username"]}'s Symptoms
+MESSAGE: str = """## {}'s Symptoms
 
 Please select all relevant symptoms, then press "Submit Symptoms" at the bottom
 of this page.\n
@@ -18,10 +18,10 @@ def main() -> None:
     st.set_page_config(**common.SITE_STATE)
     st.markdown(**common.HIDDEN_SIDEBAR_CSS)
 
-    st.write(common.PAGE_HEADER)
-    st.write(MESSAGE)
-
     common.checkSessionState()
+
+    st.write(common.PAGE_HEADER)
+    st.write(MESSAGE.format(st.session_state["username"]))
 
     if common.checkServerConnection():
         topCol1, topCol2 = st.columns(spec=[3, 1], gap="large")

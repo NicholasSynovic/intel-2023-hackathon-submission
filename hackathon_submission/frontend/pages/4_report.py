@@ -5,7 +5,7 @@ from streamlit_extras.switch_page_button import switch_page
 
 from hackathon_submission.frontend.utils import api, common
 
-MESSAGE: str = f"""## {st.session_state["username"]}'s Report
+MESSAGE: str = """## {}'s Report
 
 Below are your estimated prognoses with their probabilities.
 Please know that these are only estimations by an automated system.
@@ -17,11 +17,11 @@ def main() -> None:
     st.set_page_config(**common.SITE_STATE)
     st.markdown(**common.HIDDEN_SIDEBAR_CSS)
 
-    st.write(common.PAGE_HEADER)
-    st.write(MESSAGE)
-    st.divider()
-
     common.checkSessionState()
+
+    st.write(common.PAGE_HEADER)
+    st.write(MESSAGE.format(st.session_state["username"]))
+    st.divider()
 
     if common.checkServerConnection():
         dfs: list = api.getReports(username=st.session_state["username"])

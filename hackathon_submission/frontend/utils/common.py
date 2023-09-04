@@ -51,4 +51,4 @@ def checkSessionState() -> None:
     try:
         st.session_state["username"]
     except KeyError:
-        switch_page(page_name=about)
+        switch_page(page_name="about")
