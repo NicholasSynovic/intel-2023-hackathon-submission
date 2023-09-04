@@ -17,6 +17,7 @@ def main() -> None:
 
     st.write(common.PAGE_HEADER)
     st.write(MESSAGE)
+    st.divider()
 
     st.dataframe(
         data=st.session_state["reportDF"],
@@ -29,10 +30,7 @@ def main() -> None:
     with col1:
         logoutButton = st.button(label="Logout")
         if logoutButton:
-            api.logout()
-            st.session_state["username"] = ""
-            st.session_state["report"] = DataFrame()
-            switch_page(page_name="about")
+            common.logout()
 
     with col2:
         reportSymptomsButton = st.button(label="Return to Symptoms Page")
