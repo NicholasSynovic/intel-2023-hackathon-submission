@@ -209,7 +209,12 @@ def getUsersTable() -> DataFrame:
 
 def getReportsTable() -> DataFrame:
     sql: SQL = SQL(sqliteDBPath=common.DB_PATH)
-    df: DataFrame = pandas.read_sql_table(table_name="Reports", con=sql.conn)
+
+    try:
+        df: DataFrame = pandas.read_sql_table(table_name="Reports", con=sql.conn)
+    except ValueError:
+        df: DataFrame = DataFrame()
+
     sql.closeConnection()
     return df
 

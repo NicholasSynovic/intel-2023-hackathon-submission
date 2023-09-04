@@ -46,7 +46,7 @@ def signup(username: str, password: str) -> bool:
 
 def preprocess(data: dict) -> str:
     resp: Response = post(
-        url=f"{URL}/api/inference/api/preprocess",
+        url=f"{URL}/api/inference/nlp/preprocess",
         json=data,
         headers=HEADERS,
     )
