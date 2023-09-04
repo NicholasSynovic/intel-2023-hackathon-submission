@@ -1,9 +1,7 @@
 import streamlit as st
+from hackathon_submission.frontend.utils import api, common
 from pandas import DataFrame
 from streamlit_extras.switch_page_button import switch_page
-
-from hackathon_submission import common
-from hackathon_submission.frontend.utils import api
 
 MESSAGE: str = """## About
 
@@ -32,7 +30,6 @@ def main() -> None:
 
     st.write(common.PAGE_HEADER)
     st.write(MESSAGE)
-
 
     if api.check():
         nextPage: bool = st.button(label="Login")
