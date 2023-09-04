@@ -72,10 +72,6 @@ def main(flags) -> list:
         logging.basicConfig(filename=flags.logfile, level=logging.DEBUG)
     logger = logging.getLogger()
 
-    if not os.path.exists(flags.saved_model_dir):
-        logger.error("Saved model %s not found!", flags.saved_model_dir)
-        return
-
     # Load dataset into memory
     tokenizer = AutoTokenizer.from_pretrained(flags.saved_model_dir)
 
