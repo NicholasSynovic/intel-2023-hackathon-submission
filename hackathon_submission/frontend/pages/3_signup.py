@@ -13,36 +13,37 @@ def main() -> None:
     st.write(common.PAGE_HEADER)
     st.write(MESSAGE)
 
-    username: str = st.text_input(
-        label="Username",
-        max_chars=30,
-        type="default",
-        help="Username",
-    )
-    password: str = st.text_input(
-        label="Password",
-        max_chars=30,
-        type="password",
-        help="Password",
-    )
+    if common.checkServerConnection():
+        username: str = st.text_input(
+            label="Username",
+            max_chars=30,
+            type="default",
+            help="Username",
+        )
+        password: str = st.text_input(
+            label="Password",
+            max_chars=30,
+            type="password",
+            help="Password",
+        )
 
-    col1, col2 = st.columns(spec=[4, 1], gap="small")
+        col1, col2 = st.columns(spec=[4, 1], gap="small")
 
-    with col1:
-        backButton: bool = st.button(label="Back")
-        if backButton:
-            switch_page(page_name="Login")
+        with col1:
+            backButton: bool = st.button(label="Back")
+            if backButton:
+                switch_page(page_name="Login")
 
-    with col2:
-        createAccountButton: bool = st.button(label="Create Account")
+        with col2:
+            createAccountButton: bool = st.button(label="Create Account")
 
-    if createAccountButton:
-        signup: bool = api.signup(username=username, password=password)
-        if signup:
-            st.session_state["username"] = signup
-            switch_page(page_name="report")
-        else:
-            st.write(common.ACCOUNT_ERROR_MESSAGE.format("Account Credentials"))
+        if createAccountButton:
+            signup: bool = api.signup(username=username, password=password)
+            if signup:
+                st.session_state["username"] = signup
+                switch_page(page_name="report")
+            else:
+                st.write(common.ACCOUNT_ERROR_MESSAGE.format("Account Credentials"))
 
     st.divider()
     st.write(common.PAGE_FOOTER)

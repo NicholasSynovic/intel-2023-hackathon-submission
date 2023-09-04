@@ -17,7 +17,7 @@ def main() -> None:
     st.write(common.PAGE_HEADER)
     st.write(MESSAGE)
 
-    if api.check():
+    if common.checkServerConnection:
         username: str = st.text_input(
             label="Username",
             max_chars=30,
@@ -52,9 +52,6 @@ def main() -> None:
                 switch_page(page_name="report")
             else:
                 st.write(common.ACCOUNT_ERROR_MESSAGE.format("Account Credentials"))
-
-    else:
-        st.write(common.SERVER_ERROR_MESSAGE)
 
     st.divider()
     st.write(common.PAGE_FOOTER)
