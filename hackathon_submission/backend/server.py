@@ -365,6 +365,6 @@ def inferencePrognosis(data: SymptomStr) -> bool:
 @app.get(path="/api/storage/report")
 def getReport(username: str) -> dict:
     df: DataFrame = getReportsTable()
-    userSpecificDF: DataFrame = df[df["Username"] == username]
+    userSpecificDF: DataFrame = df[df["Username"] == username].iloc[::-1]
     userSpecificDF.reset_index(drop=True, inplace=True)
     return userSpecificDF.to_dict()
