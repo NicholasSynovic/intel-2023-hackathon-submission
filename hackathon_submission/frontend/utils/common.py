@@ -45,3 +45,10 @@ def checkServerConnection() -> bool:
         st.write(SERVER_ERROR_MESSAGE)
         return False
     return True
+
+
+def checkSessionState() -> None:
+    try:
+        st.session_state["username"]
+    except KeyError:
+        switch_page(page_name=about)
