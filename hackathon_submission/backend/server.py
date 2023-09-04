@@ -1,15 +1,20 @@
 from typing import Any, Literal
 from pandas import Series
+from argparse import Namespace
 
 import pandas
 from fastapi import FastAPI
-from hackathon_submission import common
+from hackathon_submission.frontend.utils import common
 from hackathon_submission.schemas.sql import SQL
 from pandas import DataFrame
 from hackathon_submission.backend.inference import prepareData
 from pydantic import BaseModel
+from hackathon_submission.backend.inference import runInference
 
 app: FastAPI = FastAPI()
+
+class SymptomStr(BaseModel):
+    message: str
 
 class Symptoms(BaseModel):
     abdominal_pain: int
@@ -214,8 +219,33 @@ def preprocessData(data: Symptoms)    ->  dict:
 
 
 @app.post(path="/api/inference/prognosis")
-def inferencePrognosis() -> bool:
-    pass
+def inferencePrognosis(data: SymptomStr) -> dict:
+    df: DataFrame = DataFrame(data={"symptoms": data.message})
+    
+    FLAGS: Namespace = Namespace(
+            batch_size=1,
+            benchmark_mode=False,
+            bf16=True,
+            input_file=df,
+            intel=True,
+            is_inc_int8=False,
+            logfile="",
+            n_runs=100,
+            saved_model_dir=common.MODEL_PATH,
+            seq_length=512,
+        )
+
+    predictions = runInference.main(flags=FLAGS)
+    pairs: dict[str, float] = predictions[0]["prognosis"]
+
+    formattedPairs: dict[str, list] = {"Prognosis": [], "Probability": []}
+
+    prognosis: str
+    for prognosis in pairs.keys():
+        formattedPairs["Prognosis"].append(prognosis)
+        formattedPairs["Probability"].append(str(pairs[prognosis] * 100) + "%")
+
+    return formattedPairs
 
 
 @app.get(path="/api/storage/symptoms")
