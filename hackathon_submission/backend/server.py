@@ -55,7 +55,7 @@ class Symptoms(BaseModel):
     fast_heart_rate: int
     fatigue: int
     fluid_overload: int
-    foul_smell_ofurine: int
+    foul_smell_of_urine: int
     headache: int
     high_fever: int
     hip_joint_pain: int
@@ -96,7 +96,6 @@ class Symptoms(BaseModel):
     patches_in_throat: int
     phlegm: int
     polyuria: int
-    prognosis: int
     prominent_veins_on_calf: int
     puffy_face_and_eyes: int
     pus_filled_pimples: int
@@ -144,6 +143,7 @@ class Symptoms(BaseModel):
     yellow_urine: int
     yellowing_of_eyes: int
     yellowish_skin: int
+
 
 def getUsersTable() -> DataFrame:
     sql: SQL = SQL(sqliteDBPath=common.DB_PATH)
@@ -208,7 +208,6 @@ def signup(username: str, password: str) -> dict:
 
 @app.post(path="/api/inference/preprocess")
 def preprocessData(data: Symptoms)    ->  dict:
-    print(data)
     row: Series = Series(data)
     message: str = prepareData.to_symptoms_string(row=row)
     return {"message": message} 
