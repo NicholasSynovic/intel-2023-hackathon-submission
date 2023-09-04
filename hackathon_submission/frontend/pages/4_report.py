@@ -46,7 +46,7 @@ def main() -> None:
         df: dict
         for df in dfs:
             st.write(
-                f"### Report From {datetime.utcfromtimestamp(df['time']).strftime('%Y-%m-%d %H:%M:%S')}"
+                f"### Report From {datetime.utcfromtimestamp(df['time']).strftime('%A, %B %d %Y @ %I:%M %p')}",
             )
             st.write(f"**Symptoms**: {df['symptoms']}")
             st.dataframe(data=df["df"], use_container_width=True, hide_index=True)
