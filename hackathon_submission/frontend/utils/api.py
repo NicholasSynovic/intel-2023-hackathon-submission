@@ -53,14 +53,20 @@ def nlpPreprocess(data: dict) -> str:
     return resp.json()["message"]
 
 
-def nlpPrognosis(message: str, username: str) -> bool:
+def nlpPrognosis(message: str, username: str) -> None:
     data: dict = {"message": message, "username": username}
     resp: Response = post(
         url=f"{URL}/api/inference/nlp/prognosis",
         json=data,
         headers=HEADERS,
     )
-    return str2bool(data=resp.content.decode())
+
+    jsonData: dict = resp.json()
+    resp: Response = post(
+        url=f"{URL}/api/generate/report",
+        json=jsonData,
+        headers=HEADERS,
+    )
 
 
 def getReports(username: str) -> list:
