@@ -1,4 +1,5 @@
 from argparse import Namespace
+from hackathon_submission.utils import api
 
 import streamlit as st
 from hackathon_submission import common
@@ -202,6 +203,7 @@ def main() -> None:
     with bottomCol1:
         logoutButton = st.button(label="Logout")
         if logoutButton:
+            api.logout()
             st.session_state["username"] = ""
             st.session_state["report"] = DataFrame()
             switch_page(page_name="about")
