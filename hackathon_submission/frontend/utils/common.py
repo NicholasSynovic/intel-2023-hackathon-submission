@@ -19,10 +19,6 @@ HIDDEN_SIDEBAR_CSS = {
     "unsafe_allow_html": True,
 }
 
-DB_PATH: Path = Path("../backend/storage/data.db")
-
-MODEL_PATH: Path = Path("../backend/model")
-
 PAGE_HEADER: str = """# Empire General Hospital DiagnoEase
 > A prototype developed by Nicholas M. Synovic ([nsynovic@luc.edu](mailto:nsynovic@luc.edu))"""
 
@@ -30,7 +26,9 @@ PAGE_FOOTER: str = """To speak to a medical professional at Empire General Hospi
 For all medical emergencies, call `911`"""
 
 ACCOUNT_ERROR_MESSAGE: str = ":red[Invalid {}]"
+
 SERVER_ERROR_MESSAGE: str = f":red[Unable to reach server at: {api.URL}]"
+
 def logout()    ->  None:
     api.logout()
     st.session_state["username"] = ""
