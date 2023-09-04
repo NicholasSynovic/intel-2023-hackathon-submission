@@ -214,6 +214,7 @@ def getReportsTable() -> DataFrame:
         df: DataFrame = pandas.read_sql_table(table_name="Reports", con=sql.conn)
     except ValueError:
         df: DataFrame = DataFrame()
+    df.index.name = "ID"
 
     sql.closeConnection()
     return df
@@ -261,7 +262,7 @@ def generateReport(data: ReportData) -> None:
             ignore_index=True,
         )
 
-        sql.writeDFToDB(df=df, tableName="Reports", keepIndex=True)
+        sql.writeDFToDB(df=df, tableName="Reports", keepIndex=False)
         sql.closeConnection()
 
     elif data.type_ == "cv":
@@ -313,8 +314,9 @@ def signup(username: str, password: str) -> dict:
 
 @app.post(path="/api/inference/nlp/preprocess")
 def preprocessData(data: Symptoms) -> dict:
-    row: Series = Series(data)
+    row: Series = Series(data.__dict__)
     message: str = prepareData.to_symptoms_string(row=row)
+    print(message)
     return {"message": message}
 
 

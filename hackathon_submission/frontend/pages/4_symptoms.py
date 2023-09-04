@@ -313,6 +313,8 @@ def main() -> None:
 
             symptoms: str = api.preprocess(data=data)
 
+            st.write(symptoms)
+
             with bottomCol3:
                 with st.spinner("Predicting prognosis..."):
                     api.prognosis(
