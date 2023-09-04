@@ -311,13 +311,10 @@ def main() -> None:
             }
 
             symptoms: str = api.preprocess(data=data)
-            df: DataFrame = DataFrame(data={"symptoms": [symptomStr]})
 
             with bottomCol3:
                 with st.spinner("Predicting prognosis..."):
-                    # inference(data=df)
-                    # switch_page(page_name="report")
-                    pass
+                    df: DataFrame = api.prognosis(data=symptoms)
 
     st.write(common.PAGE_FOOTER)
     st.divider()

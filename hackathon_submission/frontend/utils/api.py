@@ -1,4 +1,5 @@
 from requests import get, post, Response
+from pandas import DataFrame
 
 URL: str = "http://localhost:8000"
 HEADERS: dict = {'Content-type': 'application/json'}
@@ -38,6 +39,8 @@ def preprocess(data: dict)  ->  str:
     resp: Response = post(url=f"{URL}/api/inference/preprocess", json=data, headers=HEADERS,)
     return resp.json()["message"]
 
-def prognosis(data: dict)  ->  str:
+def prognosis(message: str)  ->  DataFrame:
+    data: dict = {"message": message}
     resp: Response = post(url=f"{URL}/api/inference/prognosis", json=data, headers=HEADERS,)
-    return resp.json()["message"]
+    df: DataFrame = DataFrame(data=resp.json())
+    return df
