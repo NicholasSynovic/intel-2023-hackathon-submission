@@ -1,22 +1,55 @@
 from fastapi import FastAPI
+from hackathon_submission import common
+from hackathon_submission.schemas.sql import SQL
+from pandas import DataFrame
+import pandas
+from typing import Any, Literal
 
 app: FastAPI = FastAPI()
 
+def getUsersTable() ->  DataFrame:
+    sql: SQL = SQL(sqliteDBPath=common.DB_PATH)
+    df: DataFrame = pandas.read_sql_table(table_name="Users", con=sql.conn)
+    sql.closeConnection()
+    return df
+
+def usernameExists(username: str, df: DataFrame)   ->  bool:
+    return username in df["Username"].values
+
+def checkPassword(username: str, password: str, df: DataFrame)  ->  bool:
+    row: Any = df[df["Username"] == username]
+    
+    if row["Password"].to_list()[0] == password:
+        return True
+    return False
+
+
 @app.get(path="/")
-def check() ->  dict:
-    return {"status": True}
+def check() ->  Literal[True]:
+    return True
 
 @app.post(path="/api/account/login")
-def login() ->  bool:
-    pass
+def login(username: str, password: str) ->  bool:
+    username=username.lower()
+    df: DataFrame = getUsersTable()
+    
+    userExists: bool = usernameExists(username=username, df=df)
+    if userExists:
+        return checkPassword(username=username, password=password, df=df)
+    return False
 
 @app.post(path="/api/account/logout")
-def logout()    ->  bool:
-    pass
+def logout()    ->  Literal[True]:
+    return True
 
 @app.post(path="/api/account/signup")
-def signup()    ->  bool:
-    pass
+def signup(username: str, password: str)    ->  bool:
+    username=username.lower()
+    df: DataFrame = getUsersTable()
+    
+    userExists: bool = usernameExists(username=username, df=df)
+    if userExists:
+        return False
 
 @app.post(path="/api/inference/prognosis")
 def inferencePrognosis()    ->  bool:
@@ -33,5 +66,4 @@ def getPrognosis()  ->  bool:
 @app.post(path="/api/generate/report")
 def generateReport()    ->  bool:
     pass
-
 
