@@ -6,7 +6,11 @@ from hackathon_submission.frontend.utils import api, common
 MESSAGE: str = f"""## {st.session_state["username"]}'s Symptoms
 
 Please select all relevant symptoms, then press "Submit Symptoms" at the bottom
-of this page.
+of this page.\n
+
+To view previous reports, press "View Reports".\n
+
+If you have an image to submit for analysis, press "Upload Image".
 """
 
 
@@ -16,10 +20,15 @@ def main() -> None:
 
     st.write(common.PAGE_HEADER)
     st.write(MESSAGE)
-    viewReportsButton = st.button(label="View Reports")
 
-    if viewReportsButton:
-        switch_page(page_name="report")
+    topCol1, topCol2 = st.columns(spec=[3, 1], gap="large")
+
+    with topCol1:
+        viewReportsButton = st.button(label="View Reports")
+        if viewReportsButton:
+            switch_page(page_name="report")
+    with topCol2:
+        submitImageButton = st.button(label="Upload Image")
 
     (
         col1,
