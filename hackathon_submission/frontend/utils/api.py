@@ -1,6 +1,7 @@
 from requests import get, post, Response
 
 URL: str = "http://localhost:8000"
+HEADERS: dict = {'Content-type': 'application/json'}
 
 def str2bool(data: str)  ->  bool:
     if data == "true":
@@ -34,5 +35,5 @@ def signup(username: str, password: str)    ->  bool:
     return str2bool(data=data)
 
 def preprocess(data: dict)  ->  str:
-    resp: Response = post(url=f"{URL}/api/inference/preprocess", data=data)
+    resp: Response = post(url=f"{URL}/api/inference/preprocess", json=data, headers=HEADERS,)
     return resp.json()["message"]
