@@ -301,7 +301,7 @@ def inferencePrognosis(data: SymptomStr) -> dict:
 
 
 @app.post(path="/api/generate/report")
-def generateReport(data: ReportData) -> bool:
+def generateReport(data: ReportData) -> None:
     sql: SQL = SQL(sqliteDBPath=common.DB_PATH)
     reportsDF: DataFrame = pandas.read_sql_table(
         table_name="Reports",
@@ -335,7 +335,6 @@ def generateReport(data: ReportData) -> bool:
             df=df,
             tableName="Reports",
             keepIndex=True,
-            indexColumn="ID",
         )
         sql.closeConnection()
 
