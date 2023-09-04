@@ -36,11 +36,10 @@ def signup(username: str, password: str)    ->  bool:
     return str2bool(data=data)
 
 def preprocess(data: dict)  ->  str:
-    resp: Response = post(url=f"{URL}/api/inference/preprocess", json=data, headers=HEADERS,)
+    resp: Response = post(url=f"{URL}/api/inference/api/preprocess", json=data, headers=HEADERS,)
     return resp.json()["message"]
 
-def prognosis(message: str)  ->  DataFrame:
+def prognosis(message: str)  ->  bool:
     data: dict = {"message": message}
     resp: Response = post(url=f"{URL}/api/inference/nlp/prognosis", json=data, headers=HEADERS,)
-    df: DataFrame = DataFrame(data=resp.json())
-    return df
+    return str2bool(data=resp.content.decode())
