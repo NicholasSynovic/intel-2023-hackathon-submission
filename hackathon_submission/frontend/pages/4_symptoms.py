@@ -314,7 +314,7 @@ def main() -> None:
 
             with bottomCol3:
                 with st.spinner("Predicting prognosis..."):
-                    df: DataFrame = api.prognosis(data=symptoms)
+                    print(api.prognosis(message=symptoms))
 
     st.write(common.PAGE_FOOTER)
     st.divider()

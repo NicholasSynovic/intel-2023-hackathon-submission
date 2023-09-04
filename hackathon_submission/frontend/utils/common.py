@@ -2,6 +2,7 @@ from hackathon_submission.frontend.utils import api
 import streamlit as st
 from pandas import DataFrame
 from pathlib import Path
+from streamlit_extras.switch_page_button import switch_page
 
 SITE_STATE = {
     "page_title": "DiagnoEase", 
@@ -34,3 +35,4 @@ def logout()    ->  None:
     st.session_state["username"] = ""
     st.session_state["reportDF"] = DataFrame()
     st.session_state["symptoms"] = ""
+    switch_page(page_name="about")

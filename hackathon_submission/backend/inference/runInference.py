@@ -57,7 +57,7 @@ def inference(predict_fn, batch, flags) -> float:
     return avg_time
 
 
-def main(flags) -> None:
+def main(flags) -> list:
     """Setup model for inference and perform benchmarking
 
     Args:
@@ -79,20 +79,15 @@ def main(flags) -> None:
     # Load dataset into memory
     tokenizer = AutoTokenizer.from_pretrained(flags.saved_model_dir)
 
-    try:
-        test_dataset = read_and_preprocess_data(
-            flags.input_file,
-            tokenizer,
-            max_length=flags.seq_length,
-            include_label=False,
-        )
-        test_loader = torch.utils.data.DataLoader(
-            test_dataset, batch_size=flags.batch_size, shuffle=False
-        )
-    except FileNotFoundError as exc:
-        logger.error("Please follow instructions to download data.")
-        logger.error(exc, exc_info=True)
-        return
+    test_dataset = read_and_preprocess_data(
+        flags.input_file,
+        tokenizer,
+        max_length=flags.seq_length,
+        include_label=False,
+    )
+    test_loader = torch.utils.data.DataLoader(
+        test_dataset, batch_size=flags.batch_size, shuffle=False
+    )
 
     # Load model into memory, if INC, need special loading
     if flags.is_inc_int8:
@@ -194,5 +189,4 @@ def main(flags) -> None:
                 }
                 predictions.append({"id": index, "prognosis": probs})
                 index += 1
-        print({"predictions": predictions})
         return predictions

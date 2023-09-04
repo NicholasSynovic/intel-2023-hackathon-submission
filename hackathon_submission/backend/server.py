@@ -220,7 +220,7 @@ def preprocessData(data: Symptoms)    ->  dict:
 
 @app.post(path="/api/inference/prognosis")
 def inferencePrognosis(data: SymptomStr) -> dict:
-    df: DataFrame = DataFrame(data={"symptoms": data.message})
+    df: DataFrame = DataFrame(data={"symptoms": [data.message]})
     
     FLAGS: Namespace = Namespace(
             batch_size=1,
