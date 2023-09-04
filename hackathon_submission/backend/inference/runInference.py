@@ -22,10 +22,11 @@ from contextlib import nullcontext
 
 import numpy as np
 import torch
-from hackathon_submission.backend.inference.processData import (REVERSE_MAPPING,
-                                                    read_and_preprocess_data)
 from transformers import (AutoModelForSequenceClassification, AutoTokenizer,
                           BertConfig, BertForSequenceClassification)
+
+from hackathon_submission.backend.inference.processData import (
+    REVERSE_MAPPING, read_and_preprocess_data)
 
 
 def inference(predict_fn, batch, flags) -> float:

@@ -1,9 +1,10 @@
 from pathlib import Path
 
 import streamlit as st
-from hackathon_submission.frontend.utils import api
 from pandas import DataFrame
 from streamlit_extras.switch_page_button import switch_page
+
+from hackathon_submission.frontend.utils import api
 
 SITE_STATE = {
     "page_title": "DiagnoEase",

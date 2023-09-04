@@ -1,6 +1,7 @@
+from pandas import DataFrame
+
 from hackathon_submission.backend.utils import common
 from hackathon_submission.schemas.sql import SQL
-from pandas import DataFrame
 
 
 def main() -> None:

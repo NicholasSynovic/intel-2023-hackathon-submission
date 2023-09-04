@@ -1,9 +1,10 @@
 from argparse import Namespace
 
 import streamlit as st
-from hackathon_submission.frontend.utils import api, common
 from pandas import DataFrame
 from streamlit_extras.switch_page_button import switch_page
+
+from hackathon_submission.frontend.utils import api, common
 
 MESSAGE: str = f"""## {st.session_state["username"]}'s Symptoms
 
@@ -314,9 +315,11 @@ def main() -> None:
 
             with bottomCol3:
                 with st.spinner("Predicting prognosis..."):
-                    api.prognosis(message=symptoms, username=st.session_state["username"],)
+                    api.prognosis(
+                        message=symptoms,
+                        username=st.session_state["username"],
+                    )
                     switch_page(page_name="report")
-
 
     st.write(common.PAGE_FOOTER)
     st.divider()

@@ -1,14 +1,15 @@
+import time
 from argparse import Namespace
 from typing import Any, Literal
 
 import pandas
 from fastapi import FastAPI
+from pandas import DataFrame, Series
+from pydantic import BaseModel
+
 from hackathon_submission.backend.inference import prepareData, runInference
 from hackathon_submission.backend.utils import common
 from hackathon_submission.schemas.sql import SQL
-from pandas import DataFrame, Series
-from pydantic import BaseModel
-import time
 
 app: FastAPI = FastAPI()
 
@@ -54,7 +55,7 @@ class Reports:
 class ReportData(BaseModel):
     username: str
     symptoms: str
-    reportTime: float 
+    reportTime: float
     type_: str
     Prognosis: list
     Probability: list
@@ -205,6 +206,7 @@ def getUsersTable() -> DataFrame:
     sql.closeConnection()
     return df
 
+
 def getReportsTable() -> DataFrame:
     sql: SQL = SQL(sqliteDBPath=common.DB_PATH)
     df: DataFrame = pandas.read_sql_table(table_name="Reports", con=sql.conn)
@@ -249,8 +251,11 @@ def generateReport(data: ReportData) -> None:
         nlpDF: DataFrame = nlpReport.to_df()
         nlpDF.index.name = "ID"
 
-        df: DataFrame = pandas.concat(objs=[reportsDF, nlpDF], ignore_index=True,)
-        
+        df: DataFrame = pandas.concat(
+            objs=[reportsDF, nlpDF],
+            ignore_index=True,
+        )
+
         sql.writeDFToDB(df=df, tableName="Reports", keepIndex=True)
         sql.closeConnection()
 
@@ -347,14 +352,11 @@ def inferencePrognosis(data: SymptomStr) -> bool:
         formattedPairs["Probability"].append(str(pairs[prognosis] * 100) + "%")
 
     fpReportData: ReportData = ReportData(**formattedPairs)
-    generateReport(data=fpReportData) 
+    generateReport(data=fpReportData)
 
     return True
-
 
 
 @app.get(path="/api/storage/report")
 def getReport(username: str) -> list:
     df: DataFrame = getReportsTable()
-
-

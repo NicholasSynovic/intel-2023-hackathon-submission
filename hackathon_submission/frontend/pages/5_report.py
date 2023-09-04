@@ -1,7 +1,8 @@
 import streamlit as st
-from hackathon_submission.frontend.utils import api, common
 from pandas import DataFrame
 from streamlit_extras.switch_page_button import switch_page
+
+from hackathon_submission.frontend.utils import api, common
 
 MESSAGE: str = f"""## {st.session_state["username"]}'s Report
 

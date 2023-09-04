@@ -1,14 +1,15 @@
 import streamlit as st
-from hackathon_submission.frontend.utils import api, common
 from pandas import DataFrame
 from streamlit_extras.switch_page_button import switch_page
+
+from hackathon_submission.frontend.utils import api, common
 
 MESSAGE: str = """## About
 
 Empire General Hospital is commited to providing patients with state-of-the-art
 resources to assist in the diagnosis of medical symptoms.
-We utilize deep learning models to provide patients with fast access to 
-prognosis predictions. 
+We utilize deep learning models to provide patients with fast access to
+prognosis predictions.
 While we do provide this technology free of charge, we remind patients that this
 technology does not replace practicioners and that the predicted prognosis might
 be incorrect.
