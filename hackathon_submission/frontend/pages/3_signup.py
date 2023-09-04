@@ -13,6 +13,8 @@ def main() -> None:
     st.write(common.PAGE_HEADER)
     st.write(MESSAGE)
 
+    common.checkSessionState()
+
     if common.checkServerConnection():
         username: str = st.text_input(
             label="Username",

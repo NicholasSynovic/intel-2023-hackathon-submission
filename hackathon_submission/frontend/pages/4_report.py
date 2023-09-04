@@ -21,6 +21,8 @@ def main() -> None:
     st.write(MESSAGE)
     st.divider()
 
+    common.checkSessionState()
+
     if common.checkServerConnection():
         dfs: list = api.getReports(username=st.session_state["username"])
 
