@@ -17,6 +17,12 @@ def main() -> None:
     st.write(common.PAGE_HEADER)
     st.write(MESSAGE)
 
+    try:
+        st.session_state["username"]
+        st.session_state["
+    except KeyError:
+        switch_page(page_name="about")
+
     if common.checkServerConnection:
         username: str = st.text_input(
             label="Username",
