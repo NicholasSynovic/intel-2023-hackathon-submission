@@ -37,3 +37,7 @@ def signup(username: str, password: str)    ->  bool:
 def preprocess(data: dict)  ->  str:
     resp: Response = post(url=f"{URL}/api/inference/preprocess", json=data, headers=HEADERS,)
     return resp.json()["message"]
+
+def prognosis(data: dict)  ->  str:
+    resp: Response = post(url=f"{URL}/api/inference/prognosis", json=data, headers=HEADERS,)
+    return resp.json()["message"]
