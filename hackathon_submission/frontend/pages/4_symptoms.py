@@ -1,11 +1,9 @@
 from argparse import Namespace
-from hackathon_submission.utils import api
+from hackathon_submission.frontend.utils import api
 
 import streamlit as st
 from hackathon_submission import common
-from hackathon_submission.utils import runInference
-from hackathon_submission.utils.prepareData import to_symptoms_string
-from pandas import DataFrame, Series
+from pandas import DataFrame 
 from streamlit_extras.switch_page_button import switch_page
 
 MESSAGE: str = f"""## {st.session_state["username"]}'s Symptoms
@@ -28,8 +26,9 @@ def inference(data: DataFrame) -> None:
         saved_model_dir=common.MODEL_PATH,
         seq_length=512,
     )
-
-    predictions = runInference.main(flags=FLAGS)
+    
+    return None
+    # predictions = runInference.main(flags=FLAGS)
     pairs: dict[str, float] = predictions[0]["prognosis"]
 
     foo: dict[str, list] = {"Prognosis": [], "Probability": []}
@@ -58,146 +57,142 @@ def main() -> None:
     ) = st.columns(spec=[1, 1, 1], gap="large")
 
     with col1:
-        itching = st.checkbox(label="Itching")
-        skin_rash = st.checkbox(label="Skin rash")
-        nodal_skin_eruptions = st.checkbox(label="Nodal skin eruptions")
-        continuous_sneezing = st.checkbox(label="Continuous sneezing")
-        shivering = st.checkbox(label="Shivering")
-        chills = st.checkbox(label="Chills")
-        joint_pain = st.checkbox(label="Joint pain")
-        stomach_pain = st.checkbox(label="Stomach pain")
-        acidity = st.checkbox(label="Acidity")
-        ulcers_on_tongue = st.checkbox(label="Ulcers on tongue")
-        muscle_wasting = st.checkbox(label="Muscle wasting")
-        vomiting = st.checkbox(label="Vomiting")
-        burning_micturition = st.checkbox(label="Burning micturition")
-        spotting_urination = st.checkbox(label="Spotting urination")
-        fatigue = st.checkbox(label="Fatigue")
-        weight_gain = st.checkbox(label="Weight gain")
-        anxiety = st.checkbox(label="Anxiety")
-        cold_hands_and_feets = st.checkbox(label="Cold hands and feets")
-        mood_swings = st.checkbox(label="Mood swings")
-        weight_loss = st.checkbox(label="Weight loss")
-        restlessness = st.checkbox(label="Restlessness")
-        lethargy = st.checkbox(label="Lethargy")
-        patches_in_throat = st.checkbox(label="Patches in throat")
-        irregular_sugar_level = st.checkbox(label="Irregular sugar level")
-        cough = st.checkbox(label="Cough")
-        high_fever = st.checkbox(label="High fever")
-        sunken_eyes = st.checkbox(label="Sunken eyes")
-        breathlessness = st.checkbox(label="Breathlessness")
-        sweating = st.checkbox(label="Sweating")
-        dehydration = st.checkbox(label="Dehydration")
-        indigestion = st.checkbox(label="Indigestion")
-        headache = st.checkbox(label="Headache")
-        yellowish_skin = st.checkbox(label="Yellowish skin")
-        dark_urine = st.checkbox(label="Dark urine")
-        nausea = st.checkbox(label="Nausea")
-        loss_of_appetite = st.checkbox(label="Loss of appetite")
-        pain_behind_the_eyes = st.checkbox(label="Pain behind the eyes")
-        back_pain = st.checkbox(label="Back pain")
-        constipation = st.checkbox(label="Constipation")
         abdominal_pain = st.checkbox(label="Abdominal pain")
-        diarrhoea = st.checkbox(label="Diarrhea")
-        mild_fever = st.checkbox(label="Mild fever")
-        yellow_urine = st.checkbox(label="Yellow urine")
-        yellowing_of_eyes = st.checkbox(label="Yellowing of eyes")
+        abnormal_menstruation = st.checkbox(label="Abnormal menstruation")
+        acidity = st.checkbox(label="Acidity")
         acute_liver_failure = st.checkbox(label="Acute liver failure")
-
-    with col2:
-        swelling_of_stomach = st.checkbox(label="Swelling of stomach")
-        swelled_lymph_nodes = st.checkbox(label="Swelled lymph nodes")
-        malaise = st.checkbox(label="Malaise")
-        blurred_and_distorted_vision = st.checkbox(label="Blurred and distorted vision")
-        phlegm = st.checkbox(label="Phlegm")
-        throat_irritation = st.checkbox(label="Throat irritation")
-        redness_of_eyes = st.checkbox(label="Redness of eyes")
-        sinus_pressure = st.checkbox(label="Sinus pressure")
-        runny_nose = st.checkbox(label="Runny nose")
-        congestion = st.checkbox(label="Congestion")
-        chest_pain = st.checkbox(label="Chest pain")
-        weakness_in_limbs = st.checkbox(label="Weakness in limbs")
-        fast_heart_rate = st.checkbox(label="Fast heart rate")
-        pain_during_bowel_movements = st.checkbox(label="Pain during bowel movements")
-        pain_in_anal_region = st.checkbox(label="Pain in anal region")
+        altered_sensorium = st.checkbox(label="Altered sensorium")
+        anxiety = st.checkbox(label="Anxiety")
+        back_pain = st.checkbox(label="Back pain")
+        belly_pain = st.checkbox(label="Belly pain")
+        blackheads = st.checkbox(label="Blackheads")
+        bladder_discomfort = st.checkbox(label="Bladder discomfort")
+        blister = st.checkbox(label="Blister")
+        blood_in_sputum = st.checkbox(label="Blood in sputum")
         bloody_stool = st.checkbox(label="Bloody stool")
-        irritation_in_anus = st.checkbox(label="Irritation in anus")
-        neck_pain = st.checkbox(label="Neck pain")
-        dizziness = st.checkbox(label="Dizziness")
-        cramps = st.checkbox(label="Cramps")
-        bruising = st.checkbox(label="Bruising")
-        obesity = st.checkbox(label="Obesity")
-        swollen_legs = st.checkbox(label="Swollen legs")
-        swollen_blood_vessels = st.checkbox(label="Swollen blood vessels")
-        puffy_face_and_eyes = st.checkbox(label="Puffy face and eyes")
-        enlarged_thyroid = st.checkbox(label="Enlarged thyroid")
+        blurred_and_distorted_vision = st.checkbox(label="Blurred and distorted vision")
+        breathlessness = st.checkbox(label="Breathlessness")
         brittle_nails = st.checkbox(label="Brittle nails")
-        swollen_extremeties = st.checkbox(label="Swollen extremeties")
+        bruising = st.checkbox(label="Bruising")
+        burning_micturition = st.checkbox(label="Burning micturition")
+        chest_pain = st.checkbox(label="Chest pain")
+        chills = st.checkbox(label="Chills")
+        cold_hands_and_feets = st.checkbox(label="Cold hands and feets")
+        coma = st.checkbox(label="Coma")
+        congestion = st.checkbox(label="Congestion")
+        constipation = st.checkbox(label="Constipation")
+        continuous_feel_of_urine = st.checkbox(label="Continuous feel of urine")
+        continuous_sneezing = st.checkbox(label="Continuous sneezing")
+        cough = st.checkbox(label="Cough")
+        cramps = st.checkbox(label="Cramps")
+        dark_urine = st.checkbox(label="Dark urine")
+        dehydration = st.checkbox(label="Dehydration")
+        depression = st.checkbox(label="Depression")
+        diarrhoea = st.checkbox(label="Diarrhoea")
+        dischromic_patches = st.checkbox(label="Dischromic patches")
+        distention_of_abdomen = st.checkbox(label="Distention of abdomen")
+        dizziness = st.checkbox(label="Dizziness")
+        drying_and_tingling_lips = st.checkbox(label="Drying and tingling lips")
+        enlarged_thyroid = st.checkbox(label="Enlarged thyroid")
         excessive_hunger = st.checkbox(label="Excessive hunger")
         extra_marital_contacts = st.checkbox(label="Extra marital contacts")
-        drying_and_tingling_lips = st.checkbox(label="Drying and tingling lips")
-        slurred_speech = st.checkbox(label="Slurred speech")
-        knee_pain = st.checkbox(label="Knee pain")
-        hip_joint_pain = st.checkbox(label="Hip joint pain")
-        muscle_weakness = st.checkbox(label="Muscle weakness")
-        stiff_neck = st.checkbox(label="Stiff neck")
-        swelling_joints = st.checkbox(label="Swelling joints")
-        movement_stiffness = st.checkbox(label="Movement stiffness")
-        spinning_movements = st.checkbox(label="Spinning movements")
-        loss_of_balance = st.checkbox(label="Loss of balance")
-        unsteadiness = st.checkbox(label="Unsteadiness")
-        weakness_of_one_body_side = st.checkbox(label="Weakness of one body side")
-        loss_of_smell = st.checkbox(label="Loss of smell")
-        bladder_discomfort = st.checkbox(label="Bladder discomfort")
-
-    with col3:
-        foul_smell_of_urine = st.checkbox(label="Foul smell of urine")
-        continuous_feel_of_urine = st.checkbox(label="Continuous feel of urine")
-        passage_of_gases = st.checkbox(label="Passage of gases")
-        internal_itching = st.checkbox(label="Internal itching")
-        toxic_look_typhos = st.checkbox(label="Toxic look (typhos)")
-        depression = st.checkbox(label="Depression")
-        irritability = st.checkbox(label="Irritability")
-        muscle_pain = st.checkbox(label="Muscle pain")
-        altered_sensorium = st.checkbox(label="Altered sensorium")
-        red_spots_over_body = st.checkbox(label="Red spots over body")
-        belly_pain = st.checkbox(label="Belly pain")
-        abnormal_menstruation = st.checkbox(label="Abnormal menstruation")
-        dischromic_patches = st.checkbox(label="Dischromic patches")
-        watering_from_eyes = st.checkbox(label="Watering from eyes")
-        increased_appetite = st.checkbox(label="Increased appetite")
-        polyuria = st.checkbox(label="Polyuria")
         family_history = st.checkbox(label="Family history")
-        mucoid_sputum = st.checkbox(label="Mucoid sputum")
-        rusty_sputum = st.checkbox(label="Rusty sputum")
-        lack_of_concentration = st.checkbox(label="Lack of concentration")
-        visual_disturbances = st.checkbox(label="Visual disturbances")
-        receiving_blood_transfusion = st.checkbox(label="Receiving blood transfusion")
-        receiving_unsterile_injections = st.checkbox(
-            label="Receiving unsterile injections"
-        )
-        coma = st.checkbox(label="Coma")
-        stomach_bleeding = st.checkbox(label="Stomach bleeding")
-        distention_of_abdomen = st.checkbox(label="Distention of abdomen")
-        history_of_alcohol_consumption = st.checkbox(
-            label="History of alcohol consumption"
-        )
+        fast_heart_rate = st.checkbox(label="Fast heart rate")
+        fatigue = st.checkbox(label="Fatigue")
         fluid_overload = st.checkbox(label="Fluid overload")
-        blood_in_sputum = st.checkbox(label="Blood in sputum")
-        prominent_veins_on_calf = st.checkbox(label="Prominent veins on calf")
-        palpitations = st.checkbox(label="Palpitations")
-        painful_walking = st.checkbox(label="Painful walking")
-        pus_filled_pimples = st.checkbox(label="Pus filled pimples")
-        blackheads = st.checkbox(label="Blackheads")
-        scurring = st.checkbox(label="Scurring")
-        skin_peeling = st.checkbox(label="Skin peeling")
-        silver_like_dusting = st.checkbox(label="Silver like dusting")
-        small_dents_in_nails = st.checkbox(label="Small dents in nails")
+        foul_smell_of_urine = st.checkbox(label="Foul smell ofurine")
+    
+    with col2:
+        headache = st.checkbox(label="Headache")
+        high_fever = st.checkbox(label="High fever")
+        hip_joint_pain = st.checkbox(label="Hip joint pain")
+        history_of_alcohol_consumption = st.checkbox(label="History of alcohol consumption")
+        increased_appetite = st.checkbox(label="Increased appetite")
+        indigestion = st.checkbox(label="Indigestion")
         inflammatory_nails = st.checkbox(label="Inflammatory nails")
-        blister = st.checkbox(label="Blister")
+        internal_itching = st.checkbox(label="Internal itching")
+        irregular_sugar_level = st.checkbox(label="Irregular sugar level")
+        irritability = st.checkbox(label="Irritability")
+        irritation_in_anus = st.checkbox(label="Irritation in anus")
+        itching = st.checkbox(label="Itching")
+        joint_pain = st.checkbox(label="Joint pain")
+        knee_pain = st.checkbox(label="Knee pain")
+        lack_of_concentration = st.checkbox(label="Lack of concentration")
+        lethargy = st.checkbox(label="Lethargy")
+        loss_of_appetite = st.checkbox(label="Loss of appetite")
+        loss_of_balance = st.checkbox(label="Loss of balance")
+        loss_of_smell = st.checkbox(label="Loss of smell")
+        malaise = st.checkbox(label="Malaise")
+        mild_fever = st.checkbox(label="Mild fever")
+        mood_swings = st.checkbox(label="Mood swings")
+        movement_stiffness = st.checkbox(label="Movement stiffness")
+        mucoid_sputum = st.checkbox(label="Mucoid sputum")
+        muscle_pain = st.checkbox(label="Muscle pain")
+        muscle_wasting = st.checkbox(label="Muscle wasting")
+        muscle_weakness = st.checkbox(label="Muscle weakness")
+        nausea = st.checkbox(label="Nausea")
+        neck_pain = st.checkbox(label="Neck pain")
+        nodal_skin_eruptions = st.checkbox(label="Nodal skin eruptions")
+        obesity = st.checkbox(label="Obesity")
+        pain_behind_the_eyes = st.checkbox(label="Pain behind the eyes")
+        pain_during_bowel_movements = st.checkbox(label="Pain during bowel movements")
+        pain_in_anal_region = st.checkbox(label="Pain in anal region")
+        painful_walking = st.checkbox(label="Painful walking")
+        palpitations = st.checkbox(label="Palpitations")
+        passage_of_gases = st.checkbox(label="Passage of gases")
+        patches_in_throat = st.checkbox(label="Patches in throat")
+        phlegm = st.checkbox(label="Phlegm")
+        polyuria = st.checkbox(label="Polyuria")
+        prominent_veins_on_calf = st.checkbox(label="Prominent veins on calf")
+        puffy_face_and_eyes = st.checkbox(label="Puffy face and eyes")
+        pus_filled_pimples = st.checkbox(label="Pus filled pimples")
+        receiving_blood_transfusion = st.checkbox(label="Receiving blood transfusion")
+    
+    with col3:
+        receiving_unsterile_injections = st.checkbox(label="Receiving unsterile injections")
         red_sore_around_nose = st.checkbox(label="Red sore around nose")
+        red_spots_over_body = st.checkbox(label="Red spots over body")
+        redness_of_eyes = st.checkbox(label="Redness of eyes")
+        restlessness = st.checkbox(label="Restlessness")
+        runny_nose = st.checkbox(label="Runny nose")
+        rusty_sputum = st.checkbox(label="Rusty sputum")
+        scurring = st.checkbox(label="Scurring")
+        shivering = st.checkbox(label="Shivering")
+        silver_like_dusting = st.checkbox(label="Silver like dusting")
+        sinus_pressure = st.checkbox(label="Sinus pressure")
+        skin_peeling = st.checkbox(label="Skin peeling")
+        skin_rash = st.checkbox(label="Skin rash")
+        slurred_speech = st.checkbox(label="Slurred speech")
+        small_dents_in_nails = st.checkbox(label="Small dents in nails")
+        spinning_movements = st.checkbox(label="Spinning movements")
+        spotting_urination = st.checkbox(label="Spotting urination")
+        stiff_neck = st.checkbox(label="Stiff neck")
+        stomach_bleeding = st.checkbox(label="Stomach bleeding")
+        stomach_pain = st.checkbox(label="Stomach pain")
+        sunken_eyes = st.checkbox(label="Sunken eyes")
+        sweating = st.checkbox(label="Sweating")
+        swelled_lymph_nodes = st.checkbox(label="Swelled lymph nodes")
+        swelling_joints = st.checkbox(label="Swelling joints")
+        swelling_of_stomach = st.checkbox(label="Swelling of stomach")
+        swollen_blood_vessels = st.checkbox(label="Swollen blood vessels")
+        swollen_extremeties = st.checkbox(label="Swollen extremeties")
+        swollen_legs = st.checkbox(label="Swollen legs")
+        throat_irritation = st.checkbox(label="Throat irritation")
+        toxic_look_typhos = st.checkbox(label="Toxic look (typhos)")
+        ulcers_on_tongue = st.checkbox(label="Ulcers on tongue")
+        unsteadiness = st.checkbox(label="Unsteadiness")
+        visual_disturbances = st.checkbox(label="Visual disturbances")
+        vomiting = st.checkbox(label="Vomiting")
+        watering_from_eyes = st.checkbox(label="Watering from eyes")
+        weakness_in_limbs = st.checkbox(label="Weakness in limbs")
+        weakness_of_one_body_side = st.checkbox(label="Weakness of one body side")
+        weight_gain = st.checkbox(label="Weight gain")
+        weight_loss = st.checkbox(label="Weight loss")
         yellow_crust_ooze = st.checkbox(label="Yellow crust ooze")
-
+        yellow_urine = st.checkbox(label="Yellow urine")
+        yellowing_of_eyes = st.checkbox(label="Yellowing of eyes")
+        yellowish_skin = st.checkbox(label="Yellowish skin")
+    
     bottomCol1, bottomCol2, bottomCol3 = st.columns(spec=[1, 1, 1], gap="small")
 
     with bottomCol1:
@@ -212,148 +207,151 @@ def main() -> None:
         submitButton = st.button(label="Submit Symptoms")
         if submitButton:
             data: dict[str, int] = {
-                "itching": int(itching),
-                "skin_rash": int(skin_rash),
-                "nodal_skin_eruptions": int(nodal_skin_eruptions),
-                "continuous_sneezing": int(continuous_sneezing),
-                "shivering": int(shivering),
-                "chills": int(chills),
-                "joint_pain": int(joint_pain),
-                "stomach_pain": int(stomach_pain),
-                "acidity": int(acidity),
-                "ulcers_on_tongue": int(ulcers_on_tongue),
-                "muscle_wasting": int(muscle_wasting),
-                "vomiting": int(vomiting),
-                "burning_micturition": int(burning_micturition),
-                "spotting_ urination": int(spotting_urination),
-                "fatigue": int(fatigue),
-                "weight_gain": int(weight_gain),
-                "anxiety": int(anxiety),
-                "cold_hands_and_feets": int(cold_hands_and_feets),
-                "mood_swings": int(mood_swings),
-                "weight_loss": int(weight_loss),
-                "restlessness": int(restlessness),
-                "lethargy": int(lethargy),
-                "patches_in_throat": int(patches_in_throat),
-                "irregular_sugar_level": int(irregular_sugar_level),
-                "cough": int(cough),
-                "high_fever": int(high_fever),
-                "sunken_eyes": int(sunken_eyes),
-                "breathlessness": int(breathlessness),
-                "sweating": int(sweating),
-                "dehydration": int(dehydration),
-                "indigestion": int(indigestion),
-                "headache": int(headache),
-                "yellowish_skin": int(yellowish_skin),
-                "dark_urine": int(dark_urine),
-                "nausea": int(nausea),
-                "loss_of_appetite": int(loss_of_appetite),
-                "pain_behind_the_eyes": int(pain_behind_the_eyes),
-                "back_pain": int(back_pain),
-                "constipation": int(constipation),
                 "abdominal_pain": int(abdominal_pain),
-                "diarrhoea": int(diarrhoea),
-                "mild_fever": int(mild_fever),
-                "yellow_urine": int(yellow_urine),
-                "yellowing_of_eyes": int(yellowing_of_eyes),
+                "abnormal_menstruation": int(abnormal_menstruation),
+                "acidity": int(acidity),
                 "acute_liver_failure": int(acute_liver_failure),
-                "fluid_overload": int(fluid_overload),
-                "swelling_of_stomach": int(swelling_of_stomach),
-                "swelled_lymph_nodes": int(swelled_lymph_nodes),
-                "malaise": int(malaise),
-                "blurred_and_distorted_vision": int(blurred_and_distorted_vision),
-                "phlegm": int(phlegm),
-                "throat_irritation": int(throat_irritation),
-                "redness_of_eyes": int(redness_of_eyes),
-                "sinus_pressure": int(sinus_pressure),
-                "runny_nose": int(runny_nose),
-                "congestion": int(congestion),
-                "chest_pain": int(chest_pain),
-                "weakness_in_limbs": int(weakness_in_limbs),
-                "fast_heart_rate": int(fast_heart_rate),
-                "pain_during_bowel_movements": int(pain_during_bowel_movements),
-                "pain_in_anal_region": int(pain_in_anal_region),
+                "altered_sensorium": int(altered_sensorium),
+                "anxiety": int(anxiety),
+                "back_pain": int(back_pain),
+                "belly_pain": int(belly_pain),
+                "blackheads": int(blackheads),
+                "bladder_discomfort": int(bladder_discomfort),
+                "blister": int(blister),
+                "blood_in_sputum": int(blood_in_sputum),
                 "bloody_stool": int(bloody_stool),
-                "irritation_in_anus": int(irritation_in_anus),
-                "neck_pain": int(neck_pain),
-                "dizziness": int(dizziness),
-                "cramps": int(cramps),
-                "bruising": int(bruising),
-                "obesity": int(obesity),
-                "swollen_legs": int(swollen_legs),
-                "swollen_blood_vessels": int(swollen_blood_vessels),
-                "puffy_face_and_eyes": int(puffy_face_and_eyes),
-                "enlarged_thyroid": int(enlarged_thyroid),
+                "blurred_and_distorted_vision": int(blurred_and_distorted_vision),
+                "breathlessness": int(breathlessness),
                 "brittle_nails": int(brittle_nails),
-                "swollen_extremeties": int(swollen_extremeties),
+                "bruising": int(bruising),
+                "burning_micturition": int(burning_micturition),
+                "chest_pain": int(chest_pain),
+                "chills": int(chills),
+                "cold_hands_and_feets": int(cold_hands_and_feets),
+                "coma": int(coma),
+                "congestion": int(congestion),
+                "constipation": int(constipation),
+                "continuous_feel_of_urine": int(continuous_feel_of_urine),
+                "continuous_sneezing": int(continuous_sneezing),
+                "cough": int(cough),
+                "cramps": int(cramps),
+                "dark_urine": int(dark_urine),
+                "dehydration": int(dehydration),
+                "depression": int(depression),
+                "diarrhoea": int(diarrhoea),
+                "dischromic_patches": int(dischromic_patches),
+                "distention_of_abdomen": int(distention_of_abdomen),
+                "dizziness": int(dizziness),
+                "drying_and_tingling_lips": int(drying_and_tingling_lips),
+                "enlarged_thyroid": int(enlarged_thyroid),
                 "excessive_hunger": int(excessive_hunger),
                 "extra_marital_contacts": int(extra_marital_contacts),
-                "drying_and_tingling_lips": int(drying_and_tingling_lips),
-                "slurred_speech": int(slurred_speech),
-                "knee_pain": int(knee_pain),
-                "hip_joint_pain": int(hip_joint_pain),
-                "muscle_weakness": int(muscle_weakness),
-                "stiff_neck": int(stiff_neck),
-                "swelling_joints": int(swelling_joints),
-                "movement_stiffness": int(movement_stiffness),
-                "spinning_movements": int(spinning_movements),
-                "loss_of_balance": int(loss_of_balance),
-                "unsteadiness": int(unsteadiness),
-                "weakness_of_one_body_side": int(weakness_of_one_body_side),
-                "loss_of_smell": int(loss_of_smell),
-                "bladder_discomfort": int(bladder_discomfort),
-                "foul_smell_of urine": int(foul_smell_of_urine),
-                "continuous_feel_of_urine": int(continuous_feel_of_urine),
-                "passage_of_gases": int(passage_of_gases),
-                "internal_itching": int(internal_itching),
-                "toxic_look_(typhos)": int(toxic_look_typhos),
-                "depression": int(depression),
-                "irritability": int(irritability),
-                "muscle_pain": int(muscle_pain),
-                "altered_sensorium": int(altered_sensorium),
-                "red_spots_over_body": int(red_spots_over_body),
-                "belly_pain": int(belly_pain),
-                "abnormal_menstruation": int(abnormal_menstruation),
-                "dischromic _patches": int(dischromic_patches),
-                "watering_from_eyes": int(watering_from_eyes),
-                "increased_appetite": int(increased_appetite),
-                "polyuria": int(polyuria),
                 "family_history": int(family_history),
-                "mucoid_sputum": int(mucoid_sputum),
-                "rusty_sputum": int(rusty_sputum),
+                "fast_heart_rate": int(fast_heart_rate),
+                "fatigue": int(fatigue),
+                "fluid_overload": int(fluid_overload),
+                "fluid_overload": int(fluid_overload),
+                "foul_smell_ofurine": int(foul_smell_of_urine),
+                "headache": int(headache),
+                "high_fever": int(high_fever),
+                "hip_joint_pain": int(hip_joint_pain),
+                "history_of_alcohol_consumption": int(history_of_alcohol_consumption),
+                "increased_appetite": int(increased_appetite),
+                "indigestion": int(indigestion),
+                "inflammatory_nails": int(inflammatory_nails),
+                "internal_itching": int(internal_itching),
+                "irregular_sugar_level": int(irregular_sugar_level),
+                "irritability": int(irritability),
+                "irritation_in_anus": int(irritation_in_anus),
+                "itching": int(itching),
+                "joint_pain": int(joint_pain),
+                "knee_pain": int(knee_pain),
                 "lack_of_concentration": int(lack_of_concentration),
-                "visual_disturbances": int(visual_disturbances),
+                "lethargy": int(lethargy),
+                "loss_of_appetite": int(loss_of_appetite),
+                "loss_of_balance": int(loss_of_balance),
+                "loss_of_smell": int(loss_of_smell),
+                "malaise": int(malaise),
+                "mild_fever": int(mild_fever),
+                "mood_swings": int(mood_swings),
+                "movement_stiffness": int(movement_stiffness),
+                "mucoid_sputum": int(mucoid_sputum),
+                "muscle_pain": int(muscle_pain),
+                "muscle_wasting": int(muscle_wasting),
+                "muscle_weakness": int(muscle_weakness),
+                "nausea": int(nausea),
+                "neck_pain": int(neck_pain),
+                "nodal_skin_eruptions": int(nodal_skin_eruptions),
+                "obesity": int(obesity),
+                "pain_behind_the_eyes": int(pain_behind_the_eyes),
+                "pain_during_bowel_movements": int(pain_during_bowel_movements),
+                "pain_in_anal_region": int(pain_in_anal_region),
+                "painful_walking": int(painful_walking),
+                "palpitations": int(palpitations),
+                "passage_of_gases": int(passage_of_gases),
+                "patches_in_throat": int(patches_in_throat),
+                "phlegm": int(phlegm),
+                "polyuria": int(polyuria),
+                "prominent_veins_on_calf": int(prominent_veins_on_calf),
+                "puffy_face_and_eyes": int(puffy_face_and_eyes),
+                "pus_filled_pimples": int(pus_filled_pimples),
                 "receiving_blood_transfusion": int(receiving_blood_transfusion),
                 "receiving_unsterile_injections": int(receiving_unsterile_injections),
-                "coma": int(coma),
-                "stomach_bleeding": int(stomach_bleeding),
-                "distention_of_abdomen": int(distention_of_abdomen),
-                "history_of_alcohol_consumption": int(history_of_alcohol_consumption),
-                "fluid_overload": int(fluid_overload),
-                "blood_in_sputum": int(blood_in_sputum),
-                "prominent_veins_on_calf": int(prominent_veins_on_calf),
-                "palpitations": int(palpitations),
-                "painful_walking": int(painful_walking),
-                "pus_filled_pimples": int(pus_filled_pimples),
-                "blackheads": int(blackheads),
-                "scurring": int(scurring),
-                "skin_peeling": int(skin_peeling),
-                "silver_like_dusting": int(silver_like_dusting),
-                "small_dents_in_nails": int(small_dents_in_nails),
-                "inflammatory_nails": int(inflammatory_nails),
-                "blister": int(blister),
                 "red_sore_around_nose": int(red_sore_around_nose),
+                "red_spots_over_body": int(red_spots_over_body),
+                "redness_of_eyes": int(redness_of_eyes),
+                "restlessness": int(restlessness),
+                "runny_nose": int(runny_nose),
+                "rusty_sputum": int(rusty_sputum),
+                "scurring": int(scurring),
+                "shivering": int(shivering),
+                "silver_like_dusting": int(silver_like_dusting),
+                "sinus_pressure": int(sinus_pressure),
+                "skin_peeling": int(skin_peeling),
+                "skin_rash": int(skin_rash),
+                "slurred_speech": int(slurred_speech),
+                "small_dents_in_nails": int(small_dents_in_nails),
+                "spinning_movements": int(spinning_movements),
+                "spotting_urination": int(spotting_urination),
+                "stiff_neck": int(stiff_neck),
+                "stomach_bleeding": int(stomach_bleeding),
+                "stomach_pain": int(stomach_pain),
+                "sunken_eyes": int(sunken_eyes),
+                "sweating": int(sweating),
+                "swelled_lymph_nodes": int(swelled_lymph_nodes),
+                "swelling_joints": int(swelling_joints),
+                "swelling_of_stomach": int(swelling_of_stomach),
+                "swollen_blood_vessels": int(swollen_blood_vessels),
+                "swollen_extremeties": int(swollen_extremeties),
+                "swollen_legs": int(swollen_legs),
+                "throat_irritation": int(throat_irritation),
+                "toxic_look_(typhos)": int(toxic_look_typhos),
+                "ulcers_on_tongue": int(ulcers_on_tongue),
+                "unsteadiness": int(unsteadiness),
+                "visual_disturbances": int(visual_disturbances),
+                "vomiting": int(vomiting),
+                "watering_from_eyes": int(watering_from_eyes),
+                "weakness_in_limbs": int(weakness_in_limbs),
+                "weakness_of_one_body_side": int(weakness_of_one_body_side),
+                "weight_gain": int(weight_gain),
+                "weight_loss": int(weight_loss),
                 "yellow_crust_ooze": int(yellow_crust_ooze),
+                "yellow_urine": int(yellow_urine),
+                "yellowing_of_eyes": int(yellowing_of_eyes),
+                "yellowish_skin": int(yellowish_skin),
             }
+            
+            symptoms: str = api.preprocess(data=data)
 
-            row: Series = Series(data=data)
-            symptomStr: str = to_symptoms_string(row=row)
+            print(symptoms)
+
             df: DataFrame = DataFrame(data={"symptoms": [symptomStr]})
 
             with bottomCol3:
                 with st.spinner("Predicting prognosis..."):
-                    inference(data=df)
-                switch_page(page_name="report")
+                    #inference(data=df)
+                #switch_page(page_name="report")
+                    pass
 
     st.write(common.PAGE_FOOTER)
     st.divider()
