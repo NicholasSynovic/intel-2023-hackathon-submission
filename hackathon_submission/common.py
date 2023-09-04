@@ -1,5 +1,5 @@
 from pathlib import Path
-from hackathon_submission.utils import api
+from hackathon_submission.frontend.utils import api
 
 SITE_STATE = {
     "page_title": "DiagnoEase", 
