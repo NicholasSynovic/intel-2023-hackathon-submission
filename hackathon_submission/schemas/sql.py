@@ -62,10 +62,6 @@ class SQL:
                 type_=String,
             ),
             Column(
-                name="Symptoms",
-                type_=String,
-            ),
-            Column(
                 name="Prognosis 1",
                 type_=String,
             ),
