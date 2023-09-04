@@ -235,7 +235,7 @@ def inferencePrognosis(data: SymptomStr) -> dict:
             seq_length=512,
         )
 
-    predictions = runInference.main(flags=FLAGS)
+    predictions: list = runInference.main(flags=FLAGS)
     pairs: dict[str, float] = predictions[0]["prognosis"]
 
     formattedPairs: dict[str, list] = {"Prognosis": [], "Probability": []}
