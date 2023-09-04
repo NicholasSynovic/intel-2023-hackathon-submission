@@ -366,3 +366,6 @@ def inferencePrognosis(data: SymptomStr) -> bool:
 @app.get(path="/api/storage/report")
 def getReport(username: str) -> list:
     df: DataFrame = getReportsTable()
+    userSpecificDF: DataFrame = df[df["Username"] == username]
+    return userSpecificDF.to_dict()
+

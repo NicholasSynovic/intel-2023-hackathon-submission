@@ -1,8 +1,8 @@
 import streamlit as st
-from pandas import DataFrame
-from streamlit_extras.switch_page_button import switch_page
 
 from hackathon_submission.frontend.utils import api, common
+from datetime import datetime
+from streamlit_extras.switch_page_button import switch_page
 
 MESSAGE: str = f"""## {st.session_state["username"]}'s Report
 
@@ -18,6 +18,16 @@ def main() -> None:
 
     st.write(common.PAGE_HEADER)
     st.write(MESSAGE)
+    st.divider()
+
+    dfs: list = api.getReports(username=st.session_state["username"])
+
+    df: dict
+    for df in dfs:
+        st.write(f"### Report From {datetime.utcfromtimestamp(df['time']).strftime('%Y-%m-%d %H:%M:%S')}")
+        st.write(f"**Symptoms**: {df['symptoms']}")
+        st.dataframe(data=df["df"])
+
 
     col1, col2, col3 = st.columns(spec=[1, 1, 1], gap="small")
 
