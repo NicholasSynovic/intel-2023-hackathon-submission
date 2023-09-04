@@ -11,7 +11,7 @@ def main() -> None:
 
     sql.createSchema_Users()
     sql.createSchema_Reports()
-    sql.writeDFToDB(df=df, tableName="Users", keepIndex=True)
+    sql.writeDFToDB(df=df, tableName="Users", keepIndex=False)
     sql.closeConnection()
 
 
