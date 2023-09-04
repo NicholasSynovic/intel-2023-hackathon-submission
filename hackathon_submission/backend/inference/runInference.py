@@ -22,7 +22,7 @@ from contextlib import nullcontext
 
 import numpy as np
 import torch
-from hackathon_submission.utils.processData import (REVERSE_MAPPING,
+from hackathon_submission.backend.inference.processData import (REVERSE_MAPPING,
                                                     read_and_preprocess_data)
 from transformers import (AutoModelForSequenceClassification, AutoTokenizer,
                           BertConfig, BertForSequenceClassification)
