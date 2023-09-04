@@ -49,7 +49,7 @@ def main() -> None:
         if loginButton:
             if api.login(username=username, password=password):
                 st.session_state["username"] = username
-                switch_page(page_name="symptoms")
+                switch_page(page_name="report")
             else:
                 st.write(common.ACCOUNT_ERROR_MESSAGE.format("Account Credentials"))
 

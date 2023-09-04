@@ -40,7 +40,7 @@ def main() -> None:
         signup: bool = api.signup(username=username, password=password)
         if signup:
             st.session_state["username"] = signup
-            switch_page(page_name="symptoms")
+            switch_page(page_name="report")
         else:
             st.write(common.ACCOUNT_ERROR_MESSAGE.format("Account Credentials"))
 
