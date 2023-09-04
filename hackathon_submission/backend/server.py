@@ -1,20 +1,67 @@
-from typing import Any, Literal
-from pandas import Series
 from argparse import Namespace
+from typing import Any, Literal
 
 import pandas
 from fastapi import FastAPI
+from hackathon_submission.backend.inference import prepareData, runInference
 from hackathon_submission.backend.utils import common
 from hackathon_submission.schemas.sql import SQL
-from pandas import DataFrame
-from hackathon_submission.backend.inference import prepareData
+from pandas import DataFrame, Series
 from pydantic import BaseModel
-from hackathon_submission.backend.inference import runInference
 
 app: FastAPI = FastAPI()
 
+
+class Reports:
+    def __init__(
+        self,
+        username: str,
+        reportTime: int,
+        symptoms: str,
+        prognosis1: str,
+        probability1: str,
+        prognosis2: str,
+        probability2: str,
+        prognosis3: str,
+        probability3: str,
+        prognosis4: str,
+        probability4: str,
+        prognosis5: str,
+        probability5: str,
+    ) -> None:
+        self.data: dict = {
+            "Username": [username],
+            "Report Time": [reportTime],
+            "Symptoms": [symptoms],
+            "Prognosis 1": [prognosis1],
+            "Prognosis 2": [prognosis2],
+            "Prognosis 3": [prognosis3],
+            "Prognosis 4": [prognosis4],
+            "Prognosis 5": [prognosis5],
+            "Probability 1": [probability1],
+            "Probability 2": [probability2],
+            "Probability 3": [probability3],
+            "Probability 4": [probability4],
+            "Probability 5": [probability5],
+        }
+
+    def to_df(self) -> DataFrame:
+        df: DataFrame = DataFrame(data=self.data)
+        return df
+
+
+class ReportData(BaseModel):
+    username: str
+    symptoms: str
+    reportTime: int
+    type_: str
+    Prognosis: list
+    Probability: list
+
+
 class SymptomStr(BaseModel):
     message: str
+
 
 class Symptoms(BaseModel):
     abdominal_pain: int
@@ -211,34 +258,39 @@ def signup(username: str, password: str) -> dict:
 
     return {"username": username}
 
+
 @app.post(path="/api/inference/preprocess")
-def preprocessData(data: Symptoms)    ->  dict:
+def preprocessData(data: Symptoms) -> dict:
     row: Series = Series(data)
     message: str = prepareData.to_symptoms_string(row=row)
-    return {"message": message} 
+    return {"message": message}
 
 
-@app.post(path="/api/inference/prognosis")
+@app.post(path="/api/inference/nlp/prognosis")
 def inferencePrognosis(data: SymptomStr) -> dict:
     df: DataFrame = DataFrame(data={"symptoms": [data.message]})
-    
+
     FLAGS: Namespace = Namespace(
-            batch_size=1,
-            benchmark_mode=False,
-            bf16=True,
-            input_file=df,
-            intel=True,
-            is_inc_int8=False,
-            logfile="",
-            n_runs=100,
-            saved_model_dir=common.MODEL_PATH,
-            seq_length=512,
-        )
+        batch_size=1,
+        benchmark_mode=False,
+        bf16=True,
+        input_file=df,
+        intel=True,
+        is_inc_int8=False,
+        logfile="",
+        n_runs=100,
+        saved_model_dir=common.MODEL_PATH,
+        seq_length=512,
+    )
 
     predictions: list = runInference.main(flags=FLAGS)
     pairs: dict[str, float] = predictions[0]["prognosis"]
 
-    formattedPairs: dict[str, list] = {"Prognosis": [], "Probability": []}
+    formattedPairs: dict[str, list] = {
+        "type_": "nlp",
+        "Prognosis": [],
+        "Probability": [],
+    }
 
     prognosis: str
     for prognosis in pairs.keys():
@@ -248,16 +300,53 @@ def inferencePrognosis(data: SymptomStr) -> dict:
     return formattedPairs
 
 
-@app.get(path="/api/storage/symptoms")
-def getSymptoms() -> bool:
-    pass
-
-
-@app.get(path="/api/storage/prognosis")
-def getPrognosis() -> bool:
-    pass
-
-
 @app.post(path="/api/generate/report")
-def generateReport() -> bool:
-    pass
+def generateReport(data: ReportData) -> bool:
+    sql: SQL = SQL(sqliteDBPath=common.DB_PATH)
+    reportsDF: DataFrame = pandas.read_sql_table(
+        table_name="Reports",
+        con=sql.conn,
+    )
+
+    if data.type_ == "nlp":
+        foo: dict = {
+            "username": data.username,
+            "reportTime": data.reportTime,
+            "symptoms": data.symptoms,
+            "prognosis1": data.Prognosis[0],
+            "prognosis2": data.Prognosis[1],
+            "prognosis3": data.Prognosis[2],
+            "prognosis4": data.Prognosis[3],
+            "prognosis5": data.Prognosis[4],
+            "probability1": data.Probability[0],
+            "probability2": data.Probability[1],
+            "probability3": data.Probability[2],
+            "probability4": data.Probability[3],
+            "probability5": data.Probability[4],
+        }
+
+        nlpReport: Reports = Reports(**foo)
+        nlpDF: DataFrame = nlpReport.to_df()
+        nlpDF.index.name = "ID"
+
+        df: DataFrame = pandas.concat(objs=[reportsDF, nlpDF], ignore_index=True)
+
+        sql.writeDFToDB(
+            df=df,
+            tableName="Reports",
+            keepIndex=True,
+            indexColumn="ID",
+        )
+        sql.closeConnection()
+
+    elif data.type_ == "cv":
+        pass
+
+
+@app.get(path="/api/storage/report")
+def getReport(username: str) -> list:
+    sql: SQL = SQL(sqliteDBPath=common.DB_PATH)
+    df: DataFrame = pandas.read_sql_table(
+        table_name="Reports",
+        con=sql.conn,
+    )
