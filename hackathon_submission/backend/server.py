@@ -203,6 +203,12 @@ def getUsersTable() -> DataFrame:
     sql.closeConnection()
     return df
 
+def getReportsTable() -> DataFrame:
+    sql: SQL = SQL(sqliteDBPath=common.DB_PATH)
+    df: DataFrame = pandas.read_sql_table(table_name="Reports", con=sql.conn)
+    sql.closeConnection()
+    return df
+
 
 def usernameExists(username: str, df: DataFrame) -> bool:
     return username in df["Username"].values
@@ -259,7 +265,7 @@ def signup(username: str, password: str) -> dict:
     return {"username": username}
 
 
-@app.post(path="/api/inference/preprocess")
+@app.post(path="/api/inference/nlp/preprocess")
 def preprocessData(data: Symptoms) -> dict:
     row: Series = Series(data)
     message: str = prepareData.to_symptoms_string(row=row)
@@ -302,11 +308,8 @@ def inferencePrognosis(data: SymptomStr) -> dict:
 
 @app.post(path="/api/generate/report")
 def generateReport(data: ReportData) -> None:
+    reportsDF: DataFrame = getReportsTable()
     sql: SQL = SQL(sqliteDBPath=common.DB_PATH)
-    reportsDF: DataFrame = pandas.read_sql_table(
-        table_name="Reports",
-        con=sql.conn,
-    )
 
     if data.type_ == "nlp":
         foo: dict = {
@@ -329,13 +332,9 @@ def generateReport(data: ReportData) -> None:
         nlpDF: DataFrame = nlpReport.to_df()
         nlpDF.index.name = "ID"
 
-        df: DataFrame = pandas.concat(objs=[reportsDF, nlpDF], ignore_index=True)
-
-        sql.writeDFToDB(
-            df=df,
-            tableName="Reports",
-            keepIndex=True,
-        )
+        df: DataFrame = pandas.concat(objs=[reportsDF, nlpDF], ignore_index=True,)
+        
+        sql.writeDFToDB(df=df, tableName="Reports", keepIndex=True)
         sql.closeConnection()
 
     elif data.type_ == "cv":
