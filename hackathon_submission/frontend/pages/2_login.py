@@ -1,7 +1,7 @@
 import streamlit as st
 from hackathon_submission import common
 from streamlit_extras.switch_page_button import switch_page
-from hackathon_submission.utils import api
+from hackathon_submission.frontend.utils import api
 
 MESSAGE: str = """## Login
 
