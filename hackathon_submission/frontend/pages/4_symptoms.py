@@ -12,36 +12,6 @@ of this page.
 """
 
 
-def inference(data: DataFrame) -> None:
-    FLAGS: Namespace = Namespace(
-        batch_size=1,
-        benchmark_mode=False,
-        bf16=True,
-        input_file=data,
-        intel=True,
-        is_inc_int8=False,
-        logfile="",
-        n_runs=100,
-        saved_model_dir=common.MODEL_PATH,
-        seq_length=512,
-    )
-
-    return None
-    # predictions = runInference.main(flags=FLAGS)
-    pairs: dict[str, float] = predictions[0]["prognosis"]
-
-    foo: dict[str, list] = {"Prognosis": [], "Probability": []}
-
-    prognosis: str
-    for prognosis in pairs.keys():
-        foo["Prognosis"].append(prognosis)
-        foo["Probability"].append(str(pairs[prognosis] * 100) + "%")
-
-    df: DataFrame = DataFrame(data=foo)
-
-    st.session_state["report"] = df
-
-
 def main() -> None:
     st.set_page_config(**common.SITE_STATE)
     st.markdown(**common.HIDDEN_SIDEBAR_CSS)
