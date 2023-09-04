@@ -1,7 +1,5 @@
-from pathlib import Path
-
 import streamlit as st
-from pandas import DataFrame
+from requests.exceptions import ConnectionError
 from streamlit_extras.switch_page_button import switch_page
 
 from hackathon_submission.frontend.utils import api
@@ -38,3 +36,12 @@ def logout() -> None:
     st.session_state["username"] = ""
     st.session_state["symptoms"] = ""
     switch_page(page_name="about")
+
+
+def checkServerConnection() -> bool:
+    try:
+        api.check()
+    except ConnectionError:
+        st.write(SERVER_ERROR_MESSAGE)
+        return False
+    return True

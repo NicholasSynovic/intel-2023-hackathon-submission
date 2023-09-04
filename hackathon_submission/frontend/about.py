@@ -30,13 +30,10 @@ def main() -> None:
     st.write(common.PAGE_HEADER)
     st.write(MESSAGE)
 
-    try:
-        if api.check():
-            nextPage: bool = st.button(label="Login")
-            if nextPage:
-                switch_page(page_name="login")
-    except ConnectionError:
-        st.write(common.SERVER_ERROR_MESSAGE)
+    if common.checkServerConnection():
+        nextPage: bool = st.button(label="Login")
+        if nextPage:
+            switch_page(page_name="login")
 
     st.divider()
     st.write(common.PAGE_FOOTER)
