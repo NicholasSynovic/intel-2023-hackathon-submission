@@ -65,9 +65,47 @@ def nlpPrognosis(message: str, username: str) -> bool:
 
 def getReports(username: str) -> list:
     dfList: list = []
-    resp: Response = get(url=f"{URL}/api/storage/report")
-    largeDF: DataFrame = DataFrame(data=resp.json())
+    resp: Response = get(url=f"{URL}/api/storage/report?username={username}")
 
-    print(largeDF)
+    largeDF: DataFrame = DataFrame(data=resp.json())
+    smallDFs: list = [largeDF.iloc[[i]] for i in range(len(largeDF))]
+
+    df: DataFrame
+    for df in smallDFs:
+        time: float = df["Report Time"].values[0]
+        symptoms: str = df["Symptoms"].values[0]
+        prognosis1: str = df["Prognosis 1"].values[0]
+        prognosis2: str = df["Prognosis 2"].values[0]
+        prognosis3: str = df["Prognosis 3"].values[0]
+        prognosis4: str = df["Prognosis 4"].values[0]
+        prognosis5: str = df["Prognosis 5"].values[0]
+        probability1: str = df["Probability 1"].values[0]
+        probability2: str = df["Probability 2"].values[0]
+        probability3: str = df["Probability 3"].values[0]
+        probability4: str = df["Probability 4"].values[0]
+        probability5: str = df["Probability 5"].values[0]
+
+        dfDict: dict = {
+            "Prognosis": [
+                prognosis1,
+                prognosis2,
+                prognosis3,
+                prognosis4,
+                prognosis5,
+            ],
+            "Probability": [
+                probability1,
+                probability2,
+                probability3,
+                probability4,
+                probability5,
+            ],
+        }
+        data: dict = {
+            "time": time,
+            "symptoms": symptoms,
+            "df": DataFrame(data=dfDict),
+        }
+        dfList.append(data)
 
     return dfList
