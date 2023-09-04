@@ -1,5 +1,5 @@
 import streamlit as st
-from pandas import DataFrame
+from requests.exceptions import ConnectionError
 from streamlit_extras.switch_page_button import switch_page
 
 from hackathon_submission.frontend.utils import api, common
@@ -30,11 +30,12 @@ def main() -> None:
     st.write(common.PAGE_HEADER)
     st.write(MESSAGE)
 
-    if api.check():
-        nextPage: bool = st.button(label="Login")
-        if nextPage:
-            switch_page(page_name="login")
-    else:
+    try:
+        if api.check():
+            nextPage: bool = st.button(label="Login")
+            if nextPage:
+                switch_page(page_name="login")
+    except ConnectionError:
         st.write(common.SERVER_ERROR_MESSAGE)
 
     st.divider()
