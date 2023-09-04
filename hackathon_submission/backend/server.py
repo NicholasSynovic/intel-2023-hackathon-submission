@@ -4,7 +4,7 @@ from argparse import Namespace
 
 import pandas
 from fastapi import FastAPI
-from hackathon_submission.frontend.utils import common
+from hackathon_submission.backend.utils import common
 from hackathon_submission.schemas.sql import SQL
 from pandas import DataFrame
 from hackathon_submission.backend.inference import prepareData
