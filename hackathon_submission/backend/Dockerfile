@@ -1,4 +1,4 @@
-FROM python:3.8
+FROM intel/oneapi-aikit
 
 # install git
 RUN apt update && apt install git -y
@@ -10,7 +10,6 @@ RUN git clone https://github.com/NicholasSynovic/intel-2023-hackathon-submission
 WORKDIR /app
 
 # install dependancies
-RUN pip3 install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu118 --user --no-cache-dir
 RUN pip3 install -r requirements.txt --user --no-cache-dir
 
 # build and install project
