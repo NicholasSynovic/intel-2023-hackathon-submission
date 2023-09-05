@@ -74,12 +74,12 @@ def main() -> None:
                 )
 
             st.dataframe(data=df["df"], use_container_width=True, hide_index=True)
-            deleteReportButton = st.button(label="Delete Report", key=keys.pop())
-            if deleteReportButton:
-                api.deleteReport(uuid=df["time"])
-                switch_page(page_name="report")
-
             st.divider()
+
+    deleteReportsButton = st.button(label="Delete Reports")
+    if deleteReportsButton:
+        api.deleteReport(uuid=st.session_state["username"])
+        st.experimental_rerun()
 
     st.write(common.PAGE_FOOTER)
     st.divider()

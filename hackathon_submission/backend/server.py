@@ -200,6 +200,10 @@ class Symptoms(BaseModel):
     yellowish_skin: int
 
 
+class DeleteReport(BaseModel):
+    uuid: str
+
+
 def getUsersTable() -> DataFrame:
     sql: SQL = SQL(sqliteDBPath=common.DB_PATH)
     df: DataFrame = pandas.read_sql_table(table_name="Users", con=sql.conn)
@@ -371,11 +375,11 @@ def getReport(username: str) -> dict:
         return {}
 
 
-@app.post(path="/api/storage/deleteReport")
-def deleteReport(uuid: float) -> None:
+@app.delete(path="/api/storage/deleteReports")
+def deleteReport(uuid: str) -> None:
     df: DataFrame = getReportsTable()
     sql: SQL = SQL(sqliteDBPath=common.DB_PATH)
-    df = df[df["Report Time"] != uuid]
+    df = df[df["Username"] != uuid]
     df.reset_index(drop=True, inplace=True)
     sql.writeDFToDB(df=df, tableName="Reports", keepIndex=False)
     sql.closeConnection()

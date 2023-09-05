@@ -1,5 +1,5 @@
 from pandas import DataFrame
-from requests import Response, get, post
+from requests import Response, delete, get, post
 from requests.exceptions import JSONDecodeError
 
 URL: str = "http://localhost:8000"
@@ -126,5 +126,5 @@ def getReports(username: str) -> list:
     return dfList
 
 
-def deleteReport(uuid: float) -> None:
-    resp: Response = post(url=f"{URL}/api/storage/deleteReport?uuid={uuid}")
+def deleteReport(uuid: str) -> None:
+    delete(url=f"{URL}/api/storage/deleteReports?uuid={uuid}")
