@@ -368,4 +368,4 @@ def getReport(username: str) -> dict:
         userSpecificDF.reset_index(drop=True, inplace=True)
         return userSpecificDF.to_dict()
     except KeyError:
-        return False
+        return {}
