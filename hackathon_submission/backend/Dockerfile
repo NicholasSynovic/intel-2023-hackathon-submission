@@ -25,4 +25,7 @@ EXPOSE 8000
 
 WORKDIR /app/hackathon_submission/backend
 
+# create DB
+RUN python3.8 createDB.py
+
 ENTRYPOINT ["uvicorn", "server:app", "--port=8000", "--host=0.0.0.0"]
