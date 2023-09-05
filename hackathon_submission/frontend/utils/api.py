@@ -1,5 +1,6 @@
 from pandas import DataFrame
 from requests import Response, get, post
+from requests.exceptions import JSONDecodeError
 
 URL: str = "http://localhost:8000"
 HEADERS: dict = {"Content-type": "application/json"}
@@ -73,7 +74,10 @@ def getReports(username: str) -> list:
     dfList: list = []
     resp: Response = get(url=f"{URL}/api/storage/report?username={username}")
 
-    largeDF: DataFrame = DataFrame(data=resp.json())
+    try:
+        largeDF: DataFrame = DataFrame(data=resp.json())
+    except JSONDecodeError:
+        return dfList
 
     try:
         smallDFs: list = [largeDF.iloc[[i]] for i in range(len(largeDF))]
