@@ -83,6 +83,13 @@ def main() -> None:
                 api.deleteReport(uuid=st.session_state["username"])
                 common.ACCOUNT_MODAL.close()
                 st.experimental_rerun()
+            deleteReportsButton = st.button(label="Delete Reports")
+
+            deleteAccountButton = st.button(lable="Delete Account")
+            if deleteAccountButton:
+                api.deleteAccount(username=st.session_state["username"])
+                common.ACCOUNT_MODAL.close()
+                common.logout()
 
     st.write(common.PAGE_FOOTER)
     st.divider()

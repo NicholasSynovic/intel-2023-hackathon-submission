@@ -128,3 +128,7 @@ def getReports(username: str) -> list:
 
 def deleteReport(uuid: str) -> None:
     delete(url=f"{URL}/api/storage/deleteReports?uuid={uuid}")
+
+
+def deleteAccount(username: str) -> None:
+    delete(url=f"{URL}/api/account/delete?username={username}")

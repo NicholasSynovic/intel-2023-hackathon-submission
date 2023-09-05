@@ -376,10 +376,21 @@ def getReport(username: str) -> dict:
 
 
 @app.delete(path="/api/storage/deleteReports")
-def deleteReport(uuid: str) -> None:
+def deleteReports(uuid: str) -> None:
     df: DataFrame = getReportsTable()
     sql: SQL = SQL(sqliteDBPath=common.DB_PATH)
     df = df[df["Username"] != uuid]
     df.reset_index(drop=True, inplace=True)
     sql.writeDFToDB(df=df, tableName="Reports", keepIndex=False)
+    sql.closeConnection()
+
+
+@app.delete(path="/api/account/delete")
+def deleteAccount(username: str) -> None:
+    deleteReports(uuid=username)
+    df: DataFrame = getUsersTable()
+    sql: SQL = SQL(sqliteDBPath=common.DB_PATH)
+    df = df[df["Username"] != username]
+    df.reset_index(drop=True, inplace=True)
+    sql.writeDFToDB(df=df, tableName="Users", keepIndex=False)
     sql.closeConnection()
