@@ -270,12 +270,11 @@ def signup(username: str, password: str) -> dict:
     if userExists:
         return {"username": False}
 
-    df = df.append(
-        other={"Username": username, "Password": password},
-        ignore_index=True,
-    )
+    foo: DataFrame = DataFrame(data={"Username": [username], "Password": [password]})
 
-    sql.writeDFToDB(df=df, tableName="Users", keepIndex=False)
+    bar: DataFrame = pandas.concat(objs=[df, foo], ignore_index=True)
+
+    sql.writeDFToDB(df=bar, tableName="Users", keepIndex=False)
     sql.closeConnection()
 
     return {"username": username}
