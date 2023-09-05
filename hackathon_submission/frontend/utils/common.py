@@ -1,6 +1,7 @@
 import streamlit as st
 from requests.exceptions import ConnectionError
 from streamlit_extras.switch_page_button import switch_page
+from streamlit_modal import Modal
 
 from hackathon_submission.frontend.utils import api
 
@@ -52,3 +53,6 @@ def checkSessionState() -> None:
         st.session_state["username"]
     except KeyError:
         switch_page(page_name="about")
+
+
+ACCOUNT_MODAL: Modal = Modal(title="Account Settings", key="modal")

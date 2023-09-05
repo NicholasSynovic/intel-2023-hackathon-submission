@@ -27,22 +27,17 @@ def main() -> None:
     if common.checkServerConnection():
         dfs: list = api.getReports(username=st.session_state["username"])
 
-        col1, col2, col3 = st.columns(spec=[1, 1, 1], gap="small")
+        col1, col2 = st.columns(spec=[3, 1], gap="small")
 
         with col1:
-            logoutButton = st.button(label="Logout")
-            if logoutButton:
-                common.logout()
+            accountSettingsButton = st.button(label="Account Settings")
+            if accountSettingsButton:
+                common.ACCOUNT_MODAL.open()
 
         with col2:
             reportSymptomsButton = st.button(label="Report Symptoms")
             if reportSymptomsButton:
                 switch_page(page_name="symptoms")
-
-        with col3:
-            aiDoctor = st.button(label="Download reports")
-            if aiDoctor:
-                switch_page(page_name="Talk")
 
         keys: list = []
         while len(keys) < len(dfs):
@@ -76,10 +71,18 @@ def main() -> None:
             st.dataframe(data=df["df"], use_container_width=True, hide_index=True)
             st.divider()
 
-    deleteReportsButton = st.button(label="Delete Reports")
-    if deleteReportsButton:
-        api.deleteReport(uuid=st.session_state["username"])
-        st.experimental_rerun()
+    if common.ACCOUNT_MODAL.is_open():
+        with common.ACCOUNT_MODAL.container():
+            logoutButton = st.button(label="Logout")
+            if logoutButton:
+                common.ACCOUNT_MODAL.close()
+                common.logout()
+
+            deleteReportsButton = st.button(label="Delete Reports")
+            if deleteReportsButton:
+                api.deleteReport(uuid=st.session_state["username"])
+                common.ACCOUNT_MODAL.close()
+                st.experimental_rerun()
 
     st.write(common.PAGE_FOOTER)
     st.divider()

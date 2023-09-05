@@ -24,13 +24,17 @@ def main() -> None:
     st.write(MESSAGE.format(st.session_state["username"]))
 
     if common.checkServerConnection():
-        topCol1, topCol2 = st.columns(spec=[3, 1], gap="large")
+        topCol1, topCol2, topCol3 = st.columns(spec=[1, 1, 1], gap="large")
 
         with topCol1:
+            accountSettingsButton = st.button(label="Account Settings")
+            if accountSettingsButton:
+                common.ACCOUNT_MODAL.open()
+        with topCol2:
             viewReportsButton = st.button(label="View Reports")
             if viewReportsButton:
                 switch_page(page_name="report")
-        with topCol2:
+        with topCol3:
             submitImageButton = st.button(label="Upload Image")
 
         (
@@ -186,14 +190,9 @@ def main() -> None:
             yellowing_of_eyes = st.checkbox(label="Yellowing of eyes")
             yellowish_skin = st.checkbox(label="Yellowish skin")
 
-        bottomCol1, bottomCol2, bottomCol3 = st.columns(spec=[1, 1, 1], gap="small")
+        bottomCol1, bottomCol2 = st.columns(spec=[1, 3], gap="small")
 
         with bottomCol1:
-            logoutButton = st.button(label="Logout")
-            if logoutButton:
-                common.logout()
-
-        with bottomCol2:
             submitButton = st.button(label="Submit Symptoms")
             if submitButton:
                 data: dict[str, int] = {
@@ -336,13 +335,26 @@ def main() -> None:
 
                 symptoms: str = api.nlpPreprocess(data=data)
 
-                with bottomCol3:
+                with bottomCol2:
                     with st.spinner("Predicting prognosis..."):
                         api.nlpPrognosis(
                             message=symptoms,
                             username=st.session_state["username"],
                         )
                         switch_page(page_name="report")
+
+    if common.ACCOUNT_MODAL.is_open():
+        with common.ACCOUNT_MODAL.container():
+            logoutButton = st.button(label="Logout")
+            if logoutButton:
+                common.ACCOUNT_MODAL.close()
+                common.logout()
+
+            deleteReportsButton = st.button(label="Delete Reports")
+            if deleteReportsButton:
+                api.deleteReport(uuid=st.session_state["username"])
+                common.ACCOUNT_MODAL.close()
+                st.experimental_rerun()
 
     st.write(common.PAGE_FOOTER)
     st.divider()
