@@ -15,5 +15,5 @@ sqlalchemy
 streamlit
 streamlit-extras
 tensorboard
-transformers==4.21.3
+transformers==4.30.0
 uvicorn[standard]
