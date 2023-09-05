@@ -1,7 +1,7 @@
 from pandas import DataFrame
 from requests import Response, get, post
 
-URL: str = "http://localhost:8000"
+URL: str = "http://0.0.0.0:8000"
 HEADERS: dict = {"Content-type": "application/json"}
 
 
