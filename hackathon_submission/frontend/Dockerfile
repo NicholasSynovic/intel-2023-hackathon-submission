@@ -1,10 +1,7 @@
 FROM intel/oneapi-aikit
 
-# install git
-RUN apt update && apt install git -y
-
-# clone project
-RUN git clone https://github.com/NicholasSynovic/intel-2023-hackathon-submission /app
+# copy project to folder
+COPY . /app
 
 # set the working directory
 WORKDIR /app

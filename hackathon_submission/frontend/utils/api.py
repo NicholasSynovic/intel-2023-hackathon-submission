@@ -2,7 +2,9 @@ from pandas import DataFrame
 from requests import Response, delete, get, post
 from requests.exceptions import JSONDecodeError
 
-URL: str = "http://localhost:8000"
+# URL: str = "http://localhost:8000"
+URL: str = "http://172.22.0.3:8000"
+
 HEADERS: dict = {"Content-type": "application/json"}
 
 
