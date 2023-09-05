@@ -5,18 +5,22 @@ services:
     build:
       context: ../hackathon_submission/frontend/
       dockerfile: Dockerfile
+      args:
+        DOCKER_BUILDKIT: 1
     ports:
       - 8501:5001
     volumes:
-      - DiagnoEase:/DiagnoEase/frontend
+      - ./DiagnoEase:/DiagnoEase/frontend
     restart: on-failure
 
   backend:
     build:
       context: ../hackathon_submission/backend/
       dockerfile: Dockerfile
+      args:
+        DOCKER_BUILDKIT: 1
     ports:
       - 8000:5002
     volumes:
-      - DiagnoEase:/DiagnoEase/backend
+      - ./DiagnoEase:/DiagnoEase/backend
     restart: on-failure
