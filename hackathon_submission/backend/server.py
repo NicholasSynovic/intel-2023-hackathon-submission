@@ -214,6 +214,9 @@ def getReportsTable() -> DataFrame:
         df: DataFrame = pandas.read_sql_table(table_name="Reports", con=sql.conn)
     except ValueError:
         df: DataFrame = DataFrame()
+    except KeyError:
+        df: DataFrame = DataFrame()
+    df.index.name = "ID"
     df.index.name = "ID"
 
     sql.closeConnection()
@@ -360,6 +363,9 @@ def createReport(fpReportData: ReportData) -> None:
 @app.get(path="/api/storage/report")
 def getReport(username: str) -> dict:
     df: DataFrame = getReportsTable()
-    userSpecificDF: DataFrame = df[df["Username"] == username].iloc[::-1]
-    userSpecificDF.reset_index(drop=True, inplace=True)
-    return userSpecificDF.to_dict()
+    try:
+        userSpecificDF: DataFrame = df[df["Username"] == username].iloc[::-1]
+        userSpecificDF.reset_index(drop=True, inplace=True)
+        return userSpecificDF.to_dict()
+    except KeyError:
+        return False
