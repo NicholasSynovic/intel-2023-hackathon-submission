@@ -40,7 +40,7 @@ Albert Einstein
 “Like all magnificent things, it's very simple.” ― Natalie Babbitt, Tuck
 Everlasting
 
-1. Run `make run`
+1. Run: `make run`
 
 ### How to Run on Intel Dev Cloud (IDC)
 
