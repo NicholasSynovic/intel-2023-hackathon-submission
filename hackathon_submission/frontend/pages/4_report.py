@@ -1,4 +1,5 @@
 from datetime import datetime
+from random import randint
 
 import streamlit as st
 from streamlit_extras.switch_page_button import switch_page
@@ -43,6 +44,12 @@ def main() -> None:
             if aiDoctor:
                 switch_page(page_name="Talk")
 
+        keys: list = []
+        while len(keys) < len(dfs):
+            key: int = randint(a=0, b=10000)
+            if key not in keys:
+                keys.append(key)
+
         df: dict
         for df in dfs:
             st.write(
@@ -67,7 +74,7 @@ def main() -> None:
                 )
 
             st.dataframe(data=df["df"], use_container_width=True, hide_index=True)
-            deleteReportButton = st.button(label="Delete Report")
+            deleteReportButton = st.button(label="Delete Report", key=keys.pop())
             if deleteReportButton:
                 api.deleteReport(uuid=df["time"])
                 switch_page(page_name="report")
