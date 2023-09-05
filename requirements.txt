@@ -2,18 +2,18 @@
 
 fastapi
 huggingface
-intel_extension_for_pytorch==1.11
+intel_extension_for_pytorch
 kaggle
 neovim
-neural-compressor==2.1
+neural-compressor
 pandas
 poetry
-psutil==5.9.2
+psutil
 requests
-scikit-learn==0.24.2
+scikit-learn
 sqlalchemy
 streamlit
 streamlit-extras
 tensorboard
-transformers==4.21.3
+transformers
 uvicorn[standard]
