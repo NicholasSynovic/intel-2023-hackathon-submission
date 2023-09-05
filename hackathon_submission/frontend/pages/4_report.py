@@ -39,7 +39,7 @@ def main() -> None:
                 switch_page(page_name="symptoms")
 
         with col3:
-            aiDoctor = st.button(label="Talk to an AI Doctor")
+            aiDoctor = st.button(label="Download reports")
             if aiDoctor:
                 switch_page(page_name="Talk")
 
@@ -50,6 +50,11 @@ def main() -> None:
             )
             st.write(f"**Symptoms**: {df['symptoms']}")
             st.dataframe(data=df["df"], use_container_width=True, hide_index=True)
+            deleteReportButton = st.button(label="Delete Report")
+            if deleteReportButton:
+                api.deleteReport(uuid=df["time"])
+                switch_page(page_name="report")
+
             st.divider()
 
     st.write(common.PAGE_FOOTER)

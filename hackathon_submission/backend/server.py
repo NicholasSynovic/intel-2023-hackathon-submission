@@ -369,3 +369,13 @@ def getReport(username: str) -> dict:
         return userSpecificDF.to_dict()
     except KeyError:
         return {}
+
+
+@app.post(path="/api/storage/deleteReport")
+def deleteReport(uuid: float) -> None:
+    df: DataFrame = getReportsTable()
+    sql: SQL = SQL(sqliteDBPath=common.DB_PATH)
+    df = df[df["Report Time"] != uuid]
+    df.reset_index(drop=True, inplace=True)
+    sql.writeDFToDB(df=df, tableName="Reports", keepIndex=False)
+    sql.closeConnection()

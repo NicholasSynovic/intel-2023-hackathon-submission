@@ -124,3 +124,7 @@ def getReports(username: str) -> list:
         pass
 
     return dfList
+
+
+def deleteReport(uuid: float) -> None:
+    resp: Response = post(url=f"{URL}/api/storage/deleteReport?uuid={uuid}")
