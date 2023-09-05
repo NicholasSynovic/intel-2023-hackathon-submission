@@ -1,14 +1,5 @@
 SHELL := /bin/bash # Use bash syntax
 
-install-python:
-	sudo apt install software-properties-common
-	sudo add-apt-repository ppa:deadsnakes/ppa
-	sudo apt install python3.8
-	sudo apt install python3-pip
-
-install-python-packages:
-	pip install pandas numpy
-
 install-dockertools:
 	sudo apt-get update
 	sudo apt-get install ca-certificates curl gnupg
@@ -27,7 +18,7 @@ install-dockertools:
 	sudo usermod -aG docker $USER
 	newgrp docker
 
-install-tools: install-python install-python-packages install-dockertools
+install: install-dockertools
 
-launch:
+run:
 	docker-compose -f docker-compose.yml -p full up
