@@ -6,9 +6,9 @@ import pandas
 from fastapi import FastAPI, File, UploadFile
 from pandas import DataFrame, Series
 from pydantic import BaseModel
-from typing_extensions import Annotated
 
-from hackathon_submission.backend.inference import prepareData, runInference
+from hackathon_submission.backend.inference import (cvInference, prepareData,
+                                                    runInference)
 from hackathon_submission.backend.utils import common
 from hackathon_submission.schemas.sql import SQL
 
@@ -60,6 +60,7 @@ class ReportData(BaseModel):
     type_: str
     Prognosis: list
     Probability: list
+    image: bytes = b""
 
 
 class SymptomStr(BaseModel):
@@ -242,6 +243,26 @@ def getImagesTable() -> DataFrame:
     return df
 
 
+def predictFromImage(username: str, image: bytes) -> None:
+    prediction: list = list(cvInference.main(imageBytes=image))
+
+    if prediction == [1, 0]:
+        prognosis = "Ill"
+    if prediction == [0, 1]:
+        prognosis = "Normal"
+
+    reportData: ReportData = ReportData(
+        username=username,
+        symptoms="X-Ray Photo",
+        reportTime=time.time(),
+        type_="cv",
+        Prognosis=[prognosis, None, None, None, None],
+        Probability=[None, None, None, None, None],
+        image=image,
+    )
+    createReport(fpReportData=reportData)
+
+
 def usernameExists(username: str, df: DataFrame) -> bool:
     return username in df["Username"].values
 
@@ -360,6 +381,25 @@ def createReport(fpReportData: ReportData) -> None:
             "probability3": fpReportData.Probability[2],
             "probability4": fpReportData.Probability[3],
             "probability5": fpReportData.Probability[4],
+            "image": None,
+        }
+
+    if fpReportData.type_ == "cv":
+        foo: dict = {
+            "username": fpReportData.username,
+            "reportTime": fpReportData.reportTime,
+            "symptoms": fpReportData.symptoms,
+            "prognosis1": fpReportData.Prognosis[0],
+            "prognosis2": fpReportData.Prognosis[1],
+            "prognosis3": fpReportData.Prognosis[2],
+            "prognosis4": fpReportData.Prognosis[3],
+            "prognosis5": fpReportData.Prognosis[4],
+            "probability1": fpReportData.Probability[0],
+            "probability2": fpReportData.Probability[1],
+            "probability3": fpReportData.Probability[2],
+            "probability4": fpReportData.Probability[3],
+            "probability5": fpReportData.Probability[4],
+            "image": fpReportData.image,
         }
 
         nlpReport: Reports = Reports(**foo)
@@ -373,9 +413,6 @@ def createReport(fpReportData: ReportData) -> None:
 
         sql.writeDFToDB(df=df, tableName="Reports", keepIndex=False)
         sql.closeConnection()
-
-    elif fpReportData.type_ == "cv":
-        pass
 
 
 @app.get(path="/api/storage/report")
