@@ -36,6 +36,8 @@ def main() -> None:
                 switch_page(page_name="report")
         with topCol3:
             submitImageButton = st.button(label="Upload Image")
+            if submitImageButton:
+                switch_page(page_name="image_upload")
 
         (
             col1,
