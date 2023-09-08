@@ -134,3 +134,10 @@ def deleteReport(uuid: str) -> None:
 
 def deleteAccount(username: str) -> None:
     delete(url=f"{URL}/api/account/delete?username={username}")
+
+
+def uploadImage(username: str, image: bytes) -> None:
+    files: dict = {"file": ("image.jpeg", image)}
+    resp: Response = post(
+        url=f"{URL}/api/storage/upload?username={username}", files=files
+    )

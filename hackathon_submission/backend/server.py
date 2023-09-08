@@ -3,9 +3,10 @@ from argparse import Namespace
 from typing import Any, Literal
 
 import pandas
-from fastapi import FastAPI
+from fastapi import FastAPI, File, UploadFile
 from pandas import DataFrame, Series
 from pydantic import BaseModel
+from typing_extensions import Annotated
 
 from hackathon_submission.backend.inference import prepareData, runInference
 from hackathon_submission.backend.utils import common
@@ -221,6 +222,20 @@ def getReportsTable() -> DataFrame:
     except KeyError:
         df: DataFrame = DataFrame()
     df.index.name = "ID"
+
+    sql.closeConnection()
+    return df
+
+
+def getImagesTable() -> DataFrame:
+    sql: SQL = SQL(sqliteDBPath=common.DB_PATH)
+
+    try:
+        df: DataFrame = pandas.read_sql_table(table_name="Images", con=sql.conn)
+    except ValueError:
+        df: DataFrame = DataFrame()
+    except KeyError:
+        df: DataFrame = DataFrame()
     df.index.name = "ID"
 
     sql.closeConnection()
@@ -392,4 +407,18 @@ def deleteAccount(username: str) -> None:
     df = df[df["Username"] != username]
     df.reset_index(drop=True, inplace=True)
     sql.writeDFToDB(df=df, tableName="Users", keepIndex=False)
+    sql.closeConnection()
+
+
+@app.post(path="/api/storage/upload")
+async def uploadImage(username: str, file: UploadFile = File(...)) -> None:
+    imagesDF: DataFrame = getImagesTable()
+    sql: SQL = SQL(sqliteDBPath=common.DB_PATH)
+    bar = await file.read()
+    df: DataFrame = DataFrame(
+        data={"Useranme": [username], "Image Data": [bar]},
+    )
+    df.index.name = "ID"
+    foo: DataFrame = pandas.concat(objs=[imagesDF, df])
+    sql.writeDFToDB(df=foo, tableName="Images", keepIndex=False)
     sql.closeConnection()

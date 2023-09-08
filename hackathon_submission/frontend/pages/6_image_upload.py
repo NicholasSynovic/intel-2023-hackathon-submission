@@ -44,8 +44,8 @@ def main() -> None:
         with topCol3:
             submitImageButton = st.button(label="Upload Image")
             if submitImageButton:
-                imageData = imageFile.getvalue()
-                st.write(imageData)
+                imageData = imageFile.read()
+                api.uploadImage(username=st.session_state["username"], image=imageData)
 
     if common.ACCOUNT_MODAL.is_open():
         with common.ACCOUNT_MODAL.container():
