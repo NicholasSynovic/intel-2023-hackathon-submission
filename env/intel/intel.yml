@@ -1,0 +1,31 @@
+name: intel
+channels:
+  - pytorch
+dependencies:
+  - intel::intelpython3_core==2022.1.0
+  - python=3.8
+  - pip
+  - pytorch::pytorch==1.11.0
+  - cpuonly
+  - conda-forge::scikit-learn==0.24.2
+  - neural-compressor==2.1
+  - pip:
+    - intel_extension_for_pytorch==1.11
+    - psutil==5.9.2
+    - transformers==4.21.3
+    - kaggle
+    - streamlit
+    - neovim
+    - streamlit-extras
+    - poetry
+    - pandas
+    - sqlalchemy
+    - huggingface
+    - sklearn
+    - fastapi
+    - uvicorn[standard]
+    - requests
+    - tensorboard
+    - streamlit-modal
+    - python-mulitpart
+      asdfasf
