@@ -24,10 +24,11 @@ def main() -> None:
     st.write(common.PAGE_HEADER)
     st.write(MESSAGE.format(st.session_state["username"]))
 
-    image = st.selectbox(
-        label="Example Image File",
-        options=listdir("pages/images"),
+    imageFile = st.file_uploader(
+        label="Upload X-Ray Image ", accept_multiple_files=False
     )
+    if imageFile is not None:
+        st.image(imageFile)
 
     if common.checkServerConnection():
         topCol1, topCol2, topCol3 = st.columns(spec=[1, 1, 1], gap="large")
@@ -43,7 +44,8 @@ def main() -> None:
         with topCol3:
             submitImageButton = st.button(label="Upload Image")
             if submitImageButton:
-                st.write(image)  # Change this to API calls)
+                imageData = imageFile.getvalue()
+                st.write(imageData)
 
     if common.ACCOUNT_MODAL.is_open():
         with common.ACCOUNT_MODAL.container():
