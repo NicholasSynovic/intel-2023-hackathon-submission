@@ -1,3 +1,5 @@
+from os import listdir
+
 import streamlit as st
 from streamlit_extras.switch_page_button import switch_page
 
@@ -24,7 +26,7 @@ def main() -> None:
 
     image = st.selectbox(
         label="Example Image File",
-        options=["Image 1", "Image 2", "Image 3"],
+        options=listdir("pages/images"),
     )
 
     if common.checkServerConnection():
