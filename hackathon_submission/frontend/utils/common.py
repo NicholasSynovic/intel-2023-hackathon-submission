@@ -1,9 +1,8 @@
 import streamlit as st
-from requests.exceptions import ConnectionError
 from streamlit_extras.switch_page_button import switch_page
 from streamlit_modal import Modal
 
-from hackathon_submission.frontend.utils import api
+from hackathon_submission.frontend.utils import new_api
 
 URL: str = "http://localhost:8000"
 # URL: str = "http://172.22.0.3:8000"
@@ -35,11 +34,13 @@ For all medical emergencies, call `911`"""
 
 ACCOUNT_ERROR_MESSAGE: str = ":red[Invalid {}]"
 
-SERVER_ERROR_MESSAGE: str = f":red[Unable to reach server at: {api.URL}]"
+SERVER_ERROR_MESSAGE: str = f":red[Unable to reach server at: {URL}]"
+
+ACCOUNT_MODAL: Modal = Modal(title="Account Settings", key="modal")
 
 
-def logout() -> None:
-    api.logout()
+def logout(username: str, password: str) -> None:
+    new_api.logout(username=username, password=password)
     st.session_state["username"] = ""
     st.session_state["symptoms"] = ""
     switch_page(page_name="about")
@@ -47,7 +48,7 @@ def logout() -> None:
 
 def checkServerConnection() -> bool:
     try:
-        api.check()
+        new_api.checkOnline
     except ConnectionError:
         st.write(SERVER_ERROR_MESSAGE)
         return False
@@ -59,6 +60,3 @@ def checkSessionState() -> None:
         st.session_state["username"]
     except KeyError:
         switch_page(page_name="about")
-
-
-ACCOUNT_MODAL: Modal = Modal(title="Account Settings", key="modal")
