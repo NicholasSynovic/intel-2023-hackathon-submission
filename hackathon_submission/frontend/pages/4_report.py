@@ -1,6 +1,9 @@
 from datetime import datetime
+from io import BytesIO
 from random import randint
 
+import cv2
+import numpy as np
 import streamlit as st
 from streamlit_extras.switch_page_button import switch_page
 
@@ -54,21 +57,35 @@ def main() -> None:
 
             topProgProb: list = df["df"].iloc[0][["Prognosis", "Probability"]].to_list()
 
-            prob: float = float(topProgProb[1][0:3])
-            if prob <= 30:
-                st.write(
-                    f"\n**Overview**: :green[Good news! You most likely do not have {topProgProb[0]}. If your sympyoms worsen, please seek medical attention.]"
-                )
-            elif (prob > 30) and (prob < 50):
-                st.write(
-                    f"\n**Overview**: :yellow[You are at moderate risk for {topProgProb[0]}. If your sympyoms worsen, please seek medical attention.]"
-                )
-            else:
-                st.write(
-                    f"\n**Overview**: :red[You are at risk for {topProgProb[0]}. Please seek medical attention.]"
-                )
+            try:
+                prob: float = float(topProgProb[1][0:3])
+                if prob <= 30:
+                    st.write(
+                        f"\n**Overview**: :green[Good news! You most likely do not have {topProgProb[0]}. If your sympyoms worsen, please seek medical attention.]"
+                    )
+                elif (prob > 30) and (prob < 50):
+                    st.write(
+                        f"\n**Overview**: :yellow[You are at moderate risk for {topProgProb[0]}. If your sympyoms worsen, please seek medical attention.]"
+                    )
+                else:
+                    st.write(
+                        f"\n**Overview**: :red[You are at risk for {topProgProb[0]}. Please seek medical attention.]"
+                    )
 
-            st.dataframe(data=df["df"], use_container_width=True, hide_index=True)
+                st.dataframe(data=df["df"], use_container_width=True, hide_index=True)
+
+            except ValueError:
+                prog: str = df["df"].iloc[0][["Prognosis"]].to_list()[0]
+
+                if prog == "Ill":
+                    st.write(
+                        f"\n**Overview**: :red[You are at risk for **pneumonia**. Please seek medical attention.]"
+                    )
+                else:
+                    st.write(
+                        f"\n**Overview**: :green[Good news! You most likely do not have **pneumonia**. If your sympyoms worsen, please seek medical attention.]"
+                    )
+
             st.divider()
 
     if common.ACCOUNT_MODAL.is_open():

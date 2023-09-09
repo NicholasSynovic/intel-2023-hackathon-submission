@@ -98,6 +98,7 @@ def getReports(username: str) -> list:
             probability3: str = df["Probability 3"].values[0]
             probability4: str = df["Probability 4"].values[0]
             probability5: str = df["Probability 5"].values[0]
+            image: str = df["Image"].values[0]
 
             dfDict: dict = {
                 "Prognosis": [
@@ -114,7 +115,15 @@ def getReports(username: str) -> list:
                     probability4,
                     probability5,
                 ],
+                "Image": [
+                    image,
+                    0,
+                    0,
+                    0,
+                    0,
+                ],
             }
+
             data: dict = {
                 "time": time,
                 "symptoms": symptoms,
@@ -138,6 +147,7 @@ def deleteAccount(username: str) -> None:
 
 def uploadImage(username: str, image: bytes) -> None:
     files: dict = {"file": ("image.jpeg", image)}
-    resp: Response = post(
-        url=f"{URL}/api/storage/upload?username={username}", files=files
+    post(
+        url=f"{URL}/api/storage/upload?username={username}",
+        files=files,
     )

@@ -92,21 +92,8 @@ def main(imageBytes: bytes) -> np.array:
     [1 0] == Disease
     [0 1] == Normal
     """
-    # Define the command line arguments to input
-    parser = argparse.ArgumentParser()
-    parser.add_argument(
-        "--codebatchsize",
-        type=int,
-        default=1,
-        help="enter the required batch size parameter?",
-    )
-    parser.add_argument(
-        "--modeldir", type=str, default="./model/updated_model.pb", help="Specify path"
-    )
 
-    paramters = parser.parse_args()
-
-    model_dir = paramters.modeldir
+    model_dir = "cvModel/updated_model.pb"
 
     # Load frozen graph using TensorFlow 1.x functions using FP32 Model
     logger.info(

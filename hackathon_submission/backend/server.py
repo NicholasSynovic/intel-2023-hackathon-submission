@@ -31,6 +31,7 @@ class Reports:
         probability4: str,
         prognosis5: str,
         probability5: str,
+        image: bytes = b"",
     ) -> None:
         self.data: dict = {
             "Username": [username],
@@ -46,6 +47,7 @@ class Reports:
             "Probability 3": [probability3],
             "Probability 4": [probability4],
             "Probability 5": [probability5],
+            "Image": [image],
         }
 
     def to_df(self) -> DataFrame:
@@ -256,8 +258,8 @@ def predictFromImage(username: str, image: bytes) -> None:
         symptoms="X-Ray Photo",
         reportTime=time.time(),
         type_="cv",
-        Prognosis=[prognosis, None, None, None, None],
-        Probability=[None, None, None, None, None],
+        Prognosis=[prognosis, "", "", "", ""],
+        Probability=["", "", "", "", ""],
         image=image,
     )
     createReport(fpReportData=reportData)
@@ -381,7 +383,7 @@ def createReport(fpReportData: ReportData) -> None:
             "probability3": fpReportData.Probability[2],
             "probability4": fpReportData.Probability[3],
             "probability5": fpReportData.Probability[4],
-            "image": None,
+            "image": b"",
         }
 
     if fpReportData.type_ == "cv":
@@ -402,17 +404,17 @@ def createReport(fpReportData: ReportData) -> None:
             "image": fpReportData.image,
         }
 
-        nlpReport: Reports = Reports(**foo)
-        nlpDF: DataFrame = nlpReport.to_df()
-        nlpDF.index.name = "ID"
+    nlpReport: Reports = Reports(**foo)
+    nlpDF: DataFrame = nlpReport.to_df()
+    nlpDF.index.name = "ID"
 
-        df: DataFrame = pandas.concat(
-            objs=[reportsDF, nlpDF],
-            ignore_index=True,
-        )
+    df: DataFrame = pandas.concat(
+        objs=[reportsDF, nlpDF],
+        ignore_index=True,
+    )
 
-        sql.writeDFToDB(df=df, tableName="Reports", keepIndex=False)
-        sql.closeConnection()
+    sql.writeDFToDB(df=df, tableName="Reports", keepIndex=False)
+    sql.closeConnection()
 
 
 @app.get(path="/api/storage/report")
@@ -421,7 +423,9 @@ def getReport(username: str) -> dict:
     try:
         userSpecificDF: DataFrame = df[df["Username"] == username].iloc[::-1]
         userSpecificDF.reset_index(drop=True, inplace=True)
-        return userSpecificDF.to_dict()
+        data: dict = userSpecificDF.to_dict()
+        data["Image"] = str(data["Image"])
+        return data
     except KeyError:
         return {}
 
@@ -459,3 +463,5 @@ async def uploadImage(username: str, file: UploadFile = File(...)) -> None:
     foo: DataFrame = pandas.concat(objs=[imagesDF, df])
     sql.writeDFToDB(df=foo, tableName="Images", keepIndex=False)
     sql.closeConnection()
+
+    predictFromImage(username=username, image=bar)
