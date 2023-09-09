@@ -18,6 +18,22 @@ class Report(BaseModel):
     image: str
 
 
+class Inference(BaseModel):
+    username: str
+    document: str
+    image: str
+
+
+class Report(BaseModel):
+    username: str
+    symptoms: str
+    reportTime: float
+    type_: str
+    Prognosis: list
+    Probability: list
+    Image: str
+
+
 class SymptomsChecklist(BaseModel):
     abdominal_pain: int
     abnormal_menstruation: int
