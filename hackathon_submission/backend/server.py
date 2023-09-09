@@ -277,11 +277,6 @@ def checkPassword(username: str, password: str, df: DataFrame) -> bool:
     return False
 
 
-@app.get(path="/")
-def check() -> Literal[True]:
-    return True
-
-
 @app.post(path="/api/account/login")
 def login(username: str, password: str) -> bool:
     username = username.lower()

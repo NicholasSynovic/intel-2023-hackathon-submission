@@ -17,6 +17,7 @@ RUN python3 -m pip install dist/hackathon_submission-0.1.0.tar.gz --force-reinst
 ENV PATH="/root/.local/bin:${PATH}"
 
 # exposing endpoint port
+EXPOSE 8000
 EXPOSE 8501
 
 ENTRYPOINT ["streamlit", "run", "hackathon_submission/frontend/about.py", "--server.port=8501", "--server.address=0.0.0.0"]
