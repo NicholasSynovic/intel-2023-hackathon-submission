@@ -9,7 +9,7 @@ from pandas import DataFrame, Series
 
 from hackathon_submission.backend.inference import (cvInference, prepareData,
                                                     processData, runInference)
-from hackathon_submission.backend.utils import common, models
+from hackathon_submission.backend.utils import models
 
 app: FastAPI = FastAPI()
 

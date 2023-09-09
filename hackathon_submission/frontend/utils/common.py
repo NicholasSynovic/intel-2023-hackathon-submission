@@ -5,6 +5,12 @@ from streamlit_modal import Modal
 
 from hackathon_submission.frontend.utils import api
 
+URL: str = "http://localhost:8000"
+# URL: str = "http://172.22.0.3:8000"
+
+HEADERS: dict = {"Content-type": "application/json"}
+
+
 SITE_STATE = {
     "page_title": "DiagnoEase",
     "initial_sidebar_state": "collapsed",

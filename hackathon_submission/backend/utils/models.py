@@ -3,6 +3,12 @@ from typing import List, Literal
 from pydantic import BaseModel
 
 
+class Inference(BaseModel):
+    username: str
+    document: str
+    image: str
+
+
 class Account(BaseModel):
     username: str
     password: str
@@ -16,22 +22,6 @@ class Report(BaseModel):
     prognosis: List[str]
     probability: List[str]
     image: str
-
-
-class Inference(BaseModel):
-    username: str
-    document: str
-    image: str
-
-
-class Report(BaseModel):
-    username: str
-    symptoms: str
-    reportTime: float
-    type_: str
-    Prognosis: list
-    Probability: list
-    Image: str
 
 
 class SymptomsChecklist(BaseModel):
