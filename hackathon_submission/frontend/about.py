@@ -24,6 +24,8 @@ def main() -> None:
 
     if "username" not in st.session_state:
         st.session_state["username"] = ""
+    if "password" not in st.session_state:
+        st.session_state["password"] = ""
 
     st.write(common.PAGE_HEADER)
     st.write(MESSAGE)
