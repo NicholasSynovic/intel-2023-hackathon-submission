@@ -52,9 +52,7 @@ def main() -> None:
             )
             st.write(f"**Symptoms**: {symptoms}")
 
-            if (prognosis == "Ill") or (prognosis == "Normal"):
-                print(df)
-                print("test")
+            print(df)
 
             continue
 

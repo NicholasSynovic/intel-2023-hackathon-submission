@@ -31,7 +31,7 @@ class Reports:
         probability4: str,
         prognosis5: str,
         probability5: str,
-        image: bytes = b"",
+        image: str,
     ) -> None:
         self.data: dict = {
             "Username": [username],
@@ -62,7 +62,7 @@ class ReportData(BaseModel):
     type_: str
     Prognosis: list
     Probability: list
-    image: bytes = b""
+    image: str
 
 
 class SymptomStr(BaseModel):

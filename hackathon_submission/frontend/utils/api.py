@@ -65,6 +65,9 @@ def nlpPrognosis(message: str, username: str) -> None:
     )
 
     jsonData: dict = resp.json()
+
+    jsonData["image"] = bytes().decode()
+
     resp: Response = post(
         url=f"{URL}/api/generate/report",
         json=jsonData,
