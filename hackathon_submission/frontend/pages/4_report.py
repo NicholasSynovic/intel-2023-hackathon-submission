@@ -1,8 +1,8 @@
 from ast import literal_eval
 from datetime import datetime
-from random import randint
 
 import streamlit as st
+from pandas import DataFrame
 from streamlit_extras.switch_page_button import switch_page
 
 from hackathon_submission.frontend.utils import api, common
@@ -26,7 +26,7 @@ def main() -> None:
     st.divider()
 
     if common.checkServerConnection():
-        dfs: list = api.getReports(username=st.session_state["username"])
+        jsonResp: list = api.getReports(username=st.session_state["username"])
 
         col1, col2 = st.columns(spec=[3, 1], gap="small")
 
@@ -40,18 +40,23 @@ def main() -> None:
             if reportSymptomsButton:
                 switch_page(page_name="symptoms")
 
-        keys: list = []
-        while len(keys) < len(dfs):
-            key: int = randint(a=0, b=10000)
-            if key not in keys:
-                keys.append(key)
+        dataDict: dict
+        for dataDict in jsonResp:
+            time: float = dataDict["time"]
+            symptoms: str = dataDict["symptoms"]
+            df: DataFrame = DataFrame(data=dataDict["df"])
+            prognosis: str = df["Prognosis"].iloc[0]
 
-        df: dict
-        for df in dfs:
             st.write(
-                f"### Report From {datetime.utcfromtimestamp(df['time']).strftime('%A, %B %d %Y @ %I:%M %p')}",
+                f"### Report From {datetime.utcfromtimestamp(time).strftime('%A, %B %d %Y @ %I:%M %p')}",
             )
-            st.write(f"**Symptoms**: {df['symptoms']}")
+            st.write(f"**Symptoms**: {symptoms}")
+
+            if (prognosis == "Ill") or (prognosis == "Normal"):
+                print(df)
+                print("test")
+
+            continue
 
             topProgProb: list = df["df"].iloc[0][["Prognosis", "Probability"]].to_list()
 
@@ -91,7 +96,7 @@ def main() -> None:
                         f"\n**Overview**: :green[Good news! You most likely do not have **pneumonia**. If your sympyoms worsen, please seek medical attention.]"
                     )
 
-                st.image(image=data[0])
+                st.image(image=data[1])
             st.divider()
 
     if common.ACCOUNT_MODAL.is_open():
