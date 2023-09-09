@@ -1,9 +1,7 @@
+from ast import literal_eval
 from datetime import datetime
-from io import BytesIO
 from random import randint
 
-import cv2
-import numpy as np
 import streamlit as st
 from streamlit_extras.switch_page_button import switch_page
 
@@ -72,10 +70,17 @@ def main() -> None:
                         f"\n**Overview**: :red[You are at risk for {topProgProb[0]}. Please seek medical attention.]"
                     )
 
-                st.dataframe(data=df["df"], use_container_width=True, hide_index=True)
+                st.dataframe(
+                    data=df["df"][["Prognosis", "Probability"]],
+                    use_container_width=True,
+                    hide_index=True,
+                )
 
             except ValueError:
                 prog: str = df["df"].iloc[0][["Prognosis"]].to_list()[0]
+                img_str: str = df["df"].iloc[0][["Image"]][0]
+
+                data = literal_eval(img_str)
 
                 if prog == "Ill":
                     st.write(
@@ -86,6 +91,7 @@ def main() -> None:
                         f"\n**Overview**: :green[Good news! You most likely do not have **pneumonia**. If your sympyoms worsen, please seek medical attention.]"
                     )
 
+                st.image(image=data[0])
             st.divider()
 
     if common.ACCOUNT_MODAL.is_open():
