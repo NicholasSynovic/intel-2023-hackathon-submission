@@ -1,7 +1,7 @@
 import streamlit as st
 from streamlit_extras.switch_page_button import switch_page
 
-from hackathon_submission.frontend.utils import common, new_api
+from hackathon_submission.frontend.utils import api, common
 
 MESSAGE: str = """## Login
 
@@ -49,9 +49,8 @@ def main() -> None:
             loginButton: bool = st.button(label="Login")
 
         if loginButton:
-            if new_api.login(username=username, password=password):
+            if api.login(username=username, password=password):
                 st.session_state["username"] = username
-                st.session_state["password"] = username
                 switch_page(page_name="report")
             else:
                 st.write(common.ACCOUNT_ERROR_MESSAGE.format("Account Credentials"))

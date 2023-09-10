@@ -2,7 +2,7 @@ import streamlit as st
 from requests.exceptions import ConnectionError
 from streamlit_extras.switch_page_button import switch_page
 
-from hackathon_submission.frontend.utils import common
+from hackathon_submission.frontend.utils import api, common
 
 MESSAGE: str = """## About
 
@@ -24,8 +24,6 @@ def main() -> None:
 
     if "username" not in st.session_state:
         st.session_state["username"] = ""
-    if "password" not in st.session_state:
-        st.session_state["password"] = ""
 
     st.write(common.PAGE_HEADER)
     st.write(MESSAGE)

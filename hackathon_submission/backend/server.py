@@ -253,6 +253,11 @@ def predictFromImage(username: str, image: bytes) -> None:
     if prediction == [0, 1]:
         prognosis = "Normal"
 
+    from ast import literal_eval
+
+    print(type(str(image)))
+    print(type(literal_eval(str(image))))
+
     reportData: ReportData = ReportData(
         username=username,
         symptoms="X-Ray Photo",
@@ -260,7 +265,7 @@ def predictFromImage(username: str, image: bytes) -> None:
         type_="cv",
         Prognosis=[prognosis, "", "", "", ""],
         Probability=["", "", "", "", ""],
-        image=image,
+        image=str(image),
     )
     createReport(fpReportData=reportData)
 
@@ -333,7 +338,7 @@ def inferencePrognosis(data: SymptomStr) -> dict:
         is_inc_int8=False,
         logfile="",
         n_runs=100,
-        saved_model_dir=common.MODEL_PATH,
+        saved_model_dir=common.NLP_MODEL_PATH,
         seq_length=512,
     )
 
@@ -378,7 +383,7 @@ def createReport(fpReportData: ReportData) -> None:
             "probability3": fpReportData.Probability[2],
             "probability4": fpReportData.Probability[3],
             "probability5": fpReportData.Probability[4],
-            "image": b"",
+            "image": "",
         }
 
     if fpReportData.type_ == "cv":

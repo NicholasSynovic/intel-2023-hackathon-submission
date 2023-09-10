@@ -1,8 +1,9 @@
 from ast import literal_eval
 from datetime import datetime
 
+import numpy as np
 import streamlit as st
-from pandas import DataFrame
+from pandas import DataFrame, Series
 from streamlit_extras.switch_page_button import switch_page
 
 from hackathon_submission.frontend.utils import api, common
@@ -52,13 +53,41 @@ def main() -> None:
             )
             st.write(f"**Symptoms**: {symptoms}")
 
-            print(df)
+            df["Prognosis"].replace("", np.nan, inplace=True)
+            df.dropna(subset=["Prognosis"], inplace=True)
 
-            continue
+            if df.shape[0] == 1:
+                prog: str = df.iloc[0][["Prognosis"]].to_list()[0]
+                imgSeries: Series = df.iloc[0][["Image"]]
+                imgDF: DataFrame = DataFrame.from_dict(
+                    data=literal_eval(imgSeries[0]),
+                    orient="index",
+                )
+                imgDF[0].replace("", np.nan, inplace=True)
+                imgDF.dropna(ignore_index=True, inplace=True)
+                imgDF.reset_index(drop=True, inplace=True)
 
-            topProgProb: list = df["df"].iloc[0][["Prognosis", "Probability"]].to_list()
+                if prog == "Ill":
+                    st.write(
+                        f"\n**Overview**: :red[You are at risk for **pneumonia**. Please seek medical attention.]"
+                    )
+                else:
+                    st.write(
+                        f"\n**Overview**: :green[Good news! You most likely do not have **pneumonia**. If your sympyoms worsen, please seek medical attention.]"
+                    )
 
-            try:
+                print(imgDF)
+
+                rawImg = imgDF.iloc[0]
+                imgDF.drop([0], inplace=True)
+                imgDF.reset_index(drop=True, inplace=True)
+
+                img: bytes = literal_eval(rawImg.values[0])
+                st.image(image=img)
+
+            else:
+                topProgProb: list = df.iloc[0][["Prognosis", "Probability"]].to_list()
+
                 prob: float = float(topProgProb[1][0:3])
                 if prob <= 30:
                     st.write(
@@ -74,27 +103,11 @@ def main() -> None:
                     )
 
                 st.dataframe(
-                    data=df["df"][["Prognosis", "Probability"]],
+                    data=df[["Prognosis", "Probability"]],
                     use_container_width=True,
                     hide_index=True,
                 )
 
-            except ValueError:
-                prog: str = df["df"].iloc[0][["Prognosis"]].to_list()[0]
-                img_str: str = df["df"].iloc[0][["Image"]][0]
-
-                data = literal_eval(img_str)
-
-                if prog == "Ill":
-                    st.write(
-                        f"\n**Overview**: :red[You are at risk for **pneumonia**. Please seek medical attention.]"
-                    )
-                else:
-                    st.write(
-                        f"\n**Overview**: :green[Good news! You most likely do not have **pneumonia**. If your sympyoms worsen, please seek medical attention.]"
-                    )
-
-                st.image(image=data[1])
             st.divider()
 
     if common.ACCOUNT_MODAL.is_open():
@@ -111,7 +124,7 @@ def main() -> None:
                 st.experimental_rerun()
             deleteReportsButton = st.button(label="Delete Reports")
 
-            deleteAccountButton = st.button(lable="Delete Account")
+            deleteAccountButton = st.button(label="Delete Account")
             if deleteAccountButton:
                 api.deleteAccount(username=st.session_state["username"])
                 common.ACCOUNT_MODAL.close()

@@ -2,13 +2,18 @@
 
 fastapi
 huggingface
+importlib-metadata
 intel_extension_for_pytorch
 kaggle
 neovim
 neural-compressor
+numpy
+opencv-python
 pandas
+pillow
 poetry
 psutil
+python-multipart
 requests
 scikit-learn
 sqlalchemy
@@ -16,5 +21,6 @@ streamlit
 streamlit-extras
 streamlit-modal
 tensorboard
-transformers
+tensorflow
+transformers==4.21.3
 uvicorn[standard]
