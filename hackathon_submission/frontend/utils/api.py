@@ -4,7 +4,7 @@ from requests.exceptions import JSONDecodeError
 
 # URL: str = "http://localhost:8000"
 # URL: str = "http://172.22.0.3:8000"
-URL: str = "http://http://172.17.0.1:8000"
+URL: str = "http://http://172.17.0.1:8000"  # Docker Bridge IP
 
 HEADERS: dict = {"Content-type": "application/json"}
 
