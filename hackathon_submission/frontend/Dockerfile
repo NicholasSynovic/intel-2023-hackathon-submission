@@ -7,7 +7,7 @@ COPY . /app
 WORKDIR /app
 
 # install dependancies
-RUN pip3 install -r requirements.txt --user --no-cache-dir
+RUN pip3 install -r requirements.txt --user
 
 # build and install project
 RUN python3 -m poetry build

@@ -7,8 +7,10 @@ COPY . /app
 WORKDIR /app
 
 # install dependancies
-RUN pip3 install torch torchvision torchaudio --user --no-cache-dir --index-url https://download.pytorch.org/whl/cu118
-RUN pip3 install -r requirements.txt --user --no-cache-dir
+RUN apt-update
+RUN apt-get install libgl1 python3-opencv -y
+RUN pip3 install torch torchvision torchaudio --user --index-url https://download.pytorch.org/whl/cu118
+RUN pip3 install -r requirements.txt --user
 
 # build and install project
 RUN python3 -m poetry build

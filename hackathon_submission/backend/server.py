@@ -465,3 +465,23 @@ async def uploadImage(username: str, file: UploadFile = File(...)) -> None:
     sql.closeConnection()
 
     predictFromImage(username=username, image=bar)
+
+
+@app.get(path="/api/storage/download/reports")
+def downloadReports(username: str) -> dict:
+    df: DataFrame = getReportsTable()
+    try:
+        userSpecificDF: DataFrame = df[df["Username"] == username].iloc[::-1]
+        userSpecificDF.reset_index(drop=True, inplace=True)
+        data: dict = userSpecificDF.to_dict()
+        data["Image"] = str(data["Image"])
+        return data
+    except KeyError:
+        return {}
+
+
+@app.get(path="/api/account/changeUsername")
+def changeUsername(username: str, newUsername: str) -> None:
+    df: DataFrame = getUsersTable()
+    df["Username"] = df["Username"].str.replace(username, newUsername)
+    common.writeDataToTable(df=df, tableName="Users")
