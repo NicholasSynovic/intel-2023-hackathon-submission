@@ -45,7 +45,12 @@ def main() -> None:
             submitImageButton = st.button(label="Upload Image")
             if submitImageButton:
                 imageData = imageFile.read()
-                api.uploadImage(username=st.session_state["username"], image=imageData)
+
+                with st.spinner(text="Identifying prognosis... "):
+                    api.uploadImage(
+                        username=st.session_state["username"], image=imageData
+                    )
+                    switch_page(page_name="report")
 
     if common.ACCOUNT_MODAL.is_open():
         with common.ACCOUNT_MODAL.container():
@@ -59,6 +64,22 @@ def main() -> None:
                 api.deleteReport(uuid=st.session_state["username"])
                 common.ACCOUNT_MODAL.close()
                 st.experimental_rerun()
+
+            downloadData = st.button(label="Download data")
+            if downloadData:
+                api.downloadReports(username=st.session_state["username"])
+                st.write(f"Data saved to {st.session_state['username']}_reports.json")
+
+            changeUsername = st.button(label="Change Username")
+            if changeUsername:
+                newUsername = st.text_input(label="New username")
+                submitUsername = st.button(label="Submit new username")
+                if submitUsername:
+                    api.changeUsername(
+                        username=st.session_state["username"],
+                        newUsername=newUsername,
+                    )
+                    st.session_state["username"] = newUsername
 
     st.write(common.PAGE_FOOTER)
     st.divider()

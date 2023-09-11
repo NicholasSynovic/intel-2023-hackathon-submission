@@ -16,7 +16,7 @@ run:
 	DOCKER_BUILDKIT=1 docker build --tag frontend -f hackathon_submission/frontend/Dockerfile .
 	DOCKER_BUILDKIT=1 docker build --tag backend -f hackathon_submission/backend/Dockerfile .
 
-	docker container create -p 8501:8501 -p 8001:8000 --name web frontend
+	docker container create -p 8501:8501 --name web frontend
 	docker container create -p 8000:8000  --name server backend
 
 	docker start web
@@ -32,4 +32,4 @@ uninstall:
 	docker image rm frontend
 	docker image rm backend
 
-	docker network rm DiagnoEase_net
+	docker system purge

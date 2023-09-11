@@ -2,8 +2,9 @@ from pandas import DataFrame
 from requests import Response, delete, get, post
 from requests.exceptions import JSONDecodeError
 
-URL: str = "http://localhost:8000"
+# URL: str = "http://localhost:8000"
 # URL: str = "http://172.22.0.3:8000"
+URL: str = "http://http://172.17.0.1:8000"
 
 HEADERS: dict = {"Content-type": "application/json"}
 
@@ -154,3 +155,18 @@ def uploadImage(username: str, image: bytes) -> None:
         url=f"{URL}/api/storage/upload?username={username}",
         files=files,
     )
+
+
+def changeUsername(username: str, newUsername: str) -> None:
+    get(
+        url=f"{URL}/api/account/changeUsername?username={username}&newUsername={newUsername}"
+    )
+
+
+def downloadReports(username: str) -> None:
+    resp: Response = get(url=f"{URL}/api/storage/download/reports?username={username}")
+    from json import dump
+
+    with open(f"{username}_reports.json", "w") as jsonFile:
+        dump(obj=resp.json(), fp=jsonFile, indent=4)
+        jsonFile.close()
