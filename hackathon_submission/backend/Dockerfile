@@ -14,6 +14,8 @@ RUN pip3 install -r requirements.txt --user
 RUN python3 -m poetry build
 RUN python3 -m pip install dist/hackathon_submission-0.1.0.tar.gz --force-reinstall
 
+RUN wget --directory-prefix /app/hackathon_submission/bakcend/cvModel https://huggingface.co/NicholasSynovic/intel-2023-student-ambassador-hackathon-cv/resolve/main/updated_model.pb
+
 # set PATH
 ENV PATH="/root/.local/bin:${PATH}"
 
